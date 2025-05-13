@@ -1,0 +1,54 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stylized "W" made of stacked dimes -->
+  
+  <!-- Left diagonal of W -->
+  <circle cx="90" cy="70" r="16" fill="#808080" />
+  <circle cx="110" cy="95" r="16" fill="#707070" />
+  <circle cx="130" cy="120" r="16" fill="#808080" />
+  <circle cx="150" cy="145" r="16" fill="#707070" />
+  <circle cx="170" cy="170" r="16" fill="#808080" />
+  <circle cx="190" cy="195" r="16" fill="#707070" />
+  <circle cx="210" cy="220" r="16" fill="#808080" />
+  
+  <!-- Highlights on left diagonal -->
+  <circle cx="85" cy="65" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="105" cy="90" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="125" cy="115" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="145" cy="140" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="165" cy="165" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="185" cy="190" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="205" cy="215" r="5" fill="#e0e0e0" opacity="0.8" />
+  
+  <!-- Middle rising diagonal of W -->
+  <circle cx="210" cy="195" r="16" fill="#707070" />
+  <circle cx="230" cy="170" r="16" fill="#808080" />
+  <circle cx="250" cy="145" r="16" fill="#707070" />
+  
+  <!-- Highlights on middle rising diagonal -->
+  <circle cx="205" cy="190" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="225" cy="165" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="245" cy="140" r="5" fill="#e0e0e0" opacity="0.8" />
+  
+  <!-- Right diagonal of W -->
+  <circle cx="250" cy="145" r="16" fill="#707070" />
+  <circle cx="270" cy="170" r="16" fill="#808080" />
+  <circle cx="290" cy="195" r="16" fill="#707070" />
+  <circle cx="310" cy="220" r="16" fill="#808080" />
+  
+  <!-- Highlights on right diagonal -->
+  <circle cx="245" cy="140" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="265" cy="165" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="285" cy="190" r="5" fill="#e0e0e0" opacity="0.8" />
+  <circle cx="305" cy="215" r="5" fill="#e0e0e0" opacity="0.8" />
+  
+  <!-- Subtle metallic sheen over entire logo -->
+  <defs>
+    <linearGradient id="metalSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="50" y="50" width="300" height="200" fill="url(#metalSheen)" />
+</svg>

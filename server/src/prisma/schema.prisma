@@ -1,0 +1,103 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:REDACT@localhost:5432/postgres?schema=public"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model categories {
+  category_id   BigInt    @id
+  category_name BigInt?
+  description   String?
+  created_at    DateTime? @db.Date
+  posts         posts[]
+}
+
+model comments {
+  comment_id BigInt  @id
+  user_id    BigInt?
+  comment    String? @db.VarChar(250)
+  post_id    BigInt?
+  vote_id    BigInt?
+  posts      posts?  @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?  @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  votes      votes?  @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model companies {
+  company_id   BigInt     @id
+  company_name String?    @db.VarChar(50)
+  description  String?    @db.VarChar(255)
+  license_num  String?    @db.VarChar(80)
+  created_at   DateTime?  @db.Date
+  location_id  BigInt?
+  locations    locations? @relation(fields: [location_id], references: [location_id], onDelete: NoAction, onUpdate: NoAction)
+  users        users[]
+}
+
+model locations {
+  location_id  BigInt      @id
+  address_1    String?     @db.VarChar(100)
+  address_2    String?     @db.VarChar(100)
+  city         String?     @db.VarChar(80)
+  state_region String?     @db.VarChar(80)
+  country      String?     @db.VarChar(80)
+  zip_postal   String?     @db.VarChar(20)
+  companies    companies[]
+  users        users[]
+}
+
+model post_tags {
+  post_tags_id BigInt  @id
+  post_id      BigInt?
+  tag_id       BigInt?
+  posts        posts?  @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+  tags         tags?   @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model posts {
+  post_id     BigInt      @id
+  title       String?     @db.VarChar(50)
+  description String?
+  created_at  DateTime?   @db.Date
+  user_id     BigInt?
+  vote_id     BigInt?
+  category_id BigInt?
+  comments    comments[]
+  post_tags   post_tags[]
+  categories  categories? @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  users       users?      @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  votes       votes?      @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tags {
+  tag_id    BigInt      @id
+  name      String?     @db.VarChar(50)
+  post_tags post_tags[]
+}
+
+model users {
+  user_id             BigInt     @id
+  f_name              String?    @db.VarChar(50)
+  l_name              String?    @db.VarChar(50)
+  created_at          DateTime?  @db.Date
+  fullname            String?    @db.VarChar(120)
+  profile_description String?
+  email               String?    @db.VarChar(100)
+  location_id         BigInt?
+  company_id          BigInt?
+  comments            comments[]
+  posts               posts[]
+  companies           companies? @relation(fields: [company_id], references: [company_id], onDelete: NoAction, onUpdate: NoAction)
+  locations           locations? @relation(fields: [location_id], references: [location_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model votes {
+  vote_id  BigInt     @id
+  upvote   Int?
+  downvote Int?
+  comments comments[]
+  posts    posts[]
+}
