@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import {getFeed} from '../services/feed'
+import { getFeed } from '../services/feed'
 
 const feed = new Hono()
 

@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { getPost } from '../services/post'
 
 const post = new Hono()
 
@@ -8,13 +9,14 @@ post.post('/create', (c) => {
 })
 
 post.put('/:id', (c) => {
-    // get specific post
+    // update specific post
     return c.json({ success: true, data: {} });
 })
 
-post.get('/:id', (c) => {
+post.get('/:id', async (c) => {
     // get specific post
-    return c.json({ success: true, data: {} });
+    const post = await getPost({post_id: c.req.param('id')});
+    return c.json({ success: true, data: post });
 })
 
 

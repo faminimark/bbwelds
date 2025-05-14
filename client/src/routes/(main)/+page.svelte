@@ -18,10 +18,10 @@
     </nav>
     {#await data}<!-- promise is pending -->
     <p>waiting for the promise to resolve...</p>{/await}
-    {#each data.data as {title, description}}
+    {#each data.data as {title, description, post_id}}
       {#if title}
       <Card>
-        <Feed title={title} description={description} />
+        <Feed title={title} description={description} post_id={post_id}/>
       </Card>
       {/if}
     {/each}
