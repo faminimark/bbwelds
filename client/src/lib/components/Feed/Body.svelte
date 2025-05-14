@@ -12,6 +12,10 @@
     </div>
     <div>
         <!-- Clickable and filter to a sub-feed with only those tags -->
-        <span class="text-xs text-gray-400 border-1 rounded-sm p-2">tags</span>
+        <span class="text-xs text-gray-400 border-1 rounded-sm p-2">bbwelds</span>
+        <span class="text-xs text-gray-400 border-1 rounded-sm p-2">hds</span>
+        <span class="text-xs text-gray-400 border-1 rounded-sm p-2">advice</span>
+        <span class="text-xs text-gray-400 border-1 rounded-sm p-2">please</span>
+        <span class="text-xs text-gray-400 border-1 rounded-sm p-2">taginess</span>
     </div>
 </div>
