@@ -17,23 +17,13 @@
     <!-- TODO: Create lib components for these inputs -->
     <Card>
         <form class="flex flex-col gap-3">
-            <div class="flex flex-col gap-2">
-                <Text name={'title'} placeholder={'Title'} max={50}></Text>
-            </div>
-            <div class="flex flex-col gap-2">
-                <Select name={'category'} placeholder="Pick a trade" options={options} select={(val) => { console.log({val})}}/>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label for="file">
-                    <input name="file" type="file" aria-label="Choose an image" placeholder="Select image" class="min-w-[280px] border-1 border-gray-300 rounded-md p-4 w-full"/>
-                </label>
-            </div>
-            <div class="flex flex-col gap-2">
-                <TextArea placeholder="Add a short description" name="description" max={250}/>  
-            </div>
-            <div class="flex flex-col gap-2">
-                <Text name={'tag'} placeholder={'Add at least 1 tag'}></Text>
-            </div>
+            <Text name={'title'} placeholder={'Title'} max={50}></Text>
+            <Select name={'category'} placeholder="Pick a trade" options={options} select={(val) => { console.log({val})}}/>
+            <label for="file">
+                <input name="file" type="file" aria-label="Choose an image" placeholder="Select image" class="min-w-[280px] border-1 border-gray-300 rounded-md p-4 w-full"/>
+            </label>
+            <TextArea placeholder="Add a short description" name="description" max={250}/>  
+            <Text name={'tag'} placeholder={'Add at least 1 tag'}></Text>
             <div class="flex justify-end">
                 <button class="px-[9px] py-[5px] cursor-pointer rounded-full bg-blue-500 text-white font-semibold max-sm:w-full text-center">Post</button>
             </div>
