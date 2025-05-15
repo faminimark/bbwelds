@@ -7,4 +7,8 @@
 <div>
     <h1>{title}</h1>
     <p>{description}</p>
+
+    <div id="comment">
+        <!-- fix this later -->
+    </div>
 </div>

@@ -50,8 +50,6 @@
           <a href="/new">New</a>
       </div>
     </nav>
-    {#await data}<!-- promise is pending -->
-    <p>waiting for the promise to resolve...</p>{/await}
     {#each data.data as {title, description, post_id}}
       {#if title}
       <Card>

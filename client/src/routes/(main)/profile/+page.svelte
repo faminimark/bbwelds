@@ -21,7 +21,7 @@
                     </div> 
                 {:else}
                     <div class="flex justify-between">
-                        <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md border-1 border-gray-700">
+                        <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md hover:bg-gray-100 border-gray-700">
                             <ChatBubbleOvalLeftIcon class="w-[25px]"/> Send message
                         </button>
                         <button class="text-gray-300 font-light text-sm cursor-pointer">

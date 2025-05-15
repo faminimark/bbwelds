@@ -9,5 +9,5 @@
 <div class="flex flex-col gap-3">
     <Title title={title}/>
     <Body description={description} post_id={post_id}/>
-    <Footer />
+    <Footer post_id={post_id}/>
 </div>
