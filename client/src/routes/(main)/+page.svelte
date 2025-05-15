@@ -8,35 +8,35 @@
 <div class="grid grid-cols-3 max-lg:grid-cols-1 gap-4">
   <div class="flex gap-3 flex-col">
     <!-- Fetch categories and loop them here? Does this need to be a DB entry? I think it can be an enum -->
-    <h3 class="text-xl font-bold">Trade Categories</h3>
+    <h3 class="text-xl text-gray-700 font-semibold">Trade Categories</h3>
     <ul class="flex flex-col">
       <li>
-        <a href='/' class="font-semibold text-blue-600">
+        <a href='/' class="font-semibold text-gray-500">
           Welding
         </a>
       </li>
       <li>
-        <a href='/' class="font-semibold text-blue-600">
+        <a href='/' class="font-semibold text-gray-500">
           Electrician
         </a>
       </li>
         <li>
-        <a href='/' class="font-semibold text-blue-600">
+        <a href='/' class="font-semibold text-gray-500">
           Mechanic
         </a>
       </li>
       <li>
-        <a href='/' class="font-semibold text-blue-600">
+        <a href='/' class="font-semibold text-gray-500">
           Plumber
         </a>
       </li>
       <li>
-        <a href='/' class="font-semibold text-blue-600">
+        <a href='/' class="font-semibold text-gray-500">
           Landscaper
         </a>
       </li>
       <li>
-        <a href='/' class="font-semibold text-blue-600">
+        <a href='/' class="font-semibold text-gray-500">
           Painter
         </a>
       </li>

@@ -1,7 +1,8 @@
 <script lang="ts">
     import {ShareIcon } from 'heroicons-svelte/24/outline'
 
-    let {title} = $props();
+    let {title, post_id} = $props();
+
 </script>
 
 <div class="flex flex-row items-center justify-between">

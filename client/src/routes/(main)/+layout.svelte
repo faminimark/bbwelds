@@ -7,7 +7,7 @@
 
 
 <Nav />
-<div class="flex flex-col justify-start gap-20 mx-25 my-5 min-h-screen justify-self-center max-w-[1480px] w-full sm:px-3">
+<div class="flex flex-col justify-start gap-20 mx-25 my-5 justify-self-center max-w-[1480px] w-full sm:px-3">
     {@render children()}
 </div>
 <Footer />
