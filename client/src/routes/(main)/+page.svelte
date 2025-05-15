@@ -5,9 +5,43 @@
   let { data } = $props();
 </script>
 
-<!-- Loop through data here -->
 <div class="grid grid-cols-3 max-lg:grid-cols-1 gap-4">
-  <div>Filter by Trade show list with (IBEW, Fitters, welders, machinists, etc.)</div>
+  <div class="flex gap-3 flex-col">
+    <!-- Fetch categories and loop them here? Does this need to be a DB entry? I think it can be an enum -->
+    <h3 class="text-xl font-bold">Trade Categories</h3>
+    <ul class="flex flex-col">
+      <li>
+        <a href='/' class="font-semibold text-blue-600">
+          Welding
+        </a>
+      </li>
+      <li>
+        <a href='/' class="font-semibold text-blue-600">
+          Electrician
+        </a>
+      </li>
+        <li>
+        <a href='/' class="font-semibold text-blue-600">
+          Mechanic
+        </a>
+      </li>
+      <li>
+        <a href='/' class="font-semibold text-blue-600">
+          Plumber
+        </a>
+      </li>
+      <li>
+        <a href='/' class="font-semibold text-blue-600">
+          Landscaper
+        </a>
+      </li>
+      <li>
+        <a href='/' class="font-semibold text-blue-600">
+          Painter
+        </a>
+      </li>
+    </ul>
+  </div>
 
   <div class="col-span-1 flex flex-col gap-4">
     <nav class="flex flex-row justify-between">

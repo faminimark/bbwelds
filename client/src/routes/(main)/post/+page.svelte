@@ -1,5 +1,14 @@
 <script lang="ts">
     import Card from '$lib/components/Card.svelte'
+    import { Text, TextArea, Select } from '$lib/components/Fields'
+
+    let options = [
+        {value: 'weld', displayValue: 'Welding'},
+        {value: 'elect', displayValue: 'Electrician'},
+        {value: 'automotive', displayValue: 'Automotive'},
+        {value: 'construction', displayValue: 'Construction'},
+        {value: 'ironworker', displayValue: 'Iron Worker'}
+    ]
 </script>
   
 <div class="flex flex-col gap-3 max-w-2xl self-center max-sm:w-full  min-sm:min-w-2xl">
@@ -9,24 +18,10 @@
     <Card>
         <form class="flex flex-col gap-3">
             <div class="flex flex-col gap-2">
-                <label for="title" class="min-w-[280px] border-1 border-gray-300 rounded-md relative">
-                    <input name='title'  placeholder="Title" class="w-full p-4" />
-                    <div class="absolute right-0 top-0 px-4 border-l-gray-300 border-l-1 h-full text-gray-600 pt-4">
-                        50
-                    </div>
-                </label>
+                <Text name={'title'} placeholder={'Title'} max={50}></Text>
             </div>
             <div class="flex flex-col gap-2">
-                <label for="title">
-                    Choose a Category:  
-                </label>
-                <select name='title' class="min-w-[280px] border-1 border-gray-300 rounded-md p-4" placeholder="category">
-                    <option>Weld</option>
-                    <option>Fab</option>
-                    <option>Elect</option>
-                    <option>Auto Body</option>
-                    <option>Paint</option>
-                </select>
+                <Select name={'category'} placeholder="Pick a trade" options={options} select={(val) => { console.log({val})}}/>
             </div>
             <div class="flex flex-col gap-2">
                 <label for="file">
@@ -34,17 +29,10 @@
                 </label>
             </div>
             <div class="flex flex-col gap-2">
-                <label for="desc" class="min-w-[280px] border-1 border-gray-300 rounded-md relative">
-                    <textarea name="desc" placeholder="Add a short description" class="w-full p-4" rows="2" maxlength="250"/>
-                    <div class="absolute right-0 top-0 px-4 border-l-gray-300 border-l-1 h-full text-gray-600 pt-8">
-                        250
-                    </div>
-                </label>
+                <TextArea placeholder="Add a short description" name="description" max={250}/>  
             </div>
             <div class="flex flex-col gap-2">
-                <label for="tag" class="min-w-[280px] border-1 border-gray-300 rounded-md">
-                    <input name="tag" class="w-full p-4" placeholder="Add at least 1 tag"/>    
-                </label>
+                <Text name={'tag'} placeholder={'Add at least 1 tag'}></Text>
             </div>
             <div class="flex justify-end">
                 <button class="px-[9px] py-[5px] cursor-pointer rounded-full bg-blue-500 text-white font-semibold max-sm:w-full text-center">Post</button>
