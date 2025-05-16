@@ -13,7 +13,7 @@
     <Category categories={categories}/>
   </div>
 
-  <div class="col-span-1 flex flex-col gap-4 min-h-screen">
+  <div class="col-span-1 flex flex-col gap-4">
     <nav class="flex flex-row justify-between">
       <div class="flex flex-row gap-5 items-center border-b-1 border-gray-300 w-full pb-2">
           <a href="/hot">Featured</a>

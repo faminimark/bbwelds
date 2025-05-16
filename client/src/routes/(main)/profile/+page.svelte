@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Display } from '$lib/components/Fields'
     import Card from '$lib/components/Card.svelte'
-    import { ChatBubbleOvalLeftIcon, PencilIcon } from 'heroicons-svelte/24/outline'
+    import { MessageSquare, PencilIcon } from 'lucide-svelte'
 </script>
 
 <div class="flex flex-row gap-7">
@@ -22,7 +22,7 @@
                 {:else}
                     <div class="flex justify-between">
                         <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md hover:bg-gray-100 border-gray-700">
-                            <ChatBubbleOvalLeftIcon class="w-[25px]"/> Send message
+                            <MessageSquare class="w-[25px]"/> Send message
                         </button>
                         <button class="text-gray-300 font-light text-sm cursor-pointer">
                             Report User
