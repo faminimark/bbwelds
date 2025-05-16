@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Share2 } from 'lucide-svelte'
-
+    import Link from '$lib/components/Profile/Link.svelte'
     let {title, post_id, user_id } = $props();
     let created_at = new Date().toDateString()
 </script>
@@ -12,5 +12,6 @@
             <Share2 class="w-5 h-5 "/> Share
         </button>
     </div>
-    <a href="/profile/{ user_id }" class="text-[10px] text-gray-500 mt-[-5px]">By James May at { created_at }</a>
+
+    <Link user_id="user_id" created_at={created_at}/>
 </div>
