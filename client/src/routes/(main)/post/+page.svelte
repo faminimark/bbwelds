@@ -18,7 +18,7 @@
             <TextArea placeholder="Add a short description" name="description" max={250}/>  
             <Text name={'tag'} placeholder={'Add at least 1 tag'}></Text>
             <div class="flex justify-end">
-                <button class="px-[9px] py-[5px] cursor-pointer rounded-full bg-blue-500 text-white font-semibold max-sm:w-full text-center">Post</button>
+                <button class="px-[9px] py-[5px] cursor-pointer rounded-sm bg-blue-500 text-white font-semibold max-sm:w-full text-center">Post</button>
             </div>
         </form>
     </Card>

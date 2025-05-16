@@ -1,6 +1,7 @@
 <script>
     import Link from '$lib/components/Profile/Link.svelte'
     import BackButton from '$lib/components/BackButton.svelte'
+    import AddComment from '$lib/components/Comments/Add.svelte'
     let { data } = $props()
     let { title, description, user_id } = data.data;
     let created_at = new Date().toDateString()
@@ -16,9 +17,11 @@
         </div>
         <desc>{ description }</desc>
     </div>
-    <aside id="comment">
-        <header class="text-xl">Comments</header>
-        <hr/>
-        <!-- fix this later -->
+    <aside id="comment" class="flex flex-col gap-5">
+        <div>
+            <header class="text-xl">Comments</header>
+            <hr/>
+        </div>
+        <AddComment />
     </aside>
 </div>
