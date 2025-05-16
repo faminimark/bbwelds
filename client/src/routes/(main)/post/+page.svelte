@@ -1,14 +1,9 @@
 <script lang="ts">
+    import { getContext } from 'svelte';
+
     import Card from '$lib/components/Card.svelte'
     import { Text, TextArea, Select } from '$lib/components/Fields'
-
-    let options = [
-        {value: 'weld', displayValue: 'Welding'},
-        {value: 'elect', displayValue: 'Electrician'},
-        {value: 'automotive', displayValue: 'Automotive'},
-        {value: 'construction', displayValue: 'Construction'},
-        {value: 'ironworker', displayValue: 'Iron Worker'}
-    ]
+    const options = getContext('category')
 </script>
   
 <div class="flex flex-col gap-3 max-w-2xl self-center max-sm:w-full  min-sm:min-w-2xl">
