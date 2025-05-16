@@ -1,8 +1,12 @@
 <script lang="ts">
+    import { setContext } from 'svelte';
+
     import Nav from '$lib/components/Nav.svelte';
     import Footer from '$lib/components/Footer.svelte';
-    let { children } = $props();
+    let { children, data } = $props();
     import "../../app.css";
+
+	setContext('category', data.data);
 </script>
 
 

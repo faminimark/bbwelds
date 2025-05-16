@@ -4,8 +4,7 @@
 
 <div class="flex flex-col min-w-380px">
     <a href={`/post/${post_id}`} class="flex justify-center bg-gray-100">
-        <!-- Clickable -->
-         <img aria-label="feed" src="https://picsum.photos/400" class="max-h-380px "/>
+        <img aria-label="feed" alt="feed" src="https://picsum.photos/400" class="max-h-380px "/>
     </a>
     <div class="my-5">
         <desc class="text-sm font-light text-gray-400">{description}</desc>
