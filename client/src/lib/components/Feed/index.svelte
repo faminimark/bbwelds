@@ -7,7 +7,7 @@
 </script>
 
 <div class="flex flex-col gap-3">
-    <Title title={title} post_id={post_id}/>
+    <Title title={title} post_id={post_id} user_id="4444"/>
     <Body description={description} post_id={post_id}/>
     <Footer post_id={post_id}/>
 </div>

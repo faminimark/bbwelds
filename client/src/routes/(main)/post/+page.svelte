@@ -3,13 +3,11 @@
 
     import Card from '$lib/components/Card.svelte'
     import { Text, TextArea, Select } from '$lib/components/Fields'
-    const options = getContext('category')
+    const options: { displayValue: string; value: string; }[] = getContext('category')
 </script>
   
 <div class="flex flex-col gap-3 max-w-2xl self-center max-sm:w-full  min-sm:min-w-2xl">
     <h1 class="font-bold text-4xl">Create Post</h1>
-
-    <!-- TODO: Create lib components for these inputs -->
     <Card>
         <form class="flex flex-col gap-3">
             <Text name={'title'} placeholder={'Title'} max={50}></Text>

@@ -29,5 +29,5 @@
     {/each}
   </div>
 
-  <div>ads/sponsors</div>
+  <div class="text-center text-sm">Ads for Exhibit Trade</div>
 </div> 

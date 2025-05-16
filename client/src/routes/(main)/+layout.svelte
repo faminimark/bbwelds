@@ -6,7 +6,7 @@
     let { children, data } = $props();
     import "../../app.css";
 
-	setContext('category', data.data);
+	setContext('category', data.data as { displayValue: string; value: string; }[]);
 </script>
 
 
