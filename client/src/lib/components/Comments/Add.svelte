@@ -8,7 +8,7 @@
 <form class="flex flex-col gap-4">
     {#if open}
     <TextArea placeholder="Add comment..." name="add-comment" />
-        <div class="flex gap-8 self-end">
+        <div class="flex gap-4 self-end">
             <button onclick={() => open = false } class='hover:bg-gray-100 p-2 font-semibold cursor-pointer rounded-sm'>
                 Cancel
             </button>

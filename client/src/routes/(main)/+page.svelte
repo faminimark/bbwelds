@@ -5,7 +5,7 @@
   import Category from '$lib/components/Category.svelte'
   const categories = getContext('category')
   let { data } = $props();
-
+  let tab = $state('featured')
 </script>
 
 <div class="grid grid-cols-5 max-lg:grid-cols-1 gap-4">
@@ -16,8 +16,12 @@
   <div class="col-span-3 flex flex-col gap-4">
     <nav class="flex flex-row justify-between">
       <div class="flex flex-row gap-5 items-center border-b-1 border-gray-300 w-full pb-2">
-          <a href="/hot">Featured</a>
-          <a href="/new">New</a>
+          <button onclick={() => tab = 'featured'} class="cursor-pointer {tab === 'featured' ? 'border-b-2' : ''}">
+            Featured
+          </button>
+          <button onclick={() => tab = 'new'} class="cursor-pointer {tab === 'new' ? 'border-b-2' : ''}">
+            New
+          </button>
       </div>
     </nav>
     {#each data.data as {title, description, post_id}}

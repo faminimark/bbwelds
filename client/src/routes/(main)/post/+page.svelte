@@ -1,12 +1,13 @@
 <script lang="ts">
     import { getContext } from 'svelte';
-
+    import BackButton from '$lib/components/BackButton.svelte'
     import Card from '$lib/components/Card.svelte'
     import { Text, TextArea, Select } from '$lib/components/Fields'
     const options: { displayValue: string; value: string; }[] = getContext('category')
 </script>
   
 <div class="flex flex-col gap-3 max-w-2xl self-center max-sm:w-full  min-sm:min-w-2xl">
+    <BackButton />
     <h1 class="font-bold text-4xl">Create Post</h1>
     <Card>
         <form class="flex flex-col gap-3">
