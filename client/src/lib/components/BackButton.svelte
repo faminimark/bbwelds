@@ -1,9 +1,6 @@
 <script lang="ts">
     import { ArrowLeft } from 'lucide-svelte';
-
-    const backHandler = () => {
-        window.history.back();
-    }
+    import { backHandler } from '$lib/utils'
 </script>
 
 <div>

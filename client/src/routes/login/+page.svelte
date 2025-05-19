@@ -5,16 +5,9 @@ const googleLogo = '/google.svg';
 </script>
 
 <div class="grid grid-cols-2 max-md:flex max-md:flex-col-reverse max-md:h-screen max-md:justify-end">
-    <div class="bg-emerald-800 text-white p-15 flex flex-col gap-10 max-md:hidden">
-        <h2 class="text-5xl font-semibold">Hello, Welcome back</h2>
-        <div class="flex flex-col text-center gap-4">
-            <p>Do not have an account?</p> 
-            <a href="/register" class="font-bold border-1 border-white rounded-2xl p-3 w-[120px] self-center">Sign up</a>
-        </div>
-    </div>
     <div class="flex flex-col gap-7 p-6">
-        <a href="/register" class="font-bold border-1 border-black rounded-2xl p-3 w-[120px] text-center self-end hidden max-md:block">Sign up</a>
-        <form class="flex flex-col gap-3">
+        <a href="/login/register" class="font-bold border-1 border-black rounded-2xl p-3 w-[120px] text-center self-end hidden max-md:block">Sign up</a>
+        <form class="flex flex-col gap-3" method="POST" >
             <span class="text-sm text-gray-700">Email</span>
             <Text name="email" placeholder="Email Address" />
             <span class="text-sm text-gray-700">Password</span>
@@ -37,6 +30,13 @@ const googleLogo = '/google.svg';
             <button aria-label="Login with Facebook" class="bg-blue-400 p-5 cursor-pointer font-bold text-white rounded-xs hover:shadow-md hover:bg-blue-300 justify-center flex flex-row gap-1 align-middle">
                 <img src={facebookLogo} alt="Facebook logo" class="w-[24px] h-[24px]"/> Log in with Facebook
             </button>
+        </div>
+    </div>
+       <div class="bg-emerald-800 text-white p-15 flex flex-col gap-10 max-md:hidden">
+        <h2 class="text-5xl font-semibold text-center">Hello, Welcome back</h2>
+        <div class="flex flex-col text-center gap-4">
+            <p>Do not have an account?</p> 
+            <a href="/login/register" class="font-bold border-1 border-white rounded-2xl p-3 w-[120px] self-center">Sign up</a>
         </div>
     </div>
 </div>

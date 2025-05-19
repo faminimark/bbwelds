@@ -3,7 +3,8 @@ import { Hono } from 'hono'
 const user = new Hono()
 
 // Create a DB client
-user.post('/create', (c) => {
+user.post('/create', async (c) => {
+    const body = await c.req.parseBody()
     return c.json({success: true, data: []});
 })
 

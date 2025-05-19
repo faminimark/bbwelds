@@ -3,6 +3,6 @@
 </script>
 
 <label for={name}>
-    <input id={name} type="checkbox"/>
-    { label }
+    <input id={name} name={name} type="checkbox"/>
+    {@html label }
 </label>
