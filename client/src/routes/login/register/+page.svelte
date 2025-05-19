@@ -5,12 +5,13 @@
     import client from '$lib/utils/ApiClient'
     const logo = '/build-bard-logo.svg';
 
+    let termsAccepted = $state(false);
+
     const handleRegister = async (event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) => {
         const form = new FormData(event.currentTarget);
         console.log(event.currentTarget);
         
  const data = Object.fromEntries(form);
-        console.log(data)
 
         const response = client.post('user/create', {data});
 
@@ -51,11 +52,12 @@
                 <Text name={'zip'} placeholder={'Zip'} max={15} />
             </div>
             <div>
-                <Checkbox label={'Do you accept the <a href="/terms" class="text-blue-400">terms of service</a>?'} name={'terms'}/>
+                <Checkbox bind:checked={termsAccepted} label={'Do you accept the <a href="/terms" class="text-blue-400">terms of service</a>?'} name={'terms'}/>
             </div>
+            
             <div class="flex gap-5 justify-end">
                 <button class="cursor-pointer text-gray-400 hover:bg-gray-100 p-3 rounded-xs" onclick={backHandler}>Back to Login</button>
-                <button class="cursor-pointer bg-teal-400 hover:bg-teal-300 p-3 rounded-xs text-white font-semibold" >Register</button>
+                <button class=" p-3 rounded-xs text-white font-semibold {termsAccepted ? 'bg-teal-400 hover:bg-teal-300 cursor-pointer' : 'bg-gray-400'}" disabled={!termsAccepted}>Register</button>
             </div>
         </form>
     </Card>

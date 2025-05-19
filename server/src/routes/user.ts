@@ -4,7 +4,7 @@ const user = new Hono()
 
 // Create a DB client
 user.post('/create', async (c) => {
-    const body = await c.req.parseBody()
+    const body = await c.req.json()
     return c.json({success: true, data: []});
 })
 
