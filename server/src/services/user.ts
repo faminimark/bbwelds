@@ -20,7 +20,7 @@ export const createUser = async (
         }
     })
 
-    try{
+    try {
         const user = await prisma.users.create({
             data: {
                 location_id: location.location_id,
@@ -31,7 +31,12 @@ export const createUser = async (
             }
         });
         return serializer(user);
-    } catch(e){
+    } catch(e) {
+        await prisma.locations.delete({
+            where: {
+                location_id: location.location_id
+            }
+        })
         return e;
     }
   };
