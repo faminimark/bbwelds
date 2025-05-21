@@ -1,7 +1,11 @@
 import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 import { cors } from 'hono/cors'
+import { csrf } from 'hono/csrf'
 import { prettyJSON } from 'hono/pretty-json'
+import whitelist from './config/whitelist'
+
+//Routes
 import user from './routes/user'
 import post from './routes/post'
 import feed from './routes/feed'
@@ -11,7 +15,8 @@ import vote from './routes/vote'
 const app = new Hono()
 
 app.use('*', logger())
-app.use('*', cors({origin: 'http://localhost:3000'}))
+app.use('*', cors({origin: whitelist}))
+app.use('*', csrf({origin: whitelist}))
 app.get('*', prettyJSON())
 app.get('/health', (c) => {
     return c.json({success: true, data: { health: 'healthy' }});

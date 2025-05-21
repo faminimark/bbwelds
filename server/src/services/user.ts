@@ -1,5 +1,5 @@
 import { HTTPException } from 'hono/http-exception'
-import { PrismaClient, posts as Posts, users as Users } from '@prisma/client'
+import { PrismaClient, locations as Locations, users as Users } from '@prisma/client'
 import { serializer } from '../utils';
 const prisma = new PrismaClient();
 
@@ -7,20 +7,31 @@ type PostInput = {
     post_id: string
 }
 
-// export const createUser = async (
-//     query?: PostInput
-//   ): Promise<Users> => {
-//     // const user: Users | null = await prisma.users.create({
-//     //     where: {
-//     //         post_id: Number(query?.post_id)
-//     //     }
-//     // });
-//     // // TODO: Add entry to post_tags and category
-//     // const posts: Posts[] = await prisma.$queryRaw<Posts[]>`
-//     // select * from posts
-//     // `
+export const createUser = async (
+    data?: any
+  ): Promise<any> => {
+    const {city, country, state: state_region, zip: zip_postal, email, fname: f_name, lname: l_name} = data;
+    const location = await prisma.locations.create({
+        data: {
+            city,
+            country,
+            state_region,
+            zip_postal
+        }
+    })
 
-//     // if(!posts) throw new HTTPException(404, { message: 'Post not found'})
-   
-//     // return serializer(posts);
-//   };
+    try{
+        const user = await prisma.users.create({
+            data: {
+                location_id: location.location_id,
+                email,
+                f_name,
+                l_name,
+                fullname: `${f_name} ${l_name}`
+            }
+        });
+        return serializer(user);
+    } catch(e){
+        return e;
+    }
+  };

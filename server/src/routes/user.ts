@@ -1,11 +1,15 @@
 import { Hono } from 'hono'
 
+import { createUser } from '../services/user'
 const user = new Hono()
 
 // Create a DB client
 user.post('/create', async (c) => {
     const body = await c.req.json()
-    return c.json({success: true, data: []});
+        const response = await createUser(body.data)
+
+        if(!response.user) return c.json({success: false, error: response});
+        return c.json({success: true, data: response});
 })
 
 user.put('/update', (c) => {
