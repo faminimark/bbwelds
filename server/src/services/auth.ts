@@ -24,9 +24,11 @@ export const login = async (username: string, password: string): Promise<{verifi
     const verified = await verifyPassword(password, auth?.password)
     
     if(!verified) return { verified: false, error: 'Incorrect Password', token: undefined }
-    
+
     const { f_name: fname, user_id } = user;
-    const token = await sign({ fname, user_id },'REDACTED this will be on the env later too lazy to set it up');
+    const exp = Math.floor(Date.now() / 1000) + ((60 * 60) * 24) * 60
+
+    const token = await sign({ fname, user_id, exp },'REDACTED this will be on the env later too lazy to set it up');
 
     return { verified: true, error: undefined, token }
 }
