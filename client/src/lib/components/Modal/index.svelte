@@ -4,8 +4,6 @@
 
     let { children, title = undefined, submit = $bindable(), label } = $props()
     let modal = $state()
-
-    console.log(title)
 </script>
 
 <dialog id="modal" class="hidden w-full max-w-3xl min-h-1/3 m-auto p-5" bind:this={modal}>
