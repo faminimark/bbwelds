@@ -1,19 +1,33 @@
-<script>
-import { Text, Checkbox } from '$lib/components/Fields'
-const facebookLogo = '/facebook.svg';
-const googleLogo = '/google.svg';
+<script lang="ts">
+    import { goto } from '$app/navigation';
+    import { Text, Checkbox } from '$lib/components/Fields'
+    const facebookLogo = '/facebook.svg';
+    const googleLogo = '/google.svg';
+    import client from '$lib/utils/ApiClient'
+
+    const handleLogin = async (event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) => {
+        event.preventDefault();
+        const form = new FormData(event.currentTarget);
+
+        const data = Object.fromEntries(form);
+        const response = await client.post('auth/login', {data});
+
+        //Save cookie
+        if(response.verified) goto('/')
+    }
+
 </script>
 
 <div class="grid grid-cols-2 max-md:flex max-md:flex-col-reverse max-md:h-screen max-md:justify-end">
     <div class="flex flex-col gap-7 p-6">
         <a href="/login/register" class="font-bold border-1 border-black rounded-2xl p-3 w-[120px] text-center self-end hidden max-md:block">Sign up</a>
-        <form class="flex flex-col gap-3" method="POST" >
+        <form class="flex flex-col gap-3" onsubmit={handleLogin} >
             <span class="text-sm text-gray-700">Email</span>
             <Text name="email" placeholder="Email Address" />
             <span class="text-sm text-gray-700">Password</span>
-            <Text name="password" placeholder="Password" />
+            <Text name="password" placeholder="Password" type="password"/>
             <Checkbox label="Remember me?" name="remember"/>
-            <button class="bg-teal-400 p-5 cursor-pointer font-bold text-white rounded-xs hover:shadow-md hover:bg-teal-300">Log in</button>
+            <button type="submit" class="bg-teal-400 p-5 cursor-pointer font-bold text-white rounded-xs hover:shadow-md hover:bg-teal-300">Log in</button>
         </form>
         <div class="relative">
             <hr>
@@ -32,7 +46,7 @@ const googleLogo = '/google.svg';
             </button>
         </div>
     </div>
-       <div class="bg-emerald-800 text-white p-15 flex flex-col gap-10 max-md:hidden">
+    <div class="bg-emerald-800 text-white p-15 flex flex-col gap-10 max-md:hidden">
         <h2 class="text-5xl font-semibold text-center">Hello, Welcome back</h2>
         <div class="flex flex-col text-center gap-4">
             <p>Do not have an account?</p> 

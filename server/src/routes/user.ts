@@ -3,7 +3,6 @@ import { Hono } from 'hono'
 import { createUser } from '../services/user'
 const user = new Hono()
 
-// Create a DB client
 user.post('/create', async (c) => {
     const body = await c.req.json()
         const response = await createUser(body.data)

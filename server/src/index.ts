@@ -6,6 +6,7 @@ import { prettyJSON } from 'hono/pretty-json'
 import whitelist from './config/whitelist'
 
 //Routes
+import auth from './routes/auth'
 import user from './routes/user'
 import post from './routes/post'
 import feed from './routes/feed'
@@ -22,6 +23,7 @@ app.get('/health', (c) => {
     return c.json({success: true, data: { health: 'healthy' }});
 })
 
+app.route('/auth', auth)
 app.route('/user', user)
 app.route('/post', post)
 app.route('/feed', feed)
