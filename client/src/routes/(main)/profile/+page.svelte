@@ -1,8 +1,11 @@
 <script lang="ts">
+    import { getContext } from 'svelte';
     import { Display } from '$lib/components/Fields'
     import Card from '$lib/components/Card.svelte'
     import BackButton from '$lib/components/BackButton.svelte'
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
+
+    const isLoggedIn = getContext('isLoggedIn')
 </script>
 
 
@@ -18,7 +21,7 @@
                             Profile pic
                         </div>
                         <!-- If user then edit profile otherwise send message -->
-                        {#if false}
+                        {#if isLoggedIn}
                             <div>
                                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md border-1 border-gray-700">
                                     <PencilIcon class="w-[25px]"/> Edit Profile
@@ -58,14 +61,16 @@
     <div>
         <div class="flex justify-between">
             <h2  class="text-2xl">Gallery</h2>
+            {#if isLoggedIn}
             <div class="flex gap-4">
                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
                     <PencilIcon class="w-[20px]"/> <span class="max-sm:hidden">Edit Gallery</span>
                 </button>
                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
-                    <Plus class="w-[20px]"/> <span class="max-sm:hidden">Add to Portfolio</span>
+                    <Plus class="w-[20px]"/> <span class="max-sm:hidden">Add to Gallery</span>
                 </button>
             </div>
+            {/if}
         </div>
         <hr />
         gallery or masonry?

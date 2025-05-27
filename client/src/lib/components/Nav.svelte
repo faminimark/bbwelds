@@ -1,6 +1,9 @@
 <script lang="ts">
-    const logo = '/build-bard-logo.svg';
+    import { getContext } from 'svelte';
+    const logo = '/bb-logo.svg';
     import { PencilIcon } from 'lucide-svelte';
+    
+    const isLoggedIn = getContext('isLoggedIn')
 </script>
 
 <div class="pt-[7px] sticky top-0 right-0 left-0 bg-white">
@@ -16,9 +19,11 @@
         </div>
 
         <div class="flex flex-row gap-3 items-center">
-            <a href="/login">Login</a>
-            <a href="/profile">Profile</a>
-            
+            {#if !isLoggedIn}
+                <a href="/login">Login</a>
+            {:else}
+                <a href="/profile">Profile</a>
+            {/if}
             <a href="/post" class="px-[9px] py-[5px] cursor-pointer rounded-sm bg-blue-500 text-white font-semibold flex gap-2 items-center">
                 <PencilIcon class="h-4 w-4"/> Post
             </a>

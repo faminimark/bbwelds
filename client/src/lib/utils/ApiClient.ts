@@ -90,5 +90,5 @@ class ApiClient {
 }
 
 
-const apiClient = new ApiClient('http://localhost:4000', {}, 'token')
+const apiClient = new ApiClient('http://localhost:4000', {}, localStorage.getItem('auth-token') ?? '')
 export default apiClient;

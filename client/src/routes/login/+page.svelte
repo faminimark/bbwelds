@@ -13,7 +13,10 @@
         const response = await client.post('auth/login', {data});
 
         //Save cookie
-        if(response.verified) goto('/')
+        if(response.verified) {
+            localStorage.setItem('auth-token', response.token)
+            goto('/')
+        }
     }
 
 </script>

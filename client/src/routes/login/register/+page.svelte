@@ -3,7 +3,7 @@
     import { Text, Checkbox } from "$lib/components/Fields"
     import { backHandler, validateEmail } from '$lib/utils'
     import client from '$lib/utils/ApiClient'
-    const logo = '/build-bard-logo.svg';
+    const logo = '/bb-logo.svg';
 
     let termsAccepted = $state(false);
     let errors: {
