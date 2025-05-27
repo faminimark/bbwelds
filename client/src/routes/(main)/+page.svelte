@@ -1,16 +1,15 @@
 <script lang="ts">
-  import { getContext } from 'svelte';
   import Card from '$lib/components/Card.svelte'
   import Feed from '$lib/components/Feed/index.svelte'
   import Category from '$lib/components/Category.svelte'
-  const categories = getContext('category')
   let { data } = $props();
+
   let tab = $state('featured')
 </script>
 
 <div class="grid grid-cols-5 max-lg:grid-cols-1 gap-4">
   <div class="flex gap-3 flex-col">
-    <Category categories={categories}/>
+    <Category categories={data.categories}/>
   </div>
 
   <div class="col-span-3 flex flex-col gap-4">

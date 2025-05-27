@@ -1,14 +1,14 @@
 import { Hono } from 'hono'
 
-import { createUser } from '../services/user'
+import { createUser, getUser } from '../services/user'
 const user = new Hono()
 
 user.post('/create', async (c) => {
     const body = await c.req.json()
-        const response = await createUser(body.data)
+    const response = await createUser(body.data)
 
-        if(!response.user) return c.json({success: false, error: response});
-        return c.json({success: true, data: response});
+    if(!response.user) return c.json({success: false, error: response});
+    return c.json({success: true, data: response});
 })
 
 user.put('/update', (c) => {
@@ -16,9 +16,9 @@ user.put('/update', (c) => {
 })
 
 // specific for profile page
-user.get('/:id', (c) => {
-    // get specific post
-    return c.json({ success: true, data: {} });
+user.get('/:id', async (c) => {
+    const user = await getUser({user_id: c.req.param('id')})
+    return c.json({ success: true, data: user });
 })
 
 

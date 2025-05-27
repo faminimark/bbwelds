@@ -1,6 +1,7 @@
 import { PrismaClient, locations as Location, users as User } from '@prisma/client'
 import { serializer } from '../utils';
 import { hashPassword } from '../utils/password';
+import { HTTPException } from 'hono/http-exception';
 const prisma = new PrismaClient();
 
 type PostInput = {
@@ -54,4 +55,24 @@ export const createUser = async (
         })
         return e;
     }
+};
+
+
+export const getUser = async (
+    query?: any
+): Promise<any> => {
+        const user: User | null = await prisma.users.findUnique({
+            where: {
+                user_id: Number(query?.user_id),
+            },
+            include: {
+                locations: true
+                // add certificates and licenses
+            }
+        });
+    
+        if(!user) throw new HTTPException(404, { message: 'User not found'})
+    
+        return serializer(user);
+    
 };

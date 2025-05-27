@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
     import { Display } from '$lib/components/Fields'
     import Card from '$lib/components/Card.svelte'
     import BackButton from '$lib/components/BackButton.svelte'
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
+    const {data} = $props()
 
-    const isLoggedIn = getContext('isLoggedIn')
+    let isLoggedIn = data.isLoggedIn;
 </script>
 
 

@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
     const logo = '/bb-logo.svg';
     import { PencilIcon } from 'lucide-svelte';
-    
-    const isLoggedIn = getContext('isLoggedIn')
+    const { isLoggedIn } = $props()
 </script>
 
 <div class="pt-[7px] sticky top-0 right-0 left-0 bg-white">

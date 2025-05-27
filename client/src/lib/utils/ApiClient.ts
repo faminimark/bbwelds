@@ -1,3 +1,5 @@
+import { getCookie } from ".";
+
 class ApiClient {
     private baseUrl: string;
     private headers: Record<string, string>;
@@ -90,5 +92,5 @@ class ApiClient {
 }
 
 
-const apiClient = new ApiClient('http://localhost:4000', {}, localStorage.getItem('auth-token') ?? '')
+const apiClient = new ApiClient('http://localhost:4000', {}, getCookie('auth-token') ?? '')
 export default apiClient;

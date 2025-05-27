@@ -1,6 +1,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { Text, Checkbox } from '$lib/components/Fields'
+    import { setCookie } from '$lib/utils';
     const facebookLogo = '/facebook.svg';
     const googleLogo = '/google.svg';
     import client from '$lib/utils/ApiClient'
@@ -10,11 +11,12 @@
         const form = new FormData(event.currentTarget);
 
         const data = Object.fromEntries(form);
-        const response = await client.post('auth/login', {data});
+        const response = await client.post('auth/login', { data });
 
         //Save cookie
         if(response.verified) {
-            localStorage.setItem('auth-token', response.token)
+            setCookie('auth-token', response.token, 30)
+            setCookie('user_id', response.user_id, 30)
             goto('/')
         }
     }
