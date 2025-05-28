@@ -17,7 +17,7 @@
         <Card>
             <div class="flex flex-row max-md:flex-col gap-3">
                 <div class="flex flex-col gap-3">
-                    <h2 class="text-2xl font-bold text-gray-700">{ user.fullname }</h2>
+                    <h2 class="text-2xl font-semibold text-gray-700">{ user.fullname }</h2>
                     <div class="flex flex-col gap-3">
                         <div class="max-h-[450px] max-w-[400px] bg-gray-300">
                             <img aria-label="profile pic" alt="profile pic" src="https://picsum.photos/400"/>

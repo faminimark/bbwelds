@@ -1,3 +1,5 @@
+import { browser } from "$app/environment";
+
 export const backHandler = () => {
     window.history.back();
 }
@@ -15,12 +17,15 @@ export const setCookie = (name: string, value: string, days: number) => {
 }
 
 export const getCookie = (name: string) => {
-  const cookies = document.cookie.split(';');
-  for (let cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.trim().split('=');
-    if (cookieName === name) {
-      return decodeURIComponent(cookieValue);
+  if(browser) {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.trim().split('=');
+      if (cookieName === name) {
+        return decodeURIComponent(cookieValue);
+      }
     }
   }
+
   return null;
 }
