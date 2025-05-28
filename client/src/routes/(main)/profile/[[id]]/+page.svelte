@@ -1,11 +1,13 @@
 <script lang="ts">
     import { Display } from '$lib/components/Fields'
     import Card from '$lib/components/Card.svelte'
+    import { ShareButton } from '$lib/components/Buttons'
     import BackButton from '$lib/components/BackButton.svelte'
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
-    const {data} = $props()
+    const { data } = $props()
 
     let isLoggedIn = data.isLoggedIn;
+    let user = data.user;
 </script>
 
 
@@ -13,9 +15,9 @@
     <BackButton />
     <div class="flex flex-col gap-7 max-w-[980px] self-center">
         <Card>
-            <div class="flex flex-row max-md:flex-col gap-3 items-center">
+            <div class="flex flex-row max-md:flex-col gap-3">
                 <div class="flex flex-col gap-3">
-                    <h2 class="text-2xl font-bold text-gray-700">Bruce Wayne</h2>
+                    <h2 class="text-2xl font-bold text-gray-700">{ user.fullname }</h2>
                     <div class="flex flex-col gap-3">
                         <div class="h-[450px] w-[400px] bg-gray-300">
                             Profile pic
@@ -39,7 +41,10 @@
                         {/if}
                     </div>
                 </div>
-                <div class="flex flex-col gap-12">
+                <div class="flex flex-col gap-12 max-md:gap-4">
+                    <div class="flex justify-end">
+                        <ShareButton />
+                    </div>
                     <div>
                         <header class="font-semibold text-sm">About</header>
                         <p class="max-w-[400px] text-sm text-gray-500">
