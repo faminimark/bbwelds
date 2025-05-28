@@ -38,7 +38,7 @@ class ApiClient {
    */
   async post(endpoint: string, data: any, requestHeaders: Record<string, string> = {}): Promise<any> {
     const url = `${this.baseUrl}/${endpoint}`;
-    const allHeaders = { ...this.headers, ...requestHeaders, 'Content-Type': 'application/json' }; //  Ensure Content-Type is set for POST
+    const allHeaders = { ...this.headers, 'Content-Type': 'application/json', ...requestHeaders }; //  Ensure Content-Type is set for POST
     const response = await fetch(url, {
       method: 'POST',
       headers: allHeaders,

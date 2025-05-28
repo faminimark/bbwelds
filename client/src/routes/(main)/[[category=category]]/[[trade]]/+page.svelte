@@ -2,6 +2,7 @@
   import Card from '$lib/components/Card.svelte'
   import Feed from '$lib/components/Feed/index.svelte'
   import Category from '$lib/components/Category.svelte'
+  import { goto } from '$app/navigation';
   let { data } = $props();
 
   let tab = $state('featured')
@@ -15,10 +16,16 @@
   <div class="col-span-3 flex flex-col gap-4">
     <nav class="flex flex-row justify-between">
       <div class="flex flex-row gap-5 items-center border-b-1 border-gray-300 w-full pb-2">
-          <button onclick={() => tab = 'featured'} class="cursor-pointer {tab === 'featured' ? 'border-b-2' : ''}">
+          <button onclick={() => {
+              tab = 'featured'
+              goto('/featured')
+            }} class="cursor-pointer {tab === 'featured' ? 'border-b-2' : ''}">
             Featured
           </button>
-          <button onclick={() => tab = 'new'} class="cursor-pointer {tab === 'new' ? 'border-b-2' : ''}">
+          <button onclick={() => {
+              tab = 'new'
+              goto('/new')
+          }} class="cursor-pointer {tab === 'new' ? 'border-b-2' : ''}">
             New
           </button>
       </div>

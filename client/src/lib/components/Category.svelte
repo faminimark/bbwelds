@@ -8,7 +8,7 @@
 		<ul class="flex flex-col max-lg:flex-row gap-2 min-h-[45px] pt-2 w-full">
 			{#each categories as category}
 			<li>
-				<a href='/' class="font-semibold text-gray-500 max-sm:text-sm max-lg:border-gray-400 max-lg:border-1 max-lg:shadow-md p-1 rounded-xs text-nowrap">
+				<a href='/category/{category.value}' class="font-semibold text-gray-500 max-sm:text-sm max-lg:border-gray-400 max-lg:border-1 max-lg:shadow-md p-1 rounded-xs text-nowrap">
 					{category.displayValue}
 				</a>
 			</li>
