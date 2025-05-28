@@ -7,7 +7,7 @@
   let tab = $state('featured')
 </script>
 
-<div class="grid grid-cols-5 max-lg:grid-cols-1 gap-4">
+<div class="grid grid-cols-5 max-lg:grid-cols-1 min-sm:gap-4">
   <div class="flex gap-3 flex-col">
     <Category categories={data.categories}/>
   </div>
