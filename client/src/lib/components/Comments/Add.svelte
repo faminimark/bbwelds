@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Send } from 'lucide-svelte';
-    import TextArea from '$lib/components/Fields/TextArea.svelte'
+    import { TextArea } from '$lib/components/Fields'
 
     let open = $state(false);
 </script>

@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { ArrowUpIcon, ArrowDownIcon, MessageSquare } from 'lucide-svelte'
+    import { MessageSquare } from 'lucide-svelte'
+    import { DownvoteButton, UpvoteButton } from '$lib/components/Buttons'
     let { post_id } = $props();
 </script>
 
 <div class="flex flex-row gap-4">
-    <!-- TODO: split component -->
-    <button type="button" class="flex flex-row  items-center gap-3 p-2 hover:bg-gray-100 rounded-md text-gray-400"><ArrowUpIcon class=" w-5 h-5"/> 25</button>
-    <button type="button" class="flex flex-row  items-center gap-3 p-2 hover:bg-gray-100 rounded-md text-gray-400"><ArrowDownIcon class=" w-5 h-5"/></button>
+    <DownvoteButton />
+    <UpvoteButton />
     <a href={`/post/${post_id}#comment`} class="flex flex-row  items-center gap-3 p-2 hover:bg-gray-100 rounded-md text-gray-400"><MessageSquare class="w-5 h-5"/> 55 comments</a>
 </div>
