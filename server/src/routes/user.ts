@@ -6,8 +6,7 @@ const user = new Hono()
 user.post('/create', async (c) => {
     const body = await c.req.json()
     const response = await createUser(body.data)
-
-    if(!response.user) return c.json({success: false, error: response});
+    if(!response.user_id) return c.json({success: false, error: response});
     return c.json({success: true, data: response});
 })
 

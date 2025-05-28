@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
     import Card from "$lib/components/Card.svelte";
     import { Text, Checkbox } from "$lib/components/Fields"
     import { backHandler, validateEmail } from '$lib/utils'
@@ -28,8 +29,8 @@
         if(errors.email || errors.confirmPassword) return;
 
         const data = Object.fromEntries(form);
-        const response = client.post('user/create', {data});
-
+        const response = await client.post('user/create', {data});
+        if(response.success) goto('/login')
     }
 </script>
 

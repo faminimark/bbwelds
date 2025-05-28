@@ -34,13 +34,18 @@ export const createUser = async (
         const user: User = await prisma.users.create({
             data: {
                 location_id: location.location_id,
-                email,
                 f_name,
                 l_name,
                 fullname: `${f_name} ${l_name}`,
                 auth: {
                     create: [{
                         password: hashedPassword
+                    }]
+                },
+                contacts:{
+                    create: [{
+                        value: email,
+                        contact_type: 'email'
                     }]
                 }
             }

@@ -4,10 +4,16 @@
     import { ShareButton } from '$lib/components/Buttons'
     import BackButton from '$lib/components/BackButton.svelte'
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
+    import { redirect } from '@sveltejs/kit';
     const { data } = $props()
 
-    let isLoggedIn = data.isLoggedIn;
-    let user = data.user;
+    let isLoggedIn = data.isLoggedIn
+    let user = data.user
+
+    if(!user) throw redirect(302, `/`);
+    
+    let location = user?.locations
+    console.log(location)
 </script>
 
 
@@ -48,14 +54,13 @@
                     <div>
                         <header class="font-semibold text-sm">About</header>
                         <p class="max-w-[400px] text-sm text-gray-500">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, ea hic consectetur accusamus 
-                            expedita veritatis pariatur provident temporibus similique quibusdam maxime tenetur, unde adipisci, laborum debitis cupiditate dolorem velit doloribus.
+                            { user.profile_description }
                         </p>
                     </div>
                     <div class="flex flex-col gap-3">
                         <Display title="Phone" value={'999999999'}/>
                         <Display title="Email" value={'email@email.com'}/>
-                        <Display title="Location" value={'email@email.com'}/>
+                        <Display title="Location" value={`${location.city}, ${location.state_region} ${location.zip_postal} `}/>
                         <Display title="License #" value={'999999999'}/>
                         <Display title="Cerifications" value={["AWS 6G", "Certified Rap battle champion", "Certified Lover boy"]} />
                     </div>

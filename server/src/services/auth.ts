@@ -1,15 +1,17 @@
 import { verifyPassword } from '../utils/password';
 import { PrismaClient, users as User } from '@prisma/client'
 import { sign } from 'hono/jwt'
+import user from '../routes/user';
 
 const prisma = new PrismaClient();
 
 export const login = async (username: string, password: string): Promise<{verified: boolean, error: string | undefined, token: string | undefined, user_id: number | undefined }  > =>  {
-    const user: User | null = await prisma.users.findUnique({
-            where: {
-                email: username
-            }
-        });
+    const user: User | null = await prisma.contacts.findUnique({
+        where: {
+            contact_type: 'email',
+            value: username
+        }
+    }).users();
 
     if(!user) return { verified: false, error: 'User not found', token: undefined, user_id: undefined }
 

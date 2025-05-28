@@ -1,5 +1,5 @@
-export const load = async ({ cookies }) => {
-    const user_id = cookies.get('user_id');
+export const load = async ({ params, cookies }) => {
+    const user_id = cookies.get('user_id') ?? params.id;
     const user = user_id ? await (await fetch(`http://localhost:4000/user/${user_id}`)).json(): null
     const isLoggedIn = user_id ? true : false
 	return { 
