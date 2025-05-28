@@ -19,8 +19,8 @@
                 <div class="flex flex-col gap-3">
                     <h2 class="text-2xl font-bold text-gray-700">{ user.fullname }</h2>
                     <div class="flex flex-col gap-3">
-                        <div class="h-[450px] w-[400px] bg-gray-300">
-                            Profile pic
+                        <div class="max-h-[450px] max-w-[400px] bg-gray-300">
+                            <img aria-label="profile pic" alt="profile pic" src="https://picsum.photos/400"/>
                         </div>
                         <!-- If user then edit profile otherwise send message -->
                         {#if isLoggedIn}
