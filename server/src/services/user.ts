@@ -73,7 +73,8 @@ export const getUser = async (
             include: {
                 locations: true,
                 // add certificates and licenses
-                contacts: true
+                contacts: true,
+                posts: true
             }
         });
     

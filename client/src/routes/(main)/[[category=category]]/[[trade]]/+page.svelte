@@ -30,10 +30,10 @@
           </button>
       </div>
     </nav>
-    {#each data.data as {title, description, post_id}}
+    {#each data.data as {title, description, created_at, post_id, users}}
       {#if title}
       <Card>
-        <Feed title={title} description={description} post_id={post_id}/>
+        <Feed created_at={created_at} title={title} description={description} post_id={post_id} user={users}/>
       </Card>
       {/if}
     {/each}

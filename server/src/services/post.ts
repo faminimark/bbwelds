@@ -16,6 +16,9 @@ export const getPost = async (
     const posts: Posts | null = await prisma.posts.findUnique({
         where: {
             post_id: Number(query?.post_id)
+        },
+        include: {
+            users: true
         }
     });
 

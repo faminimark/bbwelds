@@ -1,8 +1,9 @@
 <script lang="ts">
     import Link from '$lib/components/Profile/Link.svelte'
     import { ShareButton } from '$lib/components/Buttons'
-    let {title, post_id, user_id } = $props();
-    let created_at = new Date().toDateString()
+    let { title, user, post_id, created_at } = $props();
+    const date = new Date(created_at)
+    let formattedDate =  `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
 </script>
 
 <div>
@@ -11,5 +12,5 @@
         <ShareButton />
     </div>
 
-    <Link user_id="user_id" created_at={created_at}/>
+    <Link user_id={user.user_id} created_at={formattedDate} name={user.fullname}/>
 </div>

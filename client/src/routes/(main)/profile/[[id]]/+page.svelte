@@ -3,12 +3,13 @@
     import Card from '$lib/components/Card.svelte'
     import { ShareButton } from '$lib/components/Buttons'
     import BackButton from '$lib/components/BackButton.svelte'
+    import Feed from '$lib/components/Feed'
+
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
     import { redirect } from '@sveltejs/kit';
     const { data } = $props()
-
     let isLoggedIn = data.isLoggedIn
-    let user = data.user
+    let user = data.data
 
     if(!user) throw redirect(302, `/`);
     
@@ -89,6 +90,14 @@
     <div>
         <h2  class="text-2xl">Posts</h2>
         <hr />
-        Feed
+        <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
+        {#each user.posts as {title, description, post_id}}
+            {#if title}
+            <Card>
+                <Feed title={title} description={description} post_id={post_id} user={user}/>
+            </Card>
+            {/if}
+        {/each}
+        </div>
     </div>
 </div>
