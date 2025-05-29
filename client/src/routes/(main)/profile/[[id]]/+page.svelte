@@ -13,7 +13,7 @@
     if(!user) throw redirect(302, `/`);
     
     let location = user?.locations
-    console.log(location)
+    let contacts = user?.contacts
 </script>
 
 
@@ -58,9 +58,10 @@
                         </p>
                     </div>
                     <div class="flex flex-col gap-3">
-                        <Display title="Phone" value={'999999999'}/>
-                        <Display title="Email" value={'email@email.com'}/>
-                        <Display title="Location" value={`${location.city}, ${location.state_region} ${location.zip_postal} `}/>
+                        {#each contacts as contact}
+                            <Display title={contact.contact_type} value={contact.value}/>
+                        {/each}
+                        <Display title="Location" value={`${location.city}, ${location.state_region} ${location.zip_postal}`}/>
                         <Display title="License #" value={'999999999'}/>
                         <Display title="Cerifications" value={["AWS 6G", "Certified Rap battle champion", "Certified Lover boy"]} />
                     </div>

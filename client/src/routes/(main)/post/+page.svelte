@@ -2,13 +2,17 @@
     import BackButton from '$lib/components/BackButton.svelte'
     import Card from '$lib/components/Card.svelte'
     import { Text, TextArea, Select } from '$lib/components/Fields'
-    import client from '$lib/utils/ApiClient'
 
     let { data } = $props();
 
     const handleCreatePost = async (event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) => {
         event.preventDefault();
-        const response = await client.post('post/create', event.currentTarget, {'Content-Type': "multipart/form-data"});
+        const form = new FormData(event.currentTarget);
+
+        const response = await fetch('http://localhost:4000/post/create', {
+                method: 'POST',
+                body: form
+            });
     }
 
 </script>

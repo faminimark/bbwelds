@@ -71,8 +71,9 @@ export const getUser = async (
                 user_id: Number(query?.user_id),
             },
             include: {
-                locations: true
+                locations: true,
                 // add certificates and licenses
+                contacts: true
             }
         });
     
