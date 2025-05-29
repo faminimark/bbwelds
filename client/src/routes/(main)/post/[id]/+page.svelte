@@ -16,7 +16,7 @@
         <header class="text-3xl font-semibold">{title}</header>
         <Link user_id={users.user_id} created_at={localizedDateString} name={users.fullname}/>
         <div class="flex justify-center bg-gray-100 p-6">
-            <img aria-label="feed" alt="feed" src="https://picsum.photos/900/1200" class="max-h-[850px] max-w-[850px] aspect-auto"/>
+            <img aria-label="feed" alt="feed" src="https://picsum.photos/900/1200" class="max-h-[850px] max-w-[850px] aspect-auto w-full"/>
         </div>
         <desc>{ description }</desc>
         <div class="flex flex-row">

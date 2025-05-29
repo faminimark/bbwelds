@@ -14,7 +14,7 @@
 </svelte:head>
 
 <Nav isLoggedIn={isLoggedIn} user_id={user_id}/>
-<main class="flex flex-col justify-start gap-20 max-md:mx-25 my-5 justify-self-center max-w-[1480px] w-full max-sm:px-3  min-h-screen">
+<main class="flex flex-col justify-start gap-20 max-md:mx-25 my-5 justify-self-center max-w-[1480px] w-full px-3  min-h-screen">
     {@render children()}
 </main>
 <Footer />
