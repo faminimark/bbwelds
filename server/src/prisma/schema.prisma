@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:REDACT@localhost:5432/postgres?schema=public"
+  url      = env("DATABASE_URL_WITH_SCHEMA")
 }
 
 model categories {
@@ -117,14 +117,14 @@ model auth {
 }
 
 model credentials {
-  credential_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String    @db.VarChar(255)
+  credential_id String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String                @db.VarChar(255)
   description   String?
-  created_at    DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  created_at    DateTime?             @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?             @default(now()) @db.Timestamptz(6)
   user_id       Int?
-  type          String?   @db.VarChar(255)
-  users         users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  type          credential_type_enum?
+  users         users?                @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model contacts {
@@ -139,4 +139,14 @@ model contacts {
 enum contact_enum {
   email
   phone
+}
+
+enum credential_type_enum {
+  license
+  certification
+}
+
+enum status_enum {
+  active
+  deleted
 }
