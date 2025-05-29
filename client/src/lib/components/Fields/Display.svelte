@@ -4,7 +4,7 @@
 
 
 <div class="grid grid-cols-2 gap-4 text-sm">
-    <div class="font-semibold col-span-1">
+    <div class="font-semibold col-span-1 capitalize">
         { title }
     </div>
     {#if typeof value === 'string'}
