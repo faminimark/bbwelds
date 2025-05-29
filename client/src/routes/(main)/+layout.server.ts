@@ -1,6 +1,8 @@
+import { SERVER_URL } from '$env/static/private';
+
 export const load = async ({ params, cookies }) => {
     const user_id = cookies.get('user_id') ?? params.id;
-    const user = user_id ? await (await fetch(`http://localhost:4000/user/${user_id}`)).json(): null
+    const user = user_id ? await (await fetch(`${SERVER_URL}/user/${user_id}`)).json(): null
     const isLoggedIn = user_id ? true : false
 	return { 
         categories: [
