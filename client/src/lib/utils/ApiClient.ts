@@ -1,5 +1,4 @@
 import { getCookie } from ".";
-import { SERVER_URL } from '$env/static/private';
 
 class ApiClient {
     private baseUrl: string;
@@ -93,5 +92,5 @@ class ApiClient {
 }
 
 
-const apiClient = new ApiClient(SERVER_URL, {}, getCookie('auth-token') ?? '')
+const apiClient = new ApiClient('http://localhost:4000', {}, getCookie('auth-token') ?? '')
 export default apiClient;
