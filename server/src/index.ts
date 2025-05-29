@@ -12,6 +12,7 @@ import post from './routes/post'
 import feed from './routes/feed'
 import comment from './routes/comment'
 import vote from './routes/vote'
+import 'dotenv/config';
 
 const app = new Hono()
 

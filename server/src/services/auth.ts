@@ -1,7 +1,6 @@
 import { verifyPassword } from '../utils/password';
 import { PrismaClient, users as User } from '@prisma/client'
 import { sign } from 'hono/jwt'
-import user from '../routes/user';
 
 const prisma = new PrismaClient();
 
@@ -30,7 +29,7 @@ export const login = async (username: string, password: string): Promise<{verifi
     const { f_name: fname, user_id } = user;
     const exp = Math.floor(Date.now() / 1000) + ((60 * 60) * 24) * 60
 
-    const token = await sign({ fname, user_id, exp },'REDACTED this will be on the env later too lazy to set it up');
+    const token = await sign({ fname, user_id, exp }, process.env.TOKEN_SIGNATURE);
 
     return { verified: true, error: undefined, token, user_id }
 }
