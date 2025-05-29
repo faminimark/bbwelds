@@ -87,17 +87,23 @@
         <hr />
         gallery or masonry?
     </div>
-    <div>
+    <div class="flex flex-col">
         <h2  class="text-2xl">Posts</h2>
         <hr />
-        <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
-        {#each user.posts as {title, description, post_id}}
-            {#if title}
-            <Card>
-                <Feed title={title} description={description} post_id={post_id} user={user}/>
-            </Card>
-            {/if}
-        {/each}
-        </div>
+        {#if user.posts.length}
+            <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
+                {#each user.posts as {title, description, created_at, post_id}}
+                    {#if title}
+                    <Card>
+                        <Feed title={title} description={description} post_id={post_id} user={user} created_at={created_at}/>
+                    </Card>
+                    {/if}
+                {/each}
+            </div>
+        {:else}
+            <div class="text-center w-full py-5 text-lg">
+                {user.f_name} is still working on his posts
+            </div>
+        {/if}
     </div>
 </div>
