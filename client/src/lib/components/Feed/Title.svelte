@@ -12,5 +12,5 @@
         <ShareButton />
     </div>
 
-    <Link user_id={user.user_id} created_at={formattedDate} name={user.fullname}/>
+    <Link user_id={user.user_id} created_at={formattedDate} name={user.fullname} img_src={''}/>
 </div>
