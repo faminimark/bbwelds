@@ -18,7 +18,14 @@ export const getPost = async (
             post_id: Number(query?.post_id)
         },
         include: {
-            users: true
+            users: {
+                omit: {
+                    company_id: true,
+                    created_at: true,
+                    location_id: true,
+                    profile_description: true,
+                }
+            }
         }
     });
 

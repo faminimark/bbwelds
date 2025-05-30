@@ -7,12 +7,17 @@ export const getFeed = async (
   ): Promise<Posts[]> => {
     const posts: Posts[] = await prisma.posts.findMany({
       relationLoadStrategy: 'join',
-      include: { users: true }
+      include: { 
+        users: {
+          omit: {
+              company_id: true,
+              created_at: true,
+              location_id: true,
+              profile_description: true,
+          }
+        } 
+      }
     });
 
-    // TODO: Add entry to post_tags and category
-    // const posts: Posts[] = await prisma.$queryRaw<Posts[]>`
-    // select * from posts
-    // `
     return serializer(posts);
   };
