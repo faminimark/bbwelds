@@ -1,10 +1,13 @@
 import { PrismaClient, posts as Posts, Prisma } from '@prisma/client'
 import { serializer } from '../utils';
+import redis from '../redis';
+
 const prisma = new PrismaClient();
 
-export const getFeed = async (
-    query?: Prisma.posts$categoriesArgs | Prisma.posts$post_tagsArgs
-  ): Promise<Posts[]> => {
+export const getFeed = async (): Promise<Posts[]> => {
+    const cachedFeed = await redis.get(`feed`) ?? null
+    if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)
+
     const posts: Posts[] = await prisma.posts.findMany({
       relationLoadStrategy: 'join',
       include: { 
@@ -19,5 +22,6 @@ export const getFeed = async (
       }
     });
 
+    await redis.set(`feed`, 360, JSON.stringify(serializer(posts)));
     return serializer(posts);
   };

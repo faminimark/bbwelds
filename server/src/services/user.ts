@@ -2,6 +2,8 @@ import { PrismaClient, locations as Location, users as User } from '@prisma/clie
 import { serializer } from '../utils';
 import { hashPassword } from '../utils/password';
 import { HTTPException } from 'hono/http-exception';
+import redis from '../redis';
+
 const prisma = new PrismaClient();
 
 type PostInput = {
@@ -66,20 +68,30 @@ export const createUser = async (
 export const getUser = async (
     query?: any
 ): Promise<any> => {
-        const user: User | null = await prisma.users.findUnique({
-            where: {
-                user_id: Number(query?.user_id),
-            },
-            include: {
-                locations: true,
-                // add certificates and licenses
-                contacts: true,
-                posts: true
-            }
-        });
-    
-        if(!user) throw new HTTPException(404, { message: 'User not found'})
-    
-        return serializer(user);
+    const user_id = query?.user_id;
+
+    if(!user_id) throw new HTTPException(404, { message: 'User not found'})
+
+    const cachedUser = await redis.get(`user:${user_id}`)
+
+    if(cachedUser) return JSON.parse(cachedUser)
+
+    const user: User | null = await prisma.users.findUnique({
+        where: {
+            user_id: Number(query?.user_id),
+        },
+        include: {
+            locations: true,
+            // add certificates and licenses
+            contacts: true,
+            posts: true
+        }
+    });
+
+    if(!user) throw new HTTPException(404, { message: 'User not found'})
+
+    await redis.set(`user:${user_id}`, 3600, JSON.stringify(serializer(user)));
+
+    return serializer(user);
     
 };
