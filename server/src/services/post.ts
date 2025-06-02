@@ -24,6 +24,7 @@ type GetPostInput = {
 }
 
 type CreatePostInput = {
+    //TODO
 }
 
 export const getPost = async (
@@ -55,65 +56,63 @@ export const createPost = async (
 ): Promise<any> => {
     const files = formData.getAll('files')
     const user_id = formData.get('user_id') as string; //Build context for these
-    
-    // Run request
+    const USER_FOLDER = `gallery-${user_id}`
+    // TODO: refactor this to use GetFolder instead, this will be a bottleneck after a thousand users
     const [folders] = await controlClient.listFolders({
         parent: bucketPath,
     });
 
-    const userFolderExist = Boolean(folders.filter(({ name }) => {console.log(name) 
-        return name === `projects/_/buckets/${bucketName}/folders/gallery-${user_id}/`}).length)
+    const userFolderExist = Boolean(folders.filter(({ name }) =>  name === `projects/_/buckets/${bucketName}/folders/gallery-${user_id}/`).length)
 
     if(!userFolderExist) await controlClient.createFolder({
         parent: bucketPath,
-        folderId: `gallery-${user_id}`
+        folderId: USER_FOLDER
     });
     
     const uploadResults = []
 
-    try{
+    try {
         for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        
-        if (!(file instanceof File)) {
-            uploadResults.push({
-            index: i,
-            error: 'Invalid file object'
-            })
-            continue
-        }
+            const file = files[i]
+            
+            if (!(file instanceof File)) {
+                uploadResults.push({
+                index: i,
+                error: 'Invalid file object'
+                })
+                continue
+            }
 
-        try {
-            const timestamp = Date.now()
-            const fileName = `gallery-${user_id}/${timestamp}-${i}-${file.name}`
-            const fileRef = bucket.file(fileName)
-            
-            const arrayBuffer = await file.arrayBuffer()
-            const buffer = Buffer.from(arrayBuffer)
-            
-            await fileRef.save(buffer, {
+            try {
+                const timestamp = Date.now()
+                const fileName = `${USER_FOLDER}/${timestamp}-${i}-${file.name}`
+                const fileRef = bucket.file(fileName)
                 
-                metadata: {
-                    contentType: file.type,
-                },
-            })
+                const arrayBuffer = await file.arrayBuffer()
+                const buffer = Buffer.from(arrayBuffer)
+                
+                await fileRef.save(buffer, {
+                    metadata: {
+                        contentType: file.type,
+                    },
+                })
 
-            uploadResults.push({
+                uploadResults.push({
+                    index: i,
+                    originalName: file.name,
+                    fileName: fileName,
+                    size: file.size,
+                    contentType: file.type,
+                    publicUrl: `https://storage.googleapis.com/${bucketName}/${USER_FOLDER}/${fileName}`
+                })
+
+            } catch (error) {
+                uploadResults.push({
                 index: i,
                 originalName: file.name,
-                fileName: fileName,
-                size: file.size,
-                contentType: file.type,
-                publicUrl: `https://storage.googleapis.com/${bucketName}/${fileName}`
-            })
-
-        } catch (error) {
-            uploadResults.push({
-            index: i,
-            originalName: file.name,
-            error: error
-            })
-        }
+                error: error
+                })
+            }
         }
 
     return {
@@ -121,9 +120,9 @@ export const createPost = async (
       results: uploadResults
     }
 
-  } catch (error) {
-    console.error('Upload error:', error)
-    return { error: 'Upload failed', details: error }
-  }
+    } catch (error) {
+        console.error('Upload error:', error)
+        return { error: 'Upload failed', details: error }
+    }
 
 };
