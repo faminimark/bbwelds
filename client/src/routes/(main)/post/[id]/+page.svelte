@@ -5,7 +5,7 @@
     import { DownvoteButton, UpvoteButton, ShareButton } from '$lib/components/Buttons'
 
     let { data } = $props()
-    let { title, description, created_at, users } = data.data;
+    let { title, description, created_at, users, images} = data.data;
     const date = new Date(created_at)
     const localizedDateString = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
 </script>

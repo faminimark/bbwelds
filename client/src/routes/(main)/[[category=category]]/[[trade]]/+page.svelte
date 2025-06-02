@@ -5,6 +5,7 @@
   import { goto } from '$app/navigation';
   let { data } = $props();
 
+  const feed = data.data;
   let tab = $state('featured')
 </script>
 
@@ -30,10 +31,10 @@
           </button>
       </div>
     </nav>
-    {#each data.data as {title, description, created_at, post_id, users}}
+    {#each feed as {title, description, created_at, post_id, users, images}}
       {#if title}
       <Card>
-        <Feed created_at={created_at} title={title} description={description} post_id={post_id} user={users}/>
+        <Feed images={images} created_at={created_at} title={title} description={description} post_id={post_id} user={users}/>
       </Card>
       {/if}
     {/each}

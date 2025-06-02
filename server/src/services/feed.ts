@@ -23,6 +23,9 @@ export const getFeed = async (): Promise<PostWithImages[]> => {
                 profile_description: true,
             }
           }
+        },
+        orderBy: {
+          created_at: 'desc'
         }
       })
 

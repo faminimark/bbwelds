@@ -122,7 +122,7 @@ export const createPost = async (
                     fileName: fileName,
                     size: file.size,
                     contentType: file.type,
-                    publicUrl: `https://storage.googleapis.com/${bucketName}/${USER_FOLDER}/${fileName}`
+                    publicUrl: `https://storage.googleapis.com/${bucketName}/${fileName}`
                 })
 
             } catch (error) {

@@ -1,11 +1,16 @@
-<script>
-    let { description, post_id } = $props()
+<script lang="ts">
+    import Carousel from '$lib/components/Carousel.svelte'
+    let { description, post_id, images } = $props()
 </script>
 
 <div class="flex flex-col min-w-280px">
-    <a href={`/post/${post_id}`} class="flex justify-center bg-gray-100">
-        <img aria-label="feed" alt="feed" src="https://picsum.photos/400" class="max-h-380px"/>
-    </a>
+    <Carousel>
+        {#each images as image}
+        <a href="/" class="embla__slide w-full flex shrink-0 grow-0 basis-full">
+            <img aria-label="feed" alt="feed" src={image.image_url}  />
+            </a>
+        {/each}
+    </Carousel>
     <div class="my-5">
         <desc class="text-sm font-light text-gray-400">{description}</desc>
     </div>
