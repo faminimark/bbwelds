@@ -1,5 +1,5 @@
 import { HTTPException } from 'hono/http-exception'
-import { PrismaClient, posts as Posts } from '@prisma/client'
+import { PrismaClient, posts as Posts, category_types, status_enum, image_type } from '@prisma/client'
 import { serializer } from '../utils';
 import { Storage } from '@google-cloud/storage'
 import { v2 } from '@google-cloud/storage-control'
@@ -55,6 +55,11 @@ export const createPost = async (
     formData: FormData //fix this type after formData
 ): Promise<any> => {
     const files = formData.getAll('files')
+    const category = formData.get('category') as category_types
+    const title = formData.get('title') as string
+    const description = formData.get('description') as string
+    const tag = formData.get('tag') as string
+
     const user_id = formData.get('user_id') as string; //Build context for these
     const USER_FOLDER = `gallery-${user_id}`
     // TODO: refactor this to use GetFolder instead, this will be a bottleneck after a thousand users
@@ -72,6 +77,20 @@ export const createPost = async (
     const uploadResults = []
 
     try {
+        const post = await prisma.posts.create({
+            data: {
+                category,
+                title,
+                user_id: Number(user_id),
+                description,
+                // post_tags: {
+                //     createMany: {
+                //         data: tag // TODO fix client to do this with a comma
+                //     }
+                // }
+            }
+        })
+
         for (let i = 0; i < files.length; i++) {
             const file = files[i]
             
@@ -114,6 +133,17 @@ export const createPost = async (
                 })
             }
         }
+
+        const fileNames = uploadResults.map((res) => ({
+            image_url: res.publicUrl ?? '',
+            image_type: image_type.post,
+            status: status_enum.active,
+            imageable_id: post.post_id
+        }))
+
+        await prisma.image_urls.createManyAndReturn({
+            data: fileNames,
+        });
 
     return {
       message: 'Upload process completed',
