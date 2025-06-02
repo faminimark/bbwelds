@@ -1,19 +1,11 @@
 import { Hono } from 'hono'
-import { zValidator } from "@hono/zod-validator";
+import { getCategories } from '../services/category';
 
 const category = new Hono()
 
-// TODO: Create category client
-category.get('/', (c) => {
-    return c.json({success: true, data: []});
-})
-
-category.post('/create', (c) => {
-    return c.json({ success: true });
-})
-
-category.put('/update', (c) => {
-    return c.json({ success: true });
+category.get('/', async (c) => {
+    const categories = await getCategories()
+    return c.json({success: true, data: categories});
 })
 
 export default category;

@@ -12,6 +12,7 @@ import post from './routes/post'
 import feed from './routes/feed'
 import comment from './routes/comment'
 import vote from './routes/vote'
+import category from './routes/category'
 import 'dotenv/config';
 
 const app = new Hono()
@@ -30,5 +31,6 @@ app.route('/post', post)
 app.route('/feed', feed)
 app.route('/comment', comment)
 app.route('/vote', vote)
+app.route('/category', category)
 
 export default app
