@@ -1,12 +1,12 @@
 import { Hono } from 'hono'
-import { getPost } from '../services/post'
+import { getPost, createPost } from '../services/post'
 
 const post = new Hono()
 
 // TODO: Create post client
 post.post('/create', async (c) => {
     const formData = await c.req.formData()
-    console.log(formData)
+    const response =  await createPost(formData)
     return c.json({success: true, data: []});
 })
 

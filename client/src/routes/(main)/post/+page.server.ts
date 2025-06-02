@@ -1,9 +1,9 @@
 import { SERVER_URL } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
- import type { Actions } from './$types';
+import type { Actions } from './$types';
 
 export const actions = {
-	default: async ({ request, fetch }) => {
+	default: async ({ request, fetch, cookies }) => {
         const formData = await request.formData();
 
         const files = formData.getAll('file') as File[]
@@ -11,6 +11,7 @@ export const actions = {
         const category = formData.get('category') as string
         const description = formData.get('description') as string
         const tag = formData.get('tag') as string
+        const user_id = cookies.get('user_id') as string
 
         try {
         // Create new FormData for the node API
@@ -23,11 +24,12 @@ export const actions = {
         apiFormData.append('category', category);
         apiFormData.append('description', description);
         apiFormData.append('tag', tag);
+        apiFormData.append('user_id', user_id);
     
         const response = await fetch(`${SERVER_URL}/post/create`, {
-                method: 'POST',
-                body: apiFormData,
-            });
+            method: 'POST',
+            body: apiFormData,
+        });
 
         const result = await response.json();
         return { success: true, data: result };
