@@ -5,15 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL_WITH_SCHEMA")
-}
-
-model categories {
-  category_id  Int       @id @default(autoincrement())
-  display_name BigInt?
-  value        String?
-  created_at   DateTime? @db.Date
-  posts        posts[]
+  url      = "postgresql://postgres:Sslices1!@localhost:5432/postgres?schema=public"
 }
 
 model comments {
@@ -59,18 +51,17 @@ model post_tags {
 }
 
 model posts {
-  post_id     Int         @id @default(autoincrement())
-  title       String?     @db.VarChar(50)
+  post_id     Int             @id @default(autoincrement())
+  title       String?         @db.VarChar(50)
   description String?
-  created_at  DateTime?   @db.Date
+  created_at  DateTime        @default(now()) @db.Timestamp(6)
   user_id     Int?
   vote_id     Int?
-  category_id Int?
+  category    category_types?
   comments    comments[]
   post_tags   post_tags[]
-  categories  categories? @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
-  users       users?      @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  votes       votes?      @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
+  users       users?          @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  votes       votes?          @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model tags {
@@ -136,6 +127,14 @@ model contacts {
   users        users?        @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 }
 
+model image_urls {
+  image_id     Int          @id @default(autoincrement())
+  image_url    String       @db.VarChar(500)
+  status       status_enum? @default(active)
+  image_type   image_type
+  imageable_id Int
+}
+
 enum contact_enum {
   email
   phone
@@ -149,4 +148,18 @@ enum credential_type_enum {
 enum status_enum {
   active
   deleted
+}
+
+enum category_types {
+  electrician
+  automotive
+  metal_workers @map("metal workers")
+  hvac
+  concrete
+}
+
+enum image_type {
+  comment
+  post
+  user
 }
