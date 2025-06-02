@@ -4,7 +4,7 @@
     const { isLoggedIn, user_id } = $props()
 </script>
 
-<div class="pt-[7px] sticky top-0 right-0 left-0 bg-white shadow-md">
+<div class="pt-[7px] sticky top-0 right-0 left-0 z-[10000] bg-white shadow-md">
     <div class="flex flex-row items-center justify-between pb-[5px] max-sm:px-2 max-sm:pb-[6px] px-8">
         <div class="flex flex-row">
             <a aria-label="bbwelds logo" href="/" class="flex flex-row items-center">
