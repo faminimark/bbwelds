@@ -18,7 +18,7 @@
         <header class="text-3xl font-semibold">{title}</header>
         <Link user_id={users.user_id} created_at={localizedDateString} name={users.fullname} img_src={'TODO'}/>
         <div class="flex justify-center bg-gray-100 p-6">
-            <Carousel image_count={images}>
+            <Carousel image_count={images.length}>
                 {#each images as image}
                     <div class="embla__slide w-full flex shrink-0 grow-0 basis-full align-middle justify-center">
                         <img aria-label="feed" alt="feed" src={image.image_url}  />
