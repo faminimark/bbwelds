@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
+  import { enhance } from "$app/forms";
     import Card from "$lib/components/Card.svelte";
     import { Text, Checkbox } from "$lib/components/Fields"
-    import { backHandler, validateEmail } from '$lib/utils'
-    import client from '$lib/utils/ApiClient'
+    import { backHandler, } from '$lib/utils'
     const logo = '/bb-logo.svg';
 
     let termsAccepted = $state(false);
+
+    let { form } = $props()
     let errors: {
         email: null | string;
         confirmPassword: null | string;
@@ -16,34 +17,19 @@
 
     };
 
-
-    const handleRegister = async (event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) => {
-        event.preventDefault();
-        const form = new FormData(event.currentTarget);
-        const email = form.get('email')?.toString() ?? ''
-        const password = form.get('password')
-        const confirmPassword = form.get('confirm-password')
-
-        errors.email = validateEmail(email)
-        if(password !== confirmPassword) errors.confirmPassword = 'Confirm password does not match the password.'
-        if(errors.email || errors.confirmPassword) return;
-
-        const data = Object.fromEntries(form);
-        const response = await client.post('user/create', {data});
-        if(response.success) goto('/login')
-    }
 </script>
 
 <div class="p-8 flex w-full flex-col gap-8">
     <img alt="logo" src={logo} class="h-[140px] self-center"/>
     <Card>
-        <form class="flex flex-col gap-3" onsubmit={handleRegister}>
+        <form class="flex flex-col gap-3" method="POST" use:enhance>
+            {#if form?.message}<p class="text-red-600 text-sm">{form?.message}</p>{/if}
             <div class="flex gap-5 max-sm:flex-col max-sm:gap-3">
                     <Text name={'fname'} placeholder={'First Name'} max={50} required />
                     <Text name={'lname'} placeholder={'Last Name'} max={50} required />
             </div>
             <div>
-                <Text name={'email'} placeholder={'Email'} required bind:error={errors.email}/>
+                <Text name={'email'} placeholder={'Email'} required/>
             </div>
             <div>
                 <Text name={'password'} placeholder={'Password'} type="password" required/>

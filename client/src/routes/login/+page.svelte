@@ -12,7 +12,7 @@
     <div class="flex flex-col gap-7 p-6">
         <a href="/login/register" class="font-bold border-1 border-black rounded-2xl p-3 w-[120px] text-center self-end hidden max-md:block">Sign up</a>
         <form class="flex flex-col gap-3" method="POST" use:enhance>
-            {#if form?.message}<p class="error">{form?.message}</p>{/if}
+            {#if form?.message}<p class="text-red-600 text-sm">{form?.message}</p>{/if}
             <span class="text-sm text-gray-700">Email</span>
             <Text name="email" placeholder="Email Address" />
             <span class="text-sm text-gray-700">Password</span>
