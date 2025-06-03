@@ -2,7 +2,7 @@ import { SERVER_URL } from "$env/static/private";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { validateEmail } from '$lib/utils'
 export const actions = {
-    default: async ({ request, fetch, cookies }) => {
+    default: async ({ request, fetch }) => {
 
         const formData = await request.formData();
         const email = formData.get('email') as string
