@@ -1,8 +1,11 @@
 import { HTTPException } from 'hono/http-exception'
-import { PrismaClient, posts as Posts, category_types, status_enum, image_type } from '@prisma/client'
-import { serializer } from '../utils';
+import { PrismaClient, posts as Posts, category_types, status_enum, image_type, image_urls as Images } from '@prisma/client'
 import { Storage } from '@google-cloud/storage'
 import { v2 } from '@google-cloud/storage-control'
+
+interface PostWithImages extends Posts {
+  images: Images[]
+}
 
 const prisma = new PrismaClient();
 
@@ -29,7 +32,7 @@ type CreatePostInput = {
 
 export const getPost = async (
     query?: GetPostInput
-): Promise<Posts> => {
+): Promise<PostWithImages> => {
     const posts: Posts | null = await prisma.posts.findUnique({
         where: {
             post_id: Number(query?.post_id)
@@ -46,9 +49,16 @@ export const getPost = async (
         }
     });
 
+      const image_url: Images[] = await prisma.image_urls.findMany({
+       where: {
+        imageable_id: Number(query?.post_id),
+        image_type: 'post'
+       }
+    });
+
     if(!posts) throw new HTTPException(404, { message: 'Post not found'})
 
-    return serializer(posts);
+    return {...posts, images: image_url};
 };
 
 export const createPost = async (

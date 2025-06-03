@@ -12,7 +12,7 @@
     let user = data.data
 
     if(!user) throw redirect(302, `/`);
-    
+
     let location = user?.locations
     let contacts = user?.contacts
 </script>
@@ -92,10 +92,10 @@
         <hr />
         {#if user.posts.length}
             <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
-                {#each user.posts as {title, description, created_at, post_id}}
+                {#each user.posts as { title, description, created_at, post_id, images }}
                     {#if title}
                     <Card>
-                        <Feed title={title} description={description} post_id={post_id} user={user} created_at={created_at}/>
+                        <Feed images={images} title={title} description={description} post_id={post_id} user={user} created_at={created_at}/>
                     </Card>
                     {/if}
                 {/each}

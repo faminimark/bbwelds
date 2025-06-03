@@ -76,7 +76,7 @@ export const getUser = async (
 
     if(cachedUser) return JSON.parse(cachedUser)
 
-    const user: User | null = await prisma.users.findUnique({
+    const user = await prisma.users.findUnique({
         where: {
             user_id: Number(query?.user_id),
         },
@@ -88,10 +88,27 @@ export const getUser = async (
         }
     });
 
+    const image_urls = await prisma.image_urls.findMany({
+        where: {
+          image_type: 'post',
+          imageable_id: {
+            in: user?.posts.map(({post_id}) => post_id)
+          }
+
+        }
+    })
+
+      const userWithPosts = user?.posts.flatMap((post) => {
+         const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
+         return {...post , images}
+      })
+
+
+
     if(!user) throw new HTTPException(404, { message: 'User not found'})
 
-    await redis.set(`user:${user_id}`, 3600, JSON.stringify(serializer(user)));
+    await redis.set(`user:${user_id}`, 3600, JSON.stringify({...user, posts: userWithPosts}));
 
-    return serializer(user);
+    return {...user, posts: userWithPosts};
     
 };
