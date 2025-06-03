@@ -4,6 +4,7 @@
     import AddComment from '$lib/components/Comments/Add.svelte'
     import { DownvoteButton, UpvoteButton, ShareButton } from '$lib/components/Buttons'
   import Carousel from '$lib/components/Carousel.svelte';
+  import { enhance } from '$app/forms';
 
     let { data } = $props()
     let { title, description, created_at, users, images } = data.data;
@@ -29,8 +30,12 @@
         </div>
         <desc>{ description }</desc>
         <div class="flex flex-row">
-            <DownvoteButton />
-            <UpvoteButton />
+            <form method="POST" action="?/upvote" use:enhance>
+                <UpvoteButton />
+            </form>
+            <form  method="POST" action="?/downvote" use:enhance>
+                <DownvoteButton />
+            </form>
             <ShareButton />
         </div>
     </div>

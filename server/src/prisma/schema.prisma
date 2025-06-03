@@ -87,7 +87,7 @@ model users {
 }
 
 model votes {
-  vote_id       Int         @id
+  vote_id       Int         @id @default(autoincrement())
   upvote        Int?
   downvote      Int?
   voteable_id   Int
