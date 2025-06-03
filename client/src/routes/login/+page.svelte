@@ -1,32 +1,18 @@
 <script lang="ts">
-    import { goto } from '$app/navigation';
+    import { enhance } from '$app/forms';
     import { Text, Checkbox } from '$lib/components/Fields'
-    import { setCookie } from '$lib/utils';
+    import type { PageProps } from './$types';
     const facebookLogo = '/facebook.svg';
     const googleLogo = '/google.svg';
-    import client from '$lib/utils/ApiClient'
 
-    const handleLogin = async (event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) => {
-        event.preventDefault();
-        const form = new FormData(event.currentTarget);
-
-        const data = Object.fromEntries(form);
-        const response = await client.post('auth/login', { data });
-
-        //Save cookie
-        if(response.verified) {
-            setCookie('auth-token', response.token, 30)
-            setCookie('user_id', response.user_id, 30)
-            goto('/')
-        }
-    }
-
+    let { form }: PageProps = $props()
 </script>
 
 <div class="grid grid-cols-2 max-md:flex max-md:flex-col-reverse max-md:h-screen max-md:justify-end">
     <div class="flex flex-col gap-7 p-6">
         <a href="/login/register" class="font-bold border-1 border-black rounded-2xl p-3 w-[120px] text-center self-end hidden max-md:block">Sign up</a>
-        <form class="flex flex-col gap-3" onsubmit={handleLogin} >
+        <form class="flex flex-col gap-3" method="POST" use:enhance>
+            {#if form?.message}<p class="error">{form?.message}</p>{/if}
             <span class="text-sm text-gray-700">Email</span>
             <Text name="email" placeholder="Email Address" />
             <span class="text-sm text-gray-700">Password</span>
