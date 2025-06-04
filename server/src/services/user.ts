@@ -113,12 +113,24 @@ export const getUser = async (
         }
     })
 
-      const userWithPosts = user?.posts.flatMap((post) => {
-         const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
-         return {...post , images}
-      })
+    const votes = await prisma.votes.findMany({
+        where: {
+          voteable_type: 'post',
+          voteable_id: {
+            in: user?.posts.map(({post_id}) => post_id)
+          }
+        },
+        omit: {
+          vote_id: true,
+          voteable_type: true
+        }
+    })
 
-
+    const userWithPosts = user?.posts.flatMap((post) => {
+        const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
+        const mappedVotes = votes.find((vote) => vote.voteable_id === post.post_id)
+        return {...post , images, votes: mappedVotes}
+    })
 
     if(!user) throw new HTTPException(404, { message: 'User not found'})
 

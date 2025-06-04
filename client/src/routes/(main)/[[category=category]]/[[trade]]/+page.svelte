@@ -30,12 +30,10 @@
           </button>
       </div>
     </nav>
-    {#each feeds as {title, description, created_at, post_id, users, images, votes}}
-      {#if title}
+    {#each feeds as { images, votes, ...rest }}
       <Card>
-        <Feed images={images} created_at={created_at} title={title} description={description} post_id={post_id} user={users} votes={votes}/>
+        <Feed {...rest} votes={votes} images={images}/>
       </Card>
-      {/if}
     {/each}
   </div>
 

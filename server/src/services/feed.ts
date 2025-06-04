@@ -7,6 +7,11 @@ interface PostWithImages extends Posts {
   images: Images[]
 }
 
+// Explore algorithm based on likes, view, and maybe clicks.
+// Definitely need a data behavior query, so this will have to get set up somewhat. 
+// Maybe a data dump from GA/GTM, then put it in the db... or just raw data that goes inside the DB so it can be mapped
+// Which is probably the only way without paying for GA service
+
 export const getFeed = async (): Promise<PostWithImages[]> => {
     const cachedFeed = await redis.get(`feed`) ?? null
     if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)

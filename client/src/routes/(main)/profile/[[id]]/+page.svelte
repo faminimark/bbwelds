@@ -92,12 +92,10 @@
         <hr />
         {#if user.posts.length}
             <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
-                {#each user.posts as { title, description, created_at, post_id, images }}
-                    {#if title}
+                {#each user.posts as { images, votes, ...rest }}
                     <Card>
-                        <Feed images={images} title={title} description={description} post_id={post_id} user={user} created_at={created_at}/>
+                        <Feed {...rest} images={images} votes={votes} users={user}/>
                     </Card>
-                    {/if}
                 {/each}
             </div>
         {:else}

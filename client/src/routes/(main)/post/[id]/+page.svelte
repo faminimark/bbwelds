@@ -7,7 +7,7 @@
   import { enhance } from '$app/forms';
 
     let { data } = $props()
-    let { title, description, created_at, users, images } = data.data;
+    let { title, description, created_at, users, images, votes } = data.data;
 
     const date = new Date(created_at)
     const localizedDateString = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
@@ -31,10 +31,10 @@
         <desc>{ description }</desc>
         <div class="flex flex-row">
             <form method="POST" action="?/upvote" use:enhance>
-                <UpvoteButton />
+                <UpvoteButton count={votes.upvote}/>
             </form>
             <form  method="POST" action="?/downvote" use:enhance>
-                <DownvoteButton />
+                <DownvoteButton  />
             </form>
             <ShareButton />
         </div>
