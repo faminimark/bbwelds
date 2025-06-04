@@ -7,7 +7,7 @@ const post = new Hono()
 post.post('/create', async (c) => {
     const formData = await c.req.formData()
     const response =  await createPost(formData)
-    return c.json({success: true, data: []});
+    return c.json({success: true, data: response});
 })
 
 post.put('/:id', (c) => {

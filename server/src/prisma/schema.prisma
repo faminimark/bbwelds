@@ -82,17 +82,19 @@ model users {
   contacts            contacts[]
   credentials         credentials[]
   posts               posts[]
+  user_votes          user_votes[]
   companies           companies?    @relation(fields: [company_id], references: [company_id], onDelete: NoAction, onUpdate: NoAction)
   locations           locations?    @relation(fields: [location_id], references: [location_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model votes {
-  vote_id       Int         @id @default(autoincrement())
+  vote_id       Int          @id @default(autoincrement())
   upvote        Int?
   downvote      Int?
   voteable_id   Int
   voteable_type image_type?
   comments      comments[]
+  user_votes    user_votes[]
 }
 
 model auth {
@@ -134,6 +136,15 @@ model image_urls {
   imageable_id Int
 }
 
+model user_votes {
+  user_vote_id Int       @id @default(autoincrement())
+  vote_type    vote_type
+  vote_id      Int
+  user_id      Int
+  users        users     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  votes        votes     @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 enum contact_enum {
   email
   phone
@@ -161,4 +172,9 @@ enum image_type {
   comment
   post
   user
+}
+
+enum vote_type {
+  upvote
+  downvote
 }

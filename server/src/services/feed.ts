@@ -28,16 +28,34 @@ export const getFeed = async (): Promise<PostWithImages[]> => {
           created_at: 'desc'
         }
       })
-
+      const post_ids = posts.map((post) => post.post_id)
       const image_urls = await tx.image_urls.findMany({
         where: {
-          image_type: 'post'
+          image_type: 'post',
+          imageable_id: {
+            in: post_ids
+          }
+        }
+      })
+
+       const votes = await tx.votes.findMany({
+        where: {
+          voteable_type: 'post',
+          voteable_id: {
+            in: post_ids
+          }
+        },
+        omit: {
+          vote_id: true,
+          voteable_type: true
         }
       })
 
       const mappedImageToPost = posts.flatMap((post) => {
          const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
-         return {...post , images}
+         const mappedVotes = votes.find((vote) => vote.voteable_id === post.post_id)
+
+         return {...post , images, votes: mappedVotes}
       })
 
       await redis.set(`feed`, 360, JSON.stringify(mappedImageToPost));

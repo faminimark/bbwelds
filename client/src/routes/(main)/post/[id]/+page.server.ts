@@ -8,18 +8,24 @@ export const load = async({ fetch, params  }) => {
 }
 
 export const actions = {
-	upvote: async ({ params }) => {
-		if(!params.id)  return fail(500, { error: 'You shall not vote' })
+	upvote: async ({ params, cookies }) => {
+		const user_id = cookies.get('user_id') as string
+		if(!params.id || !user_id)  return fail(500, { error: 'You shall not vote' })
+		
 		await upvote({
 			id: params.id,
-			type: 'post'
+			type: 'post',
+			user_id: user_id
 		})
 	},
-	downvote: async ({params}) => {
-		if(!params.id)  return fail(500, { error: 'You shall not vote' })
+	downvote: async ({ params, cookies }) => {
+		const user_id = cookies.get('user_id') as string
+		if(!params.id || !user_id)  return fail(500, { error: 'You shall not vote' })
+		
 		await downvote({
 			id: params.id,
-			type: 'post'
+			type: 'post',
+			user_id: user_id
 		})
 	}
 } satisfies Actions

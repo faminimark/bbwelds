@@ -84,7 +84,22 @@ export const getUser = async (
             locations: true,
             // add certificates and licenses
             contacts: true,
-            posts: true
+            posts: true,
+            user_votes: {
+                include: {
+                    votes: {
+                        omit: {
+                            vote_id: true,
+                            downvote: true,
+                            upvote: true
+                        }
+                    }
+                },
+                omit: {
+                    user_id: true,
+                    user_vote_id: true,
+                }
+            }
         }
     });
 

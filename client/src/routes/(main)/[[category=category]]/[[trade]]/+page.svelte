@@ -4,8 +4,7 @@
   import Category from '$lib/components/Category.svelte'
   import { goto } from '$app/navigation';
   let { data } = $props();
-
-  const feed = data.data;
+  const feeds = data.data;
   let tab = $state('featured')
 </script>
 
@@ -31,10 +30,10 @@
           </button>
       </div>
     </nav>
-    {#each feed as {title, description, created_at, post_id, users, images}}
+    {#each feeds as {title, description, created_at, post_id, users, images, votes}}
       {#if title}
       <Card>
-        <Feed images={images} created_at={created_at} title={title} description={description} post_id={post_id} user={users}/>
+        <Feed images={images} created_at={created_at} title={title} description={description} post_id={post_id} user={users} votes={votes}/>
       </Card>
       {/if}
     {/each}

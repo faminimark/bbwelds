@@ -3,6 +3,7 @@ import { SERVER_URL } from '$env/static/private';
 type VoteInput = {
     type: string;
     id: string;
+    user_id: string;
 }
 
 export const upvote = async (input : VoteInput) => {
