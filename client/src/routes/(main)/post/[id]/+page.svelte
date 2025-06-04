@@ -31,7 +31,7 @@
         <desc>{ description }</desc>
         <div class="flex flex-row">
             <form method="POST" action="?/upvote" use:enhance>
-                <UpvoteButton count={votes.upvote}/>
+                <UpvoteButton count={votes?.upvote}/>
             </form>
             <form  method="POST" action="?/downvote" use:enhance>
                 <DownvoteButton  />
