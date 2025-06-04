@@ -1,10 +1,11 @@
 import { HTTPException } from 'hono/http-exception'
-import { PrismaClient, posts as Posts, category_types, status_enum, image_type, image_urls as Images } from '@prisma/client'
+import { PrismaClient, posts as Posts, category_types, status_enum, image_type, image_urls as Images, votes as Votes } from '@prisma/client'
 import { Storage } from '@google-cloud/storage'
 import { v2 } from '@google-cloud/storage-control'
 
 interface PostWithImages extends Posts {
   images: Images[]
+  votes: Omit<Votes, 'vote_id' | 'voteable_type'> | null | undefined
 }
 
 const prisma = new PrismaClient();
@@ -33,7 +34,7 @@ type CreatePostInput = {
 export const getPost = async (
     query?: GetPostInput
 ): Promise<PostWithImages> => {
-    const posts: Posts | null = await prisma.posts.findUnique({
+    const post: Posts | null = await prisma.posts.findUnique({
         where: {
             post_id: Number(query?.post_id)
         },
@@ -49,16 +50,27 @@ export const getPost = async (
         }
     });
 
-      const image_url: Images[] = await prisma.image_urls.findMany({
+    const image_url: Images[] = await prisma.image_urls.findMany({
        where: {
         imageable_id: Number(query?.post_id),
         image_type: 'post'
        }
     });
 
-    if(!posts) throw new HTTPException(404, { message: 'Post not found'})
+    const votes = await prisma.votes.findFirst({
+        where: {
+          voteable_type: 'post',
+          voteable_id: Number(query?.post_id)
+        },
+        omit: {
+          vote_id: true,
+          voteable_type: true
+        }
+    })
 
-    return {...posts, images: image_url};
+    if(!post) throw new HTTPException(404, { message: 'Post not found'})
+
+    return {...post, images: image_url, votes: votes ?? undefined};
 };
 
 export const createPost = async (

@@ -38,7 +38,7 @@ export const getFeed = async (): Promise<PostWithImages[]> => {
         }
       })
 
-       const votes = await tx.votes.findMany({
+      const votes = await tx.votes.findMany({
         where: {
           voteable_type: 'post',
           voteable_id: {
