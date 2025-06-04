@@ -94,7 +94,7 @@
             <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
                 {#each user.posts as { images, votes, ...rest }}
                     <Card>
-                        <Feed {...rest} images={images} votes={votes} users={user}/>
+                        <Feed {...rest} images={images} votes={votes} users={user} variant={'profile'}/>
                     </Card>
                 {/each}
             </div>

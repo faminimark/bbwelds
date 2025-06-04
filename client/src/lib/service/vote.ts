@@ -1,7 +1,7 @@
 import { SERVER_URL } from '$env/static/private';
 
 type VoteInput = {
-    type: string;
+    type: 'comment' | 'post' | 'user';
     id: string;
     user_id: string;
 }
