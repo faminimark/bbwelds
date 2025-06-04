@@ -10,8 +10,8 @@
             <a aria-label="bbwelds logo" href="/" class="flex flex-row items-center">
                 <img alt="logo" src={logo} class="h-[60px]"/>
                 <div class="flex flex-col ">
-                    <h1 class="font-semibold text-gray-800 text-lg tagline">Build Bard Studios</h1>
-                    <h4 class=" text-gray-500 text-xs tagline">Every Build Tells a Story</h4>
+                    <h1 class="font-semibold text-gray-800 text-lg max-sm:hidden">Build Bard Studios</h1>
+                    <h4 class=" text-gray-500 text-xs max-sm:hidden">Every Build Tells a Story</h4>
                 </div>
             </a>
         </div>
@@ -28,11 +28,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    @media (max-width: 470px){
-        .tagline {
-            display: none;
-        }
-    }
-</style>

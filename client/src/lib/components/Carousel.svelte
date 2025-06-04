@@ -11,7 +11,7 @@
 </script>
 <div class="relative">
     <div class="embla overflow-hidden" use:emblaCarouselSvelte onemblaInit={onInit}>
-        <div class="bg-gray-100 embla__container flex w-full">
+        <div class="embla__container flex w-full">
             {@render children() }
         </div>
     </div>
