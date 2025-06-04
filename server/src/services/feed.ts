@@ -13,8 +13,8 @@ interface PostWithImages extends Posts {
 // Which is probably the only way without paying for GA service
 
 export const getFeed = async (): Promise<PostWithImages[]> => {
-    const cachedFeed = await redis.get(`feed`) ?? null
-    if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)
+    // const cachedFeed = await redis.get(`feed`) ?? null
+    // if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)
 
     return await prisma.$transaction(async (tx) => {
       const posts: Posts[] = await tx.posts.findMany({
@@ -63,7 +63,7 @@ export const getFeed = async (): Promise<PostWithImages[]> => {
          return {...post , images, votes: mappedVotes}
       })
 
-      await redis.set(`feed`, 360, JSON.stringify(mappedImageToPost));
+      // await redis.set(`feed`, 360, JSON.stringify(mappedImageToPost));
       return mappedImageToPost
     })
 
