@@ -13,7 +13,6 @@ export const actions = {
         const tag = formData.get('tag') as string
         const user_id = cookies.get('user_id') as string
 
-        try {
         // Create new FormData for the node API
         const apiFormData = new FormData();
         files.forEach((file) => {
@@ -31,11 +30,14 @@ export const actions = {
             body: apiFormData,
         });
 
-        await response.json();
-        redirect(303, '/')
-		} catch (err) {
+        const result = await response.json()
+
+        if(result.success){
+            redirect(303, '/')
+        } else {
             return fail(500, { error: 'Failed to upload files' });
         }
+
 	}
 } satisfies Actions
 

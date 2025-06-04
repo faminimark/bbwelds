@@ -10,6 +10,8 @@ type PostInput = {
     post_id: string
 }
 
+
+// TODO Properly type these inputs pls
 export const createUser = async (
     data?: any
 ): Promise<any> => {

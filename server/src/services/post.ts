@@ -149,9 +149,9 @@ export const createPost = async (
 
             } catch (error) {
                 uploadResults.push({
-                index: i,
-                originalName: file.name,
-                error: error
+                    index: i,
+                    originalName: file.name,
+                    error: error
                 })
             }
         }
@@ -167,10 +167,10 @@ export const createPost = async (
             data: fileNames,
         });
 
-    return {
-      message: 'Upload process completed',
-      results: uploadResults
-    }
+        return {
+            message: 'Upload process completed',
+            results: uploadResults
+        }
 
     } catch (error) {
         console.error('Upload error:', error)
