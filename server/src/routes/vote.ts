@@ -1,17 +1,12 @@
 import { Hono } from 'hono'
-import { upvote, downvote } from '../services/vote'
+import { vote as Votes } from '../services/vote'
 
 const vote = new Hono()
 
-vote.post('/upvote', async (c) => {
-    const data = await c.req.json()
-    await upvote(data)
-    return c.json({ success: true });
-})
 
-vote.post('/downvote', async (c) => {
+vote.post('/', async (c) => {
     const data = await c.req.json()
-    await downvote(data)
+    await Votes(data)
     return c.json({ success: true });
 })
 

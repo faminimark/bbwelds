@@ -1,5 +1,4 @@
 import { SERVER_URL } from '$env/static/private';
-import { downvote, upvote } from '$lib/service/vote';
 import { fail, type Actions } from '@sveltejs/kit';
 
 export const load = async({ fetch, params  }) => {
@@ -8,24 +7,24 @@ export const load = async({ fetch, params  }) => {
 }
 
 export const actions = {
-	upvote: async ({ params, cookies }) => {
+	vote: async ({ params, cookies, request }) => {
+		const form = await request.formData()
+		const post_id = params.id
+		const vote_type = form.get('voteAction') as string	
 		const user_id = cookies.get('user_id') as string
-		if(!params.id || !user_id)  return fail(500, { error: 'You shall not vote' })
+		if(!post_id || !user_id)  return fail(500, { error: 'You shall not vote' })
 		
-		await upvote({
-			id: params.id,
-			type: 'post',
-			user_id: user_id
-		})
-	},
-	downvote: async ({ params, cookies }) => {
-		const user_id = cookies.get('user_id') as string
-		if(!params.id || !user_id)  return fail(500, { error: 'You shall not vote' })
-		
-		await downvote({
-			id: params.id,
-			type: 'post',
-			user_id: user_id
-		})
+		const response = await fetch(`${SERVER_URL}/vote`, {
+			method: 'POST',
+			body: JSON.stringify({
+				id: post_id,
+				type: 'post',
+				user_id: user_id,
+				vote_type
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 	}
 } satisfies Actions

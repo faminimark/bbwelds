@@ -1,4 +1,5 @@
-import { PrismaClient, image_type } from '@prisma/client'
+import { PrismaClient, image_type, vote_type } from '@prisma/client'
+import { useId } from 'hono/jsx';
 
 const prisma = new PrismaClient();
 
@@ -6,68 +7,54 @@ type VoteInput = {
     id: string | number;
     type: image_type; 
     user_id: string;
+    vote_type: vote_type;
 }
 
-export const upvote = async (
-    { id, type, user_id }: VoteInput
-): Promise<{success: boolean}> => {
-    const vote = await prisma.votes.findFirst({
-        where: {
-            voteable_id: Number(id),
-            voteable_type : type as image_type
-        },
-    });
-
-    if(!vote) {
-        await prisma.votes.create({
-            data: {
-                voteable_id: Number(id),
-                voteable_type : type as image_type,
-                upvote: 1,
-                downvote: 0,
+const hadVoted = (voted: boolean, vote_type: vote_type, user_vote_id: number, user_id: number) => {
+    if(voted) {
+        return {
+                [vote_type ? 'upvote' : 'downvote']: { decrement: 1 },
                 user_votes: {
-                    create: {
-                        vote_type: 'upvote',
-                        user_id: Number(user_id)
+                    delete: {
+                        user_vote_id
                     }
                 }
             }
-        })
-    } else {
-        await prisma.votes.update({
-            where: {
-                vote_id: vote.vote_id,
-            },
-            data: {
-                upvote: {
-                    increment: 1
-                },
-                user_votes: {
-                    create: {
-                        vote_type: 'upvote',
-                        user_id: Number(user_id)
-                    }
-                }
-            }
-        })
     }
+    
+    return {
+        [vote_type ? 'upvote' : 'downvote']: { increment: 1 },
+        user_votes: {
+            create: {
+                vote_type,
+                user_id: Number(user_id)
+            }
+        }
+    }
+}
 
-    return { success: true };
-};
 
-export const downvote = async (
-    { id, type, user_id }: VoteInput
+export const vote = async (
+    { id, type, user_id, vote_type }: VoteInput
 ): Promise<{success: boolean}> => {
+    const userId = Number(user_id)
+
     const vote = await prisma.votes.findFirst({
         where: {
             voteable_id: Number(id),
             voteable_type : type as image_type,
+        },
+        include: {
             user_votes: {
-                some: {
-                    user_id: Number(user_id)
+                where: {
+                    user_id: userId,
+                    votes : {
+                        voteable_id: Number(id),
+                        voteable_type : type as image_type,
+                    }
                 }
             }
-        },
+        }
     });
 
     if(!vote) {
@@ -75,32 +62,26 @@ export const downvote = async (
             data: {
                 voteable_id: Number(id),
                 voteable_type : type as image_type,
-                downvote: 1,
-                upvote: 0,
+                upvote: vote_type === 'upvote' ? 1 : 0,
+                downvote: vote_type === 'downvote' ? 1 : 0,
                 user_votes: {
                     create: {
-                        vote_type: 'downvote',
-                        user_id: Number(user_id)
+                        vote_type,
+                        user_id: userId
                     }
                 }
             }
         })
     } else {
+        const user_vote_id =  vote?.user_votes[0]?.user_vote_id
+        const voted = Boolean(vote?.user_votes.length && user_vote_id)
+        const didVote = hadVoted(voted, vote_type, user_vote_id, userId) 
+            
         await prisma.votes.update({
             where: {
-                vote_id: vote.vote_id      
+                vote_id: vote.vote_id,
             },
-            data: {
-                downvote: {
-                    increment: 1
-                },
-                user_votes: {
-                    create: {
-                        vote_type: 'downvote',
-                        user_id: Number(user_id)
-                    }
-                }
-            }
+            data: didVote
         })
     }
 

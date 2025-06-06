@@ -7,11 +7,8 @@
 </script>
 
 <div class="flex flex-row gap-4">
-    <form method="POST" action="?/upvote" use:enhance>
+    <form class="flex" method="POST" action="?/vote" use:enhance>
         <UpvoteButton count={votes?.upvote}/>
-        <input name="post_id" class="hidden" value={post_id}>
-    </form>
-    <form  method="POST" action="?/downvote" use:enhance>
         <DownvoteButton />
         <input name="post_id" class="hidden" value={post_id}>
     </form>
