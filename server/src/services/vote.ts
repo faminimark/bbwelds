@@ -13,13 +13,13 @@ type VoteInput = {
 const hadVoted = (voted: boolean, vote_type: vote_type, user_vote_id: number, user_id: number) => {
     if(voted) {
         return {
-                [vote_type ? 'upvote' : 'downvote']: { decrement: 1 },
-                user_votes: {
-                    delete: {
-                        user_vote_id
-                    }
+            [vote_type ? 'upvote' : 'downvote']: { decrement: 1 },
+            user_votes: {
+                delete: {
+                    user_vote_id
                 }
             }
+        }
     }
     
     return {
@@ -75,13 +75,13 @@ export const vote = async (
     } else {
         const user_vote_id =  vote?.user_votes[0]?.user_vote_id
         const voted = Boolean(vote?.user_votes.length && user_vote_id)
-        const didVote = hadVoted(voted, vote_type, user_vote_id, userId) 
+        const data = hadVoted(voted, vote_type, user_vote_id, userId) 
             
         await prisma.votes.update({
             where: {
                 vote_id: vote.vote_id,
             },
-            data: didVote
+            data
         })
     }
 
