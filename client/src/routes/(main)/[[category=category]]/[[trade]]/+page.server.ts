@@ -28,5 +28,8 @@ export const actions = {
 			}
 		});
 
+		const result = await response.json()
+		return result
+
 	}
 } satisfies Actions

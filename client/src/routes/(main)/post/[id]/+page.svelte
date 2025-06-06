@@ -26,12 +26,11 @@
                     </div>
                 {/each}
             </Carousel>
-            
         </div>
         <desc>{ description }</desc>
         <div class="flex flex-row">
             <form  class="flex flex-row" method="POST" action="?/vote" use:enhance>
-                <UpvoteButton count={votes?.upvote}/>
+                <UpvoteButton count={votes?.upvote} />
                 <DownvoteButton  />
             </form>
             <ShareButton />

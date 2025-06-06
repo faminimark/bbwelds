@@ -1,12 +1,14 @@
 import { Hono } from 'hono'
 import { getFeed } from '../services/feed'
+import {
+  getCookie
+} from 'hono/cookie'
 
 const feed = new Hono()
 
-
-// TODO: Create feed client
 feed.get('/', async(c) => {
-    const data = await getFeed();
+    const userid = Number(getCookie(c, 'user_id')) ?? undefined
+    const data = await getFeed(userid);
     return c.json({success: data ? true : false, data});
 })
 

@@ -12,7 +12,7 @@ interface PostWithImages extends Posts {
 // Maybe a data dump from GA/GTM, then put it in the db... or just raw data that goes inside the DB so it can be mapped
 // Which is probably the only way without paying for GA service
 
-export const getFeed = async (): Promise<PostWithImages[]> => {
+export const getFeed = async (user_id: number | undefined): Promise<PostWithImages[]> => {
     // const cachedFeed = await redis.get(`feed`) ?? null
     // if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)
 
@@ -42,6 +42,14 @@ export const getFeed = async (): Promise<PostWithImages[]> => {
           }
         }
       })
+        
+      const include = user_id ? {
+          user_votes: {
+            where: {
+              user_id
+            }
+          }
+        }: {}
 
       const votes = await tx.votes.findMany({
         where: {
@@ -51,16 +59,19 @@ export const getFeed = async (): Promise<PostWithImages[]> => {
           }
         },
         omit: {
-          vote_id: true,
           voteable_type: true
-        }
+        },
+        include
       })
 
       const mappedImageToPost = posts.flatMap((post) => {
-         const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
-         const mappedVotes = votes.find((vote) => vote.voteable_id === post.post_id)
+        const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
+        const mappedVotes = votes.find((vote) => vote.voteable_id === post.post_id)
+        const hasVoted = mappedVotes?.user_votes?.find((vote) => {
+          return vote.user_id === user_id;
+        })
 
-         return {...post , images, votes: mappedVotes}
+        return {...post , images, votes: {...mappedVotes, hasVoted}}
       })
 
       // await redis.set(`feed`, 360, JSON.stringify(mappedImageToPost));
