@@ -3,11 +3,13 @@
     import BackButton from '$lib/components/BackButton.svelte'
     import AddComment from '$lib/components/Comments/Add.svelte'
     import { DownvoteButton, UpvoteButton, ShareButton } from '$lib/components/Buttons'
-  import Carousel from '$lib/components/Carousel.svelte';
-  import { enhance } from '$app/forms';
+    import Carousel from '$lib/components/Carousel.svelte';
+    import { enhance } from '$app/forms';
+    import { didCurrentUserVote } from '$lib/utils/index.js';
 
     let { data } = $props()
     let { title, description, created_at, users, images, votes } = data.data;
+    const { liked, disliked } = didCurrentUserVote(votes?.user_votes?.[0]?.vote_type)
 
     const date = new Date(created_at)
     const localizedDateString = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
@@ -30,8 +32,8 @@
         <desc>{ description }</desc>
         <div class="flex flex-row">
             <form  class="flex flex-row" method="POST" action="?/vote" use:enhance>
-                <UpvoteButton count={votes?.upvote} />
-                <DownvoteButton  />
+                <UpvoteButton count={votes?.upvote} liked={liked} />
+                <DownvoteButton  disliked={disliked}/>
             </form>
             <ShareButton />
         </div>

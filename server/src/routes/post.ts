@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { getPost, createPost } from '../services/post'
+import { getCookie } from 'hono/cookie'
 
 const post = new Hono()
 
@@ -16,8 +17,8 @@ post.put('/:id', (c) => {
 })
 
 post.get('/:id', async (c) => {
-    // get specific post
-    const post = await getPost({post_id: c.req.param('id')});
+    const userid = Number(getCookie(c, 'user_id')) ?? undefined
+    const post = await getPost({post_id: c.req.param('id'), user_id: userid});
     return c.json({ success: true, data: post });
 })
 

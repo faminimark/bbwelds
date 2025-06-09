@@ -24,7 +24,8 @@ const bucket = storage.bucket(bucketName)
 const bucketPath = controlClient.bucketPath('_', bucketName);
 
 type GetPostInput = {
-    post_id: string
+    post_id: string;
+    user_id: number;
 }
 
 type CreatePostInput = {
@@ -32,11 +33,11 @@ type CreatePostInput = {
 }
 
 export const getPost = async (
-    query?: GetPostInput
+    {post_id, user_id}: GetPostInput
 ): Promise<PostWithImages> => {
     const post: Posts | null = await prisma.posts.findUnique({
         where: {
-            post_id: Number(query?.post_id)
+            post_id: Number(post_id)
         },
         include: {
             users: {
@@ -52,20 +53,29 @@ export const getPost = async (
 
     const image_url: Images[] = await prisma.image_urls.findMany({
        where: {
-        imageable_id: Number(query?.post_id),
+        imageable_id: Number(post_id),
         image_type: 'post'
        }
     });
 
+    const include = user_id ? {
+        user_votes: {
+        where: {
+            user_id
+        }
+        }
+    }: {}
+
     const votes = await prisma.votes.findFirst({
         where: {
           voteable_type: 'post',
-          voteable_id: Number(query?.post_id)
+          voteable_id: Number(post_id)
         },
         omit: {
           vote_id: true,
           voteable_type: true
-        }
+        },
+        include
     })
 
     if(!post) throw new HTTPException(404, { message: 'Post not found'})

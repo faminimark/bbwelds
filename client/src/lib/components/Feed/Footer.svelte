@@ -2,9 +2,10 @@
     import { MessageSquare } from 'lucide-svelte'
     import { DownvoteButton, UpvoteButton } from '$lib/components/Buttons'
     import { enhance } from '$app/forms';
+    import { didCurrentUserVote } from '$lib/utils';
     let { post_id, votes = undefined } = $props();
-    const  liked = votes?.user_votes?.[0]?.vote_type === 'upvote'
-    const disliked = votes?.user_votes?.[0]?.vote_type === 'downvote'
+    const { liked, disliked } = didCurrentUserVote(votes?.user_votes?.[0]?.vote_type)
+
 </script>
 
 <div class="flex flex-row gap-4">
