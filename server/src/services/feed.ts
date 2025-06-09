@@ -38,17 +38,9 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
           created_at: 'desc'
         }
       })
-      const post_ids = posts.map((post) => post.post_id)
 
-      const image_urls = await tx.image_urls.findMany({
-        where: {
-          image_type: 'post',
-          imageable_id: {
-            in: post_ids
-          }
-        }
-      })
-        
+      //Other query variables
+      const post_ids = posts.map((post) => post.post_id)
       const include = user_id ? {
           user_votes: {
             where: {
@@ -57,18 +49,28 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
           }
         }: {}
 
-      const votes = await tx.votes.findMany({
-        where: {
-          voteable_type: 'post',
-          voteable_id: {
-            in: post_ids
-          }
-        },
-        omit: {
-          voteable_type: true
-        },
-        include
-      })
+      const [image_urls, votes] = await Promise.all([
+        tx.image_urls.findMany({
+            where: {
+              image_type: 'post',
+              imageable_id: {
+                in: post_ids
+              }
+            }
+          }),
+        tx.votes.findMany({
+          where: {
+            voteable_type: 'post',
+            voteable_id: {
+              in: post_ids
+            }
+          },
+          omit: {
+            voteable_type: true
+          },
+          include
+        })
+      ])
 
       const mappedImageToPost = posts.flatMap((post) => {
         const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
