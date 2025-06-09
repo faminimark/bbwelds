@@ -27,6 +27,11 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
                 location_id: true,
                 profile_description: true,
             }
+          },
+          _count: {
+            select: {
+              comments: true
+            }
           }
         },
         orderBy: {
@@ -34,6 +39,7 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
         }
       })
       const post_ids = posts.map((post) => post.post_id)
+
       const image_urls = await tx.image_urls.findMany({
         where: {
           image_type: 'post',
