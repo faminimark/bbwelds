@@ -12,8 +12,9 @@ export const getCategories = async (): Promise<Categories[]> => {
     const categories: Categories[] = []
 
     for(let category in category_types){
+        const displayValue = category.replace('_', ' ')
         categories.push({
-            displayValue: category, //Only saving because I haven't decided yet if I want "category_types" to have an underscore instead of spaces, it will need a small logic to replace _ to spaces
+            displayValue, 
             value: category as category_types
         })
     }
