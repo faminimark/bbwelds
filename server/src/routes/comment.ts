@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { addComment } from '../services/comment';
 
 const comment = new Hono()
 
@@ -7,9 +8,10 @@ comment.get('/', (c) => {
     return c.json({success: true, data: []});
 })
 
-comment.post('/create', (c) => {
-    
-    return c.json({ success: true });
+comment.post('/', async(c) => {
+    const body = await c.req.json()
+    const data = await addComment(body);
+    return c.json({ success: true, data });
 })
 
 comment.put('/update', (c) => {
