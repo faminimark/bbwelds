@@ -83,6 +83,7 @@ model users {
   comments            comments[]
   contacts            contacts[]
   credentials         credentials[]
+  gallery             gallery[]
   posts               posts[]
   user_votes          user_votes[]
   companies           companies?    @relation(fields: [company_id], references: [company_id], onDelete: NoAction, onUpdate: NoAction)
@@ -145,6 +146,14 @@ model user_votes {
   user_id      Int
   users        users     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   votes        votes     @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model gallery {
+  gallery_id  String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description String
+  user_id     Int
+  title       String @db.VarChar(100)
+  users       users  @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum contact_enum {
