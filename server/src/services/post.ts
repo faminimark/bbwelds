@@ -28,7 +28,7 @@ type GetPostInput = {
     user_id: number;
 }
 
-type CreatePostInput = {
+type CreatePostOutput = {
     //TODO
 }
 
@@ -46,6 +46,16 @@ export const getPost = async (
                     created_at: true,
                     location_id: true,
                     profile_description: true,
+                }
+            },
+            comments: {
+                include: {
+                    users: true
+                },
+                omit: {
+                    comment_id: true,
+                    vote_id: true,
+                    post_id: true,
                 }
             }
         }

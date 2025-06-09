@@ -9,14 +9,16 @@ datasource db {
 }
 
 model comments {
-  comment_id Int     @id @default(autoincrement())
-  user_id    Int?
-  comment    String? @db.VarChar(250)
-  post_id    Int?
-  vote_id    Int?
-  posts      posts?  @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
-  users      users?  @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  votes      votes?  @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
+  comment_id   Int          @id @default(autoincrement())
+  user_id      Int?
+  comment      String?      @db.VarChar(250)
+  post_id      Int?
+  vote_id      Int?
+  comment_type comment_type
+  created_at   DateTime     @default(now()) @db.Timestamp(6)
+  posts        posts?       @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+  users        users?       @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  votes        votes?       @relation(fields: [vote_id], references: [vote_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model companies {
@@ -177,4 +179,10 @@ enum image_type {
 enum vote_type {
   upvote
   downvote
+}
+
+enum comment_type {
+  post
+  comment
+  reply
 }

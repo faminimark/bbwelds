@@ -8,7 +8,7 @@
     import { didCurrentUserVote } from '$lib/utils/index.js';
 
     let { data } = $props()
-    let { title, description, created_at, users, images, votes } = data.data;
+    let { title, description, created_at, users, images, votes, comments } = data.data;
     const { liked, disliked } = didCurrentUserVote(votes?.user_votes?.[0]?.vote_type)
 
     const date = new Date(created_at)
@@ -44,5 +44,13 @@
             <hr/>
         </div>
         <AddComment />
+        <div>
+            {#each comments as comment}
+            <div class="p-2">
+                <Link user_id={comment.users.user_id} created_at={comment.created_at} name={comment.users.fullname} img_src={''}/>
+                <p class="pl-8 text-md">{comment.comment}</p>
+            </div>
+            {/each}
+        </div>
     </aside>
 </div>
