@@ -91,9 +91,10 @@ model users {
 model votes {
   upvote        Int?
   downvote      Int?
-  voteable_id   String      @db.Uuid
+  voteable_id   String       @db.Uuid
   voteable_type image_type?
-  vote_id       String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vote_id       String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_votes    user_votes[]
 }
 
 model auth {
@@ -137,10 +138,11 @@ model image_urls {
 
 model user_votes {
   vote_type    vote_type
-  vote_id      String
+  vote_id      String    @db.Uuid
   user_id      String    @db.Uuid
   user_vote_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   users        users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_uv_user_id")
+  votes        votes     @relation(fields: [vote_id], references: [vote_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_uv_vote_id")
 }
 
 model gallery {

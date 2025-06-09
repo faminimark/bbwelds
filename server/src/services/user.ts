@@ -80,7 +80,7 @@ export const getUser = async (
 
     const user = await prisma.users.findUnique({
         where: {
-            user_id: Number(query?.user_id),
+            user_id: query?.user_id,
         },
         include: {
             locations: true,

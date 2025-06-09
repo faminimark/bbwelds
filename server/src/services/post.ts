@@ -25,7 +25,7 @@ const bucketPath = controlClient.bucketPath('_', bucketName);
 
 type GetPostInput = {
     post_id: string;
-    user_id: number;
+    user_id: string;
 }
 
 type CreatePostOutput = {
@@ -37,7 +37,7 @@ export const getPost = async (
 ): Promise<PostWithImages> => {
     const post: Posts | null = await prisma.posts.findUnique({
         where: {
-            post_id: Number(post_id)
+            post_id: post_id
         },
         include: {
             users: {
@@ -54,7 +54,6 @@ export const getPost = async (
                 },
                 omit: {
                     comment_id: true,
-                    vote_id: true,
                     post_id: true,
                 }
             }
@@ -63,7 +62,7 @@ export const getPost = async (
 
     const image_url: Images[] = await prisma.image_urls.findMany({
        where: {
-        imageable_id: Number(post_id),
+        imageable_id: post_id,
         image_type: 'post'
        }
     });
@@ -79,7 +78,7 @@ export const getPost = async (
     const votes = await prisma.votes.findFirst({
         where: {
           voteable_type: 'post',
-          voteable_id: Number(post_id)
+          voteable_id: post_id
         },
         omit: {
           vote_id: true,
@@ -123,7 +122,7 @@ export const createPost = async (
             data: {
                 category,
                 title,
-                user_id: Number(user_id),
+                user_id: user_id,
                 description,
                 // post_tags: {
                 //     createMany: {

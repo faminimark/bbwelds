@@ -12,7 +12,7 @@ interface PostWithImages extends Posts {
 // Maybe a data dump from GA/GTM, then put it in the db... or just raw data that goes inside the DB so it can be mapped
 // Which is probably the only way without paying for GA service
 
-export const getFeed = async (user_id: number | undefined): Promise<PostWithImages[]> => {
+export const getFeed = async (user_id: string | undefined): Promise<Posts[]> => {
     // const cachedFeed = await redis.get(`feed`) ?? null
     // if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)
 
@@ -38,6 +38,8 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
           created_at: 'desc'
         }
       })
+
+      if(!posts.length) return [];
 
       //Other query variables
       const post_ids = posts.map((post) => post.post_id)

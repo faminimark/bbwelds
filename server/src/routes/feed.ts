@@ -7,7 +7,7 @@ import {
 const feed = new Hono()
 
 feed.get('/', async(c) => {
-    const userid = Number(getCookie(c, 'user_id')) ?? undefined
+    const userid = getCookie(c, 'user_id') ?? undefined
     const data = await getFeed(userid);
     return c.json({success: data ? true : false, data});
 })
