@@ -21,10 +21,10 @@
                 <a href="/login">Login</a>
             {:else}
                 <a href="/profile/{user_id}">Profile</a>
+                <a href="/post" class="px-[9px] py-[5px] cursor-pointer rounded-sm bg-blue-500 text-white font-semibold flex gap-2 items-center">
+                    <PencilIcon class="h-4 w-4"/> Post
+                </a>
             {/if}
-            <a href="/post" class="px-[9px] py-[5px] cursor-pointer rounded-sm bg-blue-500 text-white font-semibold flex gap-2 items-center">
-                <PencilIcon class="h-4 w-4"/> Post
-            </a>
         </div>
     </div>
 </div>
