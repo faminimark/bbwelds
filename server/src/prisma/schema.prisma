@@ -9,12 +9,12 @@ datasource db {
 }
 
 model comments {
-  user_id      String       @db.Uuid
   comment      String?      @db.VarChar(250)
-  post_id      String?      @db.Uuid
   comment_type comment_type
   created_at   DateTime     @default(now()) @db.Timestamp(6)
   comment_id   String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String       @db.Uuid
+  post_id      String?      @db.Uuid
   posts        posts?       @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_comments_post_id")
   users        users        @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_comments_user_id")
 }
@@ -43,29 +43,21 @@ model locations {
 }
 
 model post_tags {
-  post_id      String? @db.Uuid
-  tag_id       Int?
-  post_tags_id String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  posts        posts?  @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pt_post_id")
-  tags         tags?   @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, onUpdate: NoAction)
+  post_tag_id String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  post_id     String?        @db.Uuid
+  tag         category_types
+  posts       posts?         @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pt_post_id")
 }
 
 model posts {
-  title       String?         @db.VarChar(50)
+  title       String?     @db.VarChar(50)
   description String?
-  created_at  DateTime        @default(now()) @db.Timestamp(6)
-  user_id     String          @db.Uuid
-  category    category_types?
-  post_id     String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at  DateTime    @default(now()) @db.Timestamp(6)
+  post_id     String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id     String      @db.Uuid
   comments    comments[]
   post_tags   post_tags[]
-  users       users           @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_posts_user_id")
-}
-
-model tags {
-  tag_id    Int         @id @default(autoincrement())
-  name      String?     @db.VarChar(50)
-  post_tags post_tags[]
+  users       users       @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_posts_user_id")
 }
 
 model users {
@@ -91,18 +83,18 @@ model users {
 model votes {
   upvote        Int?
   downvote      Int?
-  voteable_id   String       @db.Uuid
   voteable_type image_type?
   vote_id       String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  voteable_id   String       @db.Uuid
   user_votes    user_votes[]
 }
 
 model auth {
-  user_id    String    @db.Uuid
   password   String    @db.VarChar(255)
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   last_login DateTime? @db.Timestamptz(6)
   auth_id    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String    @db.Uuid
   users      users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_auth_user_id")
 
   @@index([user_id], map: "idx_auth_user_id")
@@ -114,17 +106,17 @@ model credentials {
   description   String?
   created_at    DateTime?             @default(now()) @db.Timestamptz(6)
   updated_at    DateTime?             @default(now()) @db.Timestamptz(6)
-  user_id       String?               @db.Uuid
   type          credential_type_enum?
+  user_id       String?               @db.Uuid
   users         users?                @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_credentials_user_id")
 }
 
 model contacts {
   contact_id   String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id      String        @db.Uuid
   contact_type contact_enum? @default(email)
   created_at   DateTime?     @default(now()) @db.Timestamptz(6)
   value        String?       @unique(map: "unique_contact_value") @db.VarChar(255)
+  user_id      String        @db.Uuid
   users        users         @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_contacts_user_id")
 }
 
@@ -132,15 +124,15 @@ model image_urls {
   image_url    String       @db.VarChar(500)
   status       status_enum? @default(active)
   image_type   image_type
-  imageable_id String       @db.Uuid
   image_id     String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  imageable_id String       @db.Uuid
 }
 
 model user_votes {
   vote_type    vote_type
+  user_vote_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   vote_id      String    @db.Uuid
   user_id      String    @db.Uuid
-  user_vote_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   users        users     @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_uv_user_id")
   votes        votes     @relation(fields: [vote_id], references: [vote_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_uv_vote_id")
 }

@@ -96,10 +96,10 @@ export const createPost = async (
     formData: FormData //fix this type after formData
 ): Promise<any> => {
     const files = formData.getAll('files')
-    const category = formData.get('category') as category_types
+    const category = formData.get('category') as string
+    const categories = category?.split(',') as category_types[]
     const title = formData.get('title') as string
     const description = formData.get('description') as string
-    const tag = formData.get('tag') as string
 
     const user_id = formData.get('user_id') as string; //Build context for these
     const USER_FOLDER = `gallery-${user_id}`
@@ -120,15 +120,14 @@ export const createPost = async (
     try {
         const post = await prisma.posts.create({
             data: {
-                category,
                 title,
                 user_id: user_id,
                 description,
-                // post_tags: {
-                //     createMany: {
-                //         data: tag // TODO fix client to do this with a comma
-                //     }
-                // }
+                post_tags: {
+                    createMany: {
+                        data: [...categories.map((category)=> ({ tag: category}))]
+                    }
+                }
             }
         })
 

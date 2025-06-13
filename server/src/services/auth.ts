@@ -4,7 +4,7 @@ import { sign } from 'hono/jwt'
 
 const prisma = new PrismaClient();
 
-export const login = async (username: string, password: string): Promise<{verified: boolean, error: string | undefined, token: string | undefined, user_id: number | undefined }  > =>  {
+export const login = async (username: string, password: string): Promise<{verified: boolean, error: string | undefined, token: string | undefined, user_id: string | undefined }  > =>  {
     const user: User | null = await prisma.contacts.findUnique({
         where: {
             contact_type: 'email',
