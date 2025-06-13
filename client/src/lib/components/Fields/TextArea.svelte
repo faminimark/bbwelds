@@ -6,7 +6,7 @@
     }
 </script>
 
-<label for={name} class="min-w-[280px] flex border-1 border-gray-300 rounded-md relative">
+<label for={name} class="min-w-[280px] flex border-1 border-gray-300 rounded-md relative bg-white">
     <textarea id={name} name={name} placeholder={placeholder} class="w-full p-4" rows="2" maxlength={max} use:focus></textarea>
     
     {#if max}

@@ -19,7 +19,7 @@
         <Feed {...rest} votes={votes} images={images}/>
       </Card>
     {:else}
-      <p class="text-center p-10 text-3xl">Your feed seems to be empty</p>
+      <p class="text-center p-10 text-3xl">Your feed seems to be empty, be the first bard to <a href="/post" class="text-blue-600">share your build story!</a></p>
     {/each}
   </div>
 

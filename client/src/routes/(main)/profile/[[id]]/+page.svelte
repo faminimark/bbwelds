@@ -70,9 +70,9 @@
             </div>
         </Card>
     </div>
-    <div>
-        <div class="flex justify-between">
-            <h2  class="text-2xl">Gallery</h2>
+    <div class="flex flex-col">
+        <div class="flex flex-row justify-between">
+            <h2  class="text-2xl">Portfolio</h2>
             {#if isLoggedIn}
             <div class="flex gap-4">
                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
@@ -85,11 +85,6 @@
             {/if}
         </div>
         <hr />
-        gallery or masonry?
-    </div>
-    <div class="flex flex-col">
-        <h2  class="text-2xl">Posts</h2>
-        <hr />
         {#if user.posts.length}
             <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
                 {#each user.posts as { images, votes, ...rest }}
@@ -98,9 +93,10 @@
                     </Card>
                 {/each}
             </div>
+            
         {:else}
             <div class="text-center w-full py-5 text-lg">
-                {user.f_name} is still working on his posts
+                {user.f_name} is still working on his Portfolio!
             </div>
         {/if}
     </div>

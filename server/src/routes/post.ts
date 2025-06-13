@@ -4,7 +4,6 @@ import { getCookie } from 'hono/cookie'
 
 const post = new Hono()
 
-// TODO: Create post client
 post.post('/create', async (c) => {
     const formData = await c.req.formData()
     const response =  await createPost(formData)
