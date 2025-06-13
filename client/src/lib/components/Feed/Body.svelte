@@ -7,7 +7,7 @@
     <Carousel image_count={images.length} >
         {#each images as image}
             <a href="/post/{post_id}" class="embla__slide w-full flex shrink-0 grow-0 basis-full">
-                <img aria-label="feed" alt="feed" src={image.image_url}  />
+                <img aria-label="feed" alt="feed" src={image.image_url} class="w-full h-full object-cover aspect-auto" />
             </a>
         {/each}
     </Carousel>

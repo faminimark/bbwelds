@@ -24,7 +24,7 @@
             <Carousel image_count={images.length}>
                 {#each images as image}
                     <div class="embla__slide w-full flex shrink-0 grow-0 basis-full align-middle justify-center">
-                        <img aria-label="feed" alt="feed" src={image.image_url}  />
+                        <img aria-label="feed" alt="feed" src={image.image_url} class="w-full h-full object-cover aspect-auto" />
                     </div>
                 {/each}
             </Carousel>

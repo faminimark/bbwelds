@@ -2,7 +2,6 @@
   import Card from '$lib/components/Card.svelte'
   import Feed from '$lib/components/Feed/index.svelte'
   import Category from '$lib/components/Category.svelte'
-  import { goto } from '$app/navigation';
   let { data } = $props();
   const feeds = data.data;
   let tab = $state('featured')
