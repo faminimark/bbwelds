@@ -9,15 +9,15 @@
     import { redirect } from '@sveltejs/kit';
     import { generateFromString } from 'generate-avatar';
     const { data } = $props()
-    let isLoggedIn = data.isLoggedIn
-    let user = data.data
+    const isLoggedIn = data.isLoggedIn
+    const user = data.data
 
     if(!user) throw redirect(302, `/`);
 
-    let location = user?.locations
-    let contacts = user?.contacts
-console.log(user)
-    const imageURL = Boolean(false) ? user.fullname :  `data:image/svg+xml;utf8,${generateFromString(user.user_id)}`
+    const location = user?.locations
+    const contacts = user?.contacts
+    const avatar = user.profile_image.image_url
+    const imageURL = Boolean(avatar) ? avatar :  `data:image/svg+xml;utf8,${generateFromString(user.user_id)}`
     
 </script>
 

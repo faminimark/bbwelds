@@ -4,7 +4,6 @@
   import Category from '$lib/components/Category.svelte'
   let { data } = $props();
   const feeds = data.data;
-  let tab = $state('featured')
 </script>
 
 <div class="grid grid-cols-6 max-lg:grid-cols-1 min-sm:gap-4">

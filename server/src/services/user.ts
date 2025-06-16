@@ -115,13 +115,15 @@ export const getUser = async (
                 },
             },
         }), 
-        prisma.image_urls.findMany({
+        prisma.image_urls.findFirst({
             where: {
                 image_type: 'user',
                 imageable_id: user_id
             },
+            select: {
+                image_url: true
+            }
         }), 
-        
         prisma.votes.findMany({
             where: {
                 voteable_type: 'post',
@@ -146,6 +148,6 @@ export const getUser = async (
 
     await redis.set(`user:${user_id}`, 3600, JSON.stringify({...user, posts: userWithPosts}));
 
-    return {...user, posts: userWithPosts};
+    return {...user, profile_image, posts: userWithPosts};
     
 };

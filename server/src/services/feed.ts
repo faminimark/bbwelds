@@ -43,6 +43,7 @@ export const getFeed = async (user_id: string | undefined): Promise<Posts[]> => 
 
       //Other query variables
       const post_ids = posts.map((post) => post.post_id)
+      const user_ids = posts.map((post) => post.user_id)
       const include = user_id ? {
           user_votes: {
             where: {
@@ -51,15 +52,27 @@ export const getFeed = async (user_id: string | undefined): Promise<Posts[]> => 
           }
         }: {}
 
-      const [image_urls, votes] = await Promise.all([
+      const [image_urls, profile_images, votes] = await Promise.all([
         tx.image_urls.findMany({
-            where: {
-              image_type: 'post',
-              imageable_id: {
-                in: post_ids
-              }
+          where: {
+            image_type: 'post',
+            imageable_id: {
+              in: post_ids
             }
-          }),
+          }
+        }),
+        tx.image_urls.findMany({
+          where: {
+            image_type: 'user',
+            imageable_id: {
+              in: user_ids
+            }
+          },
+          select: {
+            image_url: true,
+            imageable_id: true
+          }
+        }),
         tx.votes.findMany({
           where: {
             voteable_type: 'post',
@@ -76,12 +89,14 @@ export const getFeed = async (user_id: string | undefined): Promise<Posts[]> => 
 
       const mappedImageToPost = posts.flatMap((post) => {
         const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
+        const profile_image = profile_images.find(({imageable_id}) => imageable_id === post.user_id)?.image_url
+        
         const mappedVotes = votes.find((vote) => vote.voteable_id === post.post_id)
         const hasVoted = mappedVotes?.user_votes?.find((vote) => {
           return vote.user_id === user_id;
         })
 
-        return {...post , images, votes: {...mappedVotes, hasVoted}}
+        return {...post , images, profile_image, votes: {...mappedVotes, hasVoted}}
       })
 
       // await redis.set(`feed`, 360, JSON.stringify(mappedImageToPost));
