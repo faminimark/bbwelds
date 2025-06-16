@@ -14,7 +14,7 @@
     <Category categories={data.categories}/>
     {#each feeds as { images, votes, ...rest }}
       <Card>
-        <Feed {...rest} votes={votes} images={images}/>
+        <Feed {...rest} {votes} {images}/>
       </Card>
     {:else}
       <p class="text-center p-10 text-3xl">Your feed seems to be empty, be the first bard to <a href="/post" class="text-blue-600">share your build story!</a></p>
