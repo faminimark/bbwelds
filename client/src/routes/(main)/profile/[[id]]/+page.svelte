@@ -7,6 +7,7 @@
 
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
     import { redirect } from '@sveltejs/kit';
+    import { generateFromString } from 'generate-avatar';
     const { data } = $props()
     let isLoggedIn = data.isLoggedIn
     let user = data.data
@@ -15,6 +16,9 @@
 
     let location = user?.locations
     let contacts = user?.contacts
+console.log(user)
+    const imageURL = Boolean(false) ? user.fullname :  `data:image/svg+xml;utf8,${generateFromString(user.user_id)}`
+    
 </script>
 
 
@@ -27,7 +31,7 @@
                     <h2 class="text-2xl font-semibold text-gray-700">{ user.fullname }</h2>
                     <div class="flex flex-col gap-3">
                         <div class="max-h-[450px] max-w-[400px] bg-gray-300">
-                            <img aria-label="profile pic" alt="profile pic" src="https://picsum.photos/400"/>
+                            <img aria-label="profile pic" alt="profile pic" src="{imageURL}"/>
                         </div>
                         <!-- If user then edit profile otherwise send message -->
                         {#if isLoggedIn}

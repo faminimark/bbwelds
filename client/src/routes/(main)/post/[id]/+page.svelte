@@ -19,7 +19,7 @@
     <div class=" flex flex-col justify-center gap-4">
         <BackButton />
         <header class="text-3xl font-semibold">{title}</header>
-        <Link user_id={users.user_id} created_at={localizedDateString} name={users.fullname} img_src={'TODO'}/>
+        <Link user_id={users.user_id} created_at={localizedDateString} name={users.fullname} img_src={''}/>
         <div class="flex justify-center bg-gray-100 p-6">
             <Carousel image_count={images.length}>
                 {#each images as image}

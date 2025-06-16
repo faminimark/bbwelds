@@ -3,6 +3,6 @@
     import Avatar from './Avatar.svelte'
 </script>
 
-<div class="flex flex-row items-center">
-    <Avatar img_src={img_src}/> <a href="/profile/{ user_id }" class="text-[10px] text-gray-500">By { name } at { created_at }</a>
+<div class="flex flex-row items-center gap-2">
+    <Avatar img_src={img_src} user_id={user_id}/> <a href="/profile/{ user_id }" class="text-[10px] text-gray-500"> By { name } at { created_at }</a>
 </div>

@@ -68,9 +68,8 @@ export const createUser = async (
 
 
 export const getUser = async (
-    query?: any
+    { user_id }: {user_id: string }
 ): Promise<any> => {
-    const user_id = query?.user_id;
 
     if(!user_id) throw new HTTPException(404, { message: 'User not found'})
 
@@ -80,7 +79,7 @@ export const getUser = async (
 
     const user = await prisma.users.findUnique({
         where: {
-            user_id: query?.user_id,
+            user_id,
         },
         include: {
             locations: true,
@@ -101,32 +100,41 @@ export const getUser = async (
                     user_id: true,
                     user_vote_id: true,
                 }
-            }
+            },
+            
         }
     });
 
-    const image_urls = await prisma.image_urls.findMany({
-        where: {
-          image_type: 'post',
-          imageable_id: {
-            in: user?.posts.map(({post_id}) => post_id)
-          }
 
-        }
-    })
-
-    const votes = await prisma.votes.findMany({
-        where: {
-          voteable_type: 'post',
-          voteable_id: {
-            in: user?.posts.map(({post_id}) => post_id)
-          }
-        },
-        omit: {
-          vote_id: true,
-          voteable_type: true
-        }
-    })
+    const [image_urls, profile_image, votes ]  = await Promise.all([ 
+        prisma.image_urls.findMany({
+            where: {
+                image_type: 'post',
+                imageable_id: {
+                    in: user?.posts.map(({post_id}) => post_id)
+                },
+            },
+        }), 
+        prisma.image_urls.findMany({
+            where: {
+                image_type: 'user',
+                imageable_id: user_id
+            },
+        }), 
+        
+        prisma.votes.findMany({
+            where: {
+                voteable_type: 'post',
+                voteable_id: {
+                    in: user?.posts.map(({post_id}) => post_id)
+                }
+            },
+            omit: {
+                vote_id: true,
+                voteable_type: true
+            }
+        })
+    ]);
 
     const userWithPosts = user?.posts.flatMap((post) => {
         const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
