@@ -6,6 +6,7 @@ import { v2 } from '@google-cloud/storage-control'
 interface PostWithImages extends Posts {
   images: Images[]
   votes: Omit<Votes, 'vote_id' | 'voteable_type'> | null | undefined
+  profile_image: string
 }
 
 const prisma = new PrismaClient();
@@ -60,13 +61,6 @@ export const getPost = async (
         }
     });
 
-    const image_url: Images[] = await prisma.image_urls.findMany({
-       where: {
-        imageable_id: post_id,
-        image_type: 'post'
-       }
-    });
-
     const include = user_id ? {
         user_votes: {
         where: {
@@ -75,21 +69,38 @@ export const getPost = async (
         }
     }: {}
 
-    const votes = await prisma.votes.findFirst({
+    const [image_url, profile_image, votes] = await Promise.all([
+        prisma.image_urls.findMany({
         where: {
-          voteable_type: 'post',
-          voteable_id: post_id
-        },
-        omit: {
-          vote_id: true,
-          voteable_type: true
-        },
-        include
-    })
+            imageable_id: post_id,
+            image_type: 'post'
+        }
+        }),
+        prisma.image_urls.findFirst({
+            where: {
+            image_type: 'user',
+            imageable_id: post?.user_id
+            },
+        }),
+        prisma.votes.findFirst({
+            where: {
+            voteable_type: 'post',
+            voteable_id: post_id
+            },
+            omit: {
+            vote_id: true,
+            voteable_type: true
+            },
+            include
+        })
+    ])
+
+
+
 
     if(!post) throw new HTTPException(404, { message: 'Post not found'})
 
-    return {...post, images: image_url, votes: votes ?? undefined};
+    return {...post, images: image_url, profile_image: profile_image?.image_url ?? '', votes: votes ?? undefined};
 };
 
 export const createPost = async (
