@@ -38,9 +38,14 @@ export const getPost = async (
 ): Promise<PostWithImages> => {
     const post: Posts | null = await prisma.posts.findUnique({
         where: {
-            post_id: post_id
+            post_id
         },
         include: {
+            post_tags: {
+                select: {
+                    tag: true
+                }
+            },
             users: {
                 omit: {
                     company_id: true,
@@ -94,9 +99,6 @@ export const getPost = async (
             include
         })
     ])
-
-
-
 
     if(!post) throw new HTTPException(404, { message: 'Post not found'})
 

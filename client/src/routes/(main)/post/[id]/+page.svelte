@@ -8,7 +8,7 @@
     import { didCurrentUserVote } from '$lib/utils/index.js';
 
     let { data } = $props()
-    let { title, description, created_at, users, images, votes, comments, profile_image } = data.data;
+    let { title, description, created_at, users, images, votes, comments, profile_image, post_tags } = data.data;
     const { liked, disliked } = didCurrentUserVote(votes?.user_votes?.[0]?.vote_type)
 
     const date = new Date(created_at)
@@ -30,7 +30,11 @@
             </Carousel>
         </div>
         <desc>{ description }</desc>
-        
+        <div>
+            {#each post_tags as {tag}}
+                <a href="/category/{tag}" class="text-xs font-semibold text-gray-400 border-1 rounded-sm p-2 capitalize cursor-pointer">{tag}</a>
+            {/each}
+        </div>
         <div class="flex flex-row">
             <form  class="flex flex-row" method="POST" action="?/vote" use:enhance>
                 <UpvoteButton count={votes?.upvote} liked={liked} />
