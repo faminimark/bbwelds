@@ -12,7 +12,7 @@ interface PostWithImages extends Posts {
 // Maybe a data dump from GA/GTM, then put it in the db... or just raw data that goes inside the DB so it can be mapped
 // Which is probably the only way without paying for GA service
 
-export const getFeed = async (user_id: string | undefined): Promise<Posts[]> => {
+export const getFeed = async (user_id: string | undefined): Promise<PostWithImages[]> => {
     // const cachedFeed = await redis.get(`feed`) ?? null
     // if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)
 
@@ -20,6 +20,7 @@ export const getFeed = async (user_id: string | undefined): Promise<Posts[]> => 
       const posts: Posts[] = await tx.posts.findMany({
         relationLoadStrategy: 'join',
         include: {
+          post_tags: true,
           users: {
             omit: {
                 company_id: true,

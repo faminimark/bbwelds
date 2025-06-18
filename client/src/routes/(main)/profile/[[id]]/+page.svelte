@@ -16,7 +16,7 @@
 
     const location = user?.locations
     const contacts = user?.contacts
-    const avatar = user.profile_image.image_url
+    const avatar = user?.profile_image?.image_url
     const imageURL = Boolean(avatar) ? avatar :  `data:image/svg+xml;utf8,${generateFromString(user.user_id)}`
 </script>
 
