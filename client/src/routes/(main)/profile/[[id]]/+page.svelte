@@ -12,6 +12,7 @@
     import type { PostsByYear } from './types';
     import { redirect } from '@sveltejs/kit';
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
+    import { Centered } from '$lib/components/Dividers';
     
     const { data } = $props()
     const current_user = data?.user
@@ -99,14 +100,7 @@
                 <div class="flex flex-col gap-8">
                         {#each Object.entries(yearGroup) as [year, posts]}
                         <div class="flex flex-col gap-6">
-                            <div class="relative">
-                                <hr>
-                                <div class="absolute w-full top-[-18px] flex justify-center">
-                                    <div class="bg-[#f8f8f8] w-18 text-center self-center text-3xl">
-                                        {year}
-                                    </div>
-                                </div>
-                            </div>
+                            <Centered text={year}/>
                             <Masonry columns={{lg: 3, md: 2, sm: 1}} gap={14}>
                                 {#each posts as {images, post_id}}
                                     <Carousel image_count={images.length} >

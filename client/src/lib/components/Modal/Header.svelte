@@ -6,7 +6,7 @@
 
 <header>
     <div class="flex w-full justify-between">
-        <div class="text-center">{title}</div>
+        <div class="text-center font-semibold">{title}</div>
         <button class="cursor-pointer" onclick={() => modal.close()}><X/></button>
     </div>
 </header>
