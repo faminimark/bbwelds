@@ -1,6 +1,7 @@
 <script lang="ts">
     import {Text, TextArea} from '$lib/components/Fields'
     import {LeftAligned} from '$lib/components/Dividers'
+    import Certificate from './Certificate.svelte';
 </script>
 
 <form action="" method="POST" class="flex flex-col gap-4">
@@ -13,11 +14,15 @@
     <Text name="phone" placeholder={"Phone"} />
     <Text name="email" placeholder={"Email"} />
     <LeftAligned text="Location"/>
+    <div class="flex gap-3 max-sm:flex-col">
     <Text name="city" placeholder={"City"} />
     <Text name="state_region" placeholder={"State/Region"} />
+    </div>
+    <div class="flex gap-3 max-sm:flex-col">
     <Text name="zip_postal" placeholder={"Zip/Postal Code"} />
     <Text name="country" placeholder={"Country"} />
+    </div>
+    
     <LeftAligned text="Certificates"/>
-    <Text name="certificates" placeholder="Certificates"/>
-    <Text name="licences" placeholder="License #"/>
+    <Certificate />
 </form>

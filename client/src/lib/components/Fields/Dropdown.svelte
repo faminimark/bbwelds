@@ -2,7 +2,7 @@
 
     interface OptionProps {
         options: Option[];
-        select(value: string): void;
+        select?(value: string): void;
         placeholder: string;
         name: string;
     }
@@ -11,11 +11,11 @@
         placeholder, 
         name, 
         options,
-        select
+        select = undefined
     }: OptionProps = $props();
 
     const onChangeHandler = (e: Event) => {
-        select((e?.target as HTMLInputElement)?.value ?? '') 
+        if(select) select((e?.target as HTMLInputElement)?.value ?? '') 
     }
 </script>
 
