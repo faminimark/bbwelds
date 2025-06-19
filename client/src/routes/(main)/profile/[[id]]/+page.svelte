@@ -4,36 +4,22 @@
     import { ShareButton } from '$lib/components/Buttons'
     import BackButton from '$lib/components/BackButton.svelte'
     import Carousel from '$lib/components/Carousel.svelte'
-    import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
-    import { redirect } from '@sveltejs/kit';
+    import Edit from '$lib/components/Profile/Edit.svelte'
+    import Modal from '$lib/components/Modal/index'
     import Masonry from '$lib/components/Masonry.svelte'
+    
     import { generateFromString } from 'generate-avatar'
-
-    interface Image {
-    image_url: string;
-    status: string;
-    image_type: string;
-    image_id: string;
-    imageable_id: string;
-    }
-
-    interface Post {
-    title: string;
-    description: string;
-    created_at: string;
-    post_id: string;
-    user_id: string;
-    images: Image[];
-    }
-
-    type PostsByYear = Record<string, Post[]>[];
-
+    import type { PostsByYear } from './types';
+    import { redirect } from '@sveltejs/kit';
+    import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
+    
     const { data } = $props()
-    const isLoggedIn = data.isLoggedIn
+    const current_user = data?.user
     const user = data.data
     const posts: PostsByYear = user.posts;
     if(!user) throw redirect(302, `/`)
 
+    const isCurrentUser = Boolean(current_user && user.user_id === current_user?.user_id)
     const location = user?.locations
     const contacts = user?.contacts
     const avatar = user?.profile_image?.image_url
@@ -53,11 +39,11 @@
                             <img aria-label="profile pic" alt="profile pic" src="{imageURL}"/>
                         </div>
                         <!-- If user then edit profile otherwise send message -->
-                        {#if isLoggedIn}
+                        {#if isCurrentUser}
                             <div>
-                                <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md border-1 border-gray-700">
-                                    <PencilIcon class="w-[25px]"/> Edit Profile
-                                </button>
+                                <Modal label={'Edit Profile'} title={"Edit Profile"}>
+                                    <Edit />
+                                </Modal>
                             </div> 
                         {:else}
                             <div class="flex justify-between">
@@ -96,7 +82,7 @@
     <div class="flex flex-col gap-2">
         <div class="flex flex-row justify-between">
             <h2  class="text-2xl">Portfolio</h2>
-            {#if isLoggedIn}
+            {#if isCurrentUser}
             <div class="flex gap-4">
                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
                     <PencilIcon class="w-[20px]"/> <span class="max-sm:hidden">Edit Gallery</span>
