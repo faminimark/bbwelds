@@ -18,8 +18,6 @@
 <div class="flex flex-col gap-12">
     <div class=" flex flex-col justify-center gap-4">
         <BackButton />
-        <header class="text-3xl font-semibold">{title}</header>
-        <Link user_id={users.user_id} created_at={localizedDateString} name={users.fullname} img_src={profile_image}/>
         <div class="flex justify-center bg-gray-200 p-6">
             <Carousel image_count={images.length}>
                 {#each images as image}
@@ -29,8 +27,10 @@
                 {/each}
             </Carousel>
         </div>
+        <header class="text-3xl font-semibold">{title}</header>
+        <Link user_id={users.user_id} created_at={localizedDateString} name={users.fullname} img_src={profile_image}/>
         <desc>{ description }</desc>
-        <div>
+        <div class="flex gap-2">
             {#each post_tags as {tag}}
                 <a href="/category/{tag}" class="text-xs font-semibold text-gray-400 border-1 rounded-sm p-2 capitalize cursor-pointer">{tag}</a>
             {/each}

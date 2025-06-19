@@ -8,10 +8,30 @@
     import { redirect } from '@sveltejs/kit';
     import Masonry from '$lib/components/Masonry.svelte'
     import { generateFromString } from 'generate-avatar'
+
+    interface Image {
+    image_url: string;
+    status: string;
+    image_type: string;
+    image_id: string;
+    imageable_id: string;
+    }
+
+    interface Post {
+    title: string;
+    description: string;
+    created_at: string;
+    post_id: string;
+    user_id: string;
+    images: Image[];
+    }
+
+    type PostsByYear = Record<string, Post[]>[];
+
     const { data } = $props()
     const isLoggedIn = data.isLoggedIn
     const user = data.data
-    
+    const posts: PostsByYear = user.posts;
     if(!user) throw redirect(302, `/`)
 
     const location = user?.locations
@@ -87,20 +107,35 @@
             </div>
             {/if}
         </div>
-        <hr />
         <!-- Make the post here sorted by date -->
-        {#if user.posts.length}
-            <Masonry columns={{lg: 3, md: 2, sm: 1}} gap={14}>
-                {#each user.posts as { images, post_id }}
-                    <Carousel image_count={images.length} >
-                        {#each images as image}
-                            <a href="/post/{post_id}" class="embla__slide w-full flex shrink-0 grow-0 basis-full">
-                                <img aria-label="feed" alt="feed" src={image.image_url} class="w-full h-full object-cover aspect-auto" />
-                            </a>
+        {#if posts.length}
+            {#each posts as yearGroup}
+                <div class="flex flex-col gap-8">
+                        {#each Object.entries(yearGroup) as [year, posts]}
+                        <div class="flex flex-col gap-6">
+                            <div class="relative">
+                                <hr>
+                                <div class="absolute w-full top-[-18px] flex justify-center">
+                                    <div class="bg-[#f8f8f8] w-18 text-center self-center text-3xl">
+                                        {year}
+                                    </div>
+                                </div>
+                            </div>
+                            <Masonry columns={{lg: 3, md: 2, sm: 1}} gap={14}>
+                                {#each posts as {images, post_id}}
+                                    <Carousel image_count={images.length} >
+                                        {#each images as image}
+                                            <a href="/post/{post_id}" class="embla__slide w-full flex shrink-0 grow-0 basis-full">
+                                                <img aria-label="feed" alt="feed" src={image.image_url} class="w-full h-full object-cover aspect-auto" />
+                                            </a>
+                                        {/each}
+                                    </Carousel>
+                                {/each}
+                            </Masonry>
+                        </div>
                         {/each}
-                    </Carousel>
-                {/each}
-            </Masonry>
+                </div>
+            {/each}
         {:else}
             <div class="text-center w-full py-5 text-lg">
                 {user.f_name} is still working on his Portfolio!

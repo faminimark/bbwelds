@@ -73,9 +73,9 @@ export const getUser = async (
 
     if(!user_id) throw new HTTPException(404, { message: 'User not found'})
 
-    const cachedUser = await redis.get(`user:${user_id}`)
+    // const cachedUser = await redis.get(`user:${user_id}`)
 
-    if(cachedUser) return JSON.parse(cachedUser)
+    // if(cachedUser) return JSON.parse(cachedUser)
 
     const user = await prisma.users.findUnique({
         where: {
@@ -105,6 +105,7 @@ export const getUser = async (
         }
     });
 
+    if(!user) throw new HTTPException(404, { message: 'User not found'})
 
     const [image_urls, profile_image, votes ]  = await Promise.all([ 
         prisma.image_urls.findMany({
@@ -144,10 +145,12 @@ export const getUser = async (
         return {...post , images, votes: mappedVotes}
     })
 
-    if(!user) throw new HTTPException(404, { message: 'User not found'})
+    const postsByYear = Object.groupBy(userWithPosts, ({created_at}) => new Date(created_at).getFullYear())
+    const sortedYears = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a))
 
-    await redis.set(`user:${user_id}`, 3600, JSON.stringify({...user, posts: userWithPosts}));
-
-    return {...user, profile_image, posts: userWithPosts};
+    const posts = sortedYears.map((year) => ({[year]: postsByYear[Number(year)]}))
+    // await redis.set(`user:${user_id}`, 3600, JSON.stringify({...user, posts: userWithPosts}));
+    
+    return {...user, profile_image, posts};
     
 };
