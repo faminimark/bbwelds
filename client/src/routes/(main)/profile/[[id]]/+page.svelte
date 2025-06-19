@@ -42,7 +42,7 @@
                         <!-- If user then edit profile otherwise send message -->
                         {#if isCurrentUser}
                             <div>
-                                <Modal label={'Edit Profile'} title={"Edit Profile"}>
+                                <Modal label={'Edit Profile'} title={"Edit Profile"} Icon={PencilIcon}>
                                     <Edit />
                                 </Modal>
                             </div> 

@@ -1,8 +1,8 @@
 <script>
     import Footer from './Footer.svelte';
     import Header from './Header.svelte';
-
-    let { children, title = undefined, submit = $bindable(), label } = $props()
+    import {WhiteButton} from '$lib/components/Buttons'
+    let { children, title = undefined, submit = $bindable(), label, Icon = undefined } = $props()
     let modal = $state()
 </script>
 
@@ -14,8 +14,7 @@
     <Footer submit={submit} modal={modal}/>
 </dialog>
 
-<button aria-label="open modal" onclick={() => modal.showModal() }>{label}</button>
-
+<WhiteButton {Icon} {label} onclick={() => modal.showModal() } />
 <style>
     dialog:open {
         display: flex;
