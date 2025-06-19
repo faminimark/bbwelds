@@ -12,12 +12,12 @@
     <LeftAligned text="Contact"/>
     <Text name="phone" placeholder={"Phone"} />
     <Text name="email" placeholder={"Email"} />
-    <LeftAligned text="Certificates"/>
-    <Text name="certificates" placeholder="Certificates"/>
-    <Text name="licences" placeholder="License #"/>
     <LeftAligned text="Location"/>
     <Text name="city" placeholder={"City"} />
     <Text name="state_region" placeholder={"State/Region"} />
     <Text name="zip_postal" placeholder={"Zip/Postal Code"} />
     <Text name="country" placeholder={"Country"} />
+    <LeftAligned text="Certificates"/>
+    <Text name="certificates" placeholder="Certificates"/>
+    <Text name="licences" placeholder="License #"/>
 </form>
