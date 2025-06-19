@@ -9,10 +9,9 @@ type AddCommentInput = {
 
 type AddCommentOutput = { 
     comment: string | null;
-    user_id: number | null;
-    comment_id: number;
-    post_id: number | null;
-    vote_id: number | null;
+    user_id: string | null;
+    comment_id: string;
+    post_id: string | null;
     comment_type: $Enums.comment_type;
 }
 
@@ -22,8 +21,8 @@ export const addComment = async (
     
     return await prisma.comments.create({data: {
         comment,
-        post_id: Number(id),
-        user_id: Number(user_id),
+        post_id: id,
+        user_id: user_id,
         comment_type: 'post'
     }})
 };

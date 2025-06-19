@@ -16,16 +16,6 @@
             <li>Advertise</li>
         </ul>
 
-        <div class="gap-2 flex flex-col">
-            <h4 class="font-semibold">Follow us</h4>
-            <ul>
-                <li>Facebook</li>
-                <li>Instagram</li>
-                <li>X</li>
-            </ul>
-        </div>
-
-        <div></div>
     </section>
 
     <div class="flex flex-row gap-7">

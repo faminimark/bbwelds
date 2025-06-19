@@ -3,18 +3,41 @@
     import Card from '$lib/components/Card.svelte'
     import { ShareButton } from '$lib/components/Buttons'
     import BackButton from '$lib/components/BackButton.svelte'
-    import Feed from '$lib/components/Feed'
-
+    import Carousel from '$lib/components/Carousel.svelte'
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
     import { redirect } from '@sveltejs/kit';
+    import Masonry from '$lib/components/Masonry.svelte'
+    import { generateFromString } from 'generate-avatar'
+
+    interface Image {
+    image_url: string;
+    status: string;
+    image_type: string;
+    image_id: string;
+    imageable_id: string;
+    }
+
+    interface Post {
+    title: string;
+    description: string;
+    created_at: string;
+    post_id: string;
+    user_id: string;
+    images: Image[];
+    }
+
+    type PostsByYear = Record<string, Post[]>[];
+
     const { data } = $props()
-    let isLoggedIn = data.isLoggedIn
-    let user = data.data
+    const isLoggedIn = data.isLoggedIn
+    const user = data.data
+    const posts: PostsByYear = user.posts;
+    if(!user) throw redirect(302, `/`)
 
-    if(!user) throw redirect(302, `/`);
-
-    let location = user?.locations
-    let contacts = user?.contacts
+    const location = user?.locations
+    const contacts = user?.contacts
+    const avatar = user?.profile_image?.image_url
+    const imageURL = Boolean(avatar) ? avatar :  `data:image/svg+xml;utf8,${generateFromString(user.user_id)}`
 </script>
 
 
@@ -27,7 +50,7 @@
                     <h2 class="text-2xl font-semibold text-gray-700">{ user.fullname }</h2>
                     <div class="flex flex-col gap-3">
                         <div class="max-h-[450px] max-w-[400px] bg-gray-300">
-                            <img aria-label="profile pic" alt="profile pic" src="https://picsum.photos/400"/>
+                            <img aria-label="profile pic" alt="profile pic" src="{imageURL}"/>
                         </div>
                         <!-- If user then edit profile otherwise send message -->
                         {#if isLoggedIn}
@@ -70,9 +93,9 @@
             </div>
         </Card>
     </div>
-    <div>
-        <div class="flex justify-between">
-            <h2  class="text-2xl">Gallery</h2>
+    <div class="flex flex-col gap-2">
+        <div class="flex flex-row justify-between">
+            <h2  class="text-2xl">Portfolio</h2>
             {#if isLoggedIn}
             <div class="flex gap-4">
                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
@@ -84,23 +107,38 @@
             </div>
             {/if}
         </div>
-        <hr />
-        gallery or masonry?
-    </div>
-    <div class="flex flex-col">
-        <h2  class="text-2xl">Posts</h2>
-        <hr />
-        {#if user.posts.length}
-            <div class="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1  gap-2 p-2">
-                {#each user.posts as { images, votes, ...rest }}
-                    <Card>
-                        <Feed {...rest} images={images} votes={votes} users={user} variant={'profile'}/>
-                    </Card>
-                {/each}
-            </div>
+        <!-- Make the post here sorted by date -->
+        {#if posts.length}
+            {#each posts as yearGroup}
+                <div class="flex flex-col gap-8">
+                        {#each Object.entries(yearGroup) as [year, posts]}
+                        <div class="flex flex-col gap-6">
+                            <div class="relative">
+                                <hr>
+                                <div class="absolute w-full top-[-18px] flex justify-center">
+                                    <div class="bg-[#f8f8f8] w-18 text-center self-center text-3xl">
+                                        {year}
+                                    </div>
+                                </div>
+                            </div>
+                            <Masonry columns={{lg: 3, md: 2, sm: 1}} gap={14}>
+                                {#each posts as {images, post_id}}
+                                    <Carousel image_count={images.length} >
+                                        {#each images as image}
+                                            <a href="/post/{post_id}" class="embla__slide w-full flex shrink-0 grow-0 basis-full">
+                                                <img aria-label="feed" alt="feed" src={image.image_url} class="w-full h-full object-cover aspect-auto" />
+                                            </a>
+                                        {/each}
+                                    </Carousel>
+                                {/each}
+                            </Masonry>
+                        </div>
+                        {/each}
+                </div>
+            {/each}
         {:else}
             <div class="text-center w-full py-5 text-lg">
-                {user.f_name} is still working on his posts
+                {user.f_name} is still working on his Portfolio!
             </div>
         {/if}
     </div>

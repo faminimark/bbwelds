@@ -4,7 +4,6 @@ import { getCookie } from 'hono/cookie'
 
 const post = new Hono()
 
-// TODO: Create post client
 post.post('/create', async (c) => {
     const formData = await c.req.formData()
     const response =  await createPost(formData)
@@ -17,8 +16,8 @@ post.put('/:id', (c) => {
 })
 
 post.get('/:id', async (c) => {
-    const userid = Number(getCookie(c, 'user_id')) ?? undefined
-    const post = await getPost({post_id: c.req.param('id'), user_id: userid});
+    const user_id = getCookie(c, 'user_id') ?? ''
+    const post = await getPost({post_id: c.req.param('id'), user_id});
     return c.json({ success: true, data: post });
 })
 

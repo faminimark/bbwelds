@@ -5,7 +5,7 @@
 
 </script>
 
-<label for={name} class="min-w-[280px] flex w-full border-1 border-gray-300 rounded-md relative">
+<label for={name} class="min-w-[280px] flex w-full border-1 border-gray-300 rounded-md relative bg-white">
     <input id={name} name={name} placeholder={placeholder} class="w-full p-4" type={showHide} {required}/>
     
     {#if max}
@@ -27,4 +27,7 @@
     </div>
     {/if}
 </label>
+
+{#if error}
 <span class='text-red-500 text-xs' >{error}</span>
+{/if}

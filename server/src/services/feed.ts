@@ -12,7 +12,7 @@ interface PostWithImages extends Posts {
 // Maybe a data dump from GA/GTM, then put it in the db... or just raw data that goes inside the DB so it can be mapped
 // Which is probably the only way without paying for GA service
 
-export const getFeed = async (user_id: number | undefined): Promise<PostWithImages[]> => {
+export const getFeed = async (user_id: string | undefined): Promise<PostWithImages[]> => {
     // const cachedFeed = await redis.get(`feed`) ?? null
     // if(cachedFeed && cachedFeed != null) return JSON.parse(cachedFeed)
 
@@ -20,6 +20,7 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
       const posts: Posts[] = await tx.posts.findMany({
         relationLoadStrategy: 'join',
         include: {
+          post_tags: true,
           users: {
             omit: {
                 company_id: true,
@@ -39,8 +40,11 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
         }
       })
 
+      if(!posts.length) return [];
+
       //Other query variables
       const post_ids = posts.map((post) => post.post_id)
+      const user_ids = posts.map((post) => post.user_id)
       const include = user_id ? {
           user_votes: {
             where: {
@@ -49,15 +53,27 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
           }
         }: {}
 
-      const [image_urls, votes] = await Promise.all([
+      const [image_urls, profile_images, votes] = await Promise.all([
         tx.image_urls.findMany({
-            where: {
-              image_type: 'post',
-              imageable_id: {
-                in: post_ids
-              }
+          where: {
+            image_type: 'post',
+            imageable_id: {
+              in: post_ids
             }
-          }),
+          }
+        }),
+        tx.image_urls.findMany({
+          where: {
+            image_type: 'user',
+            imageable_id: {
+              in: user_ids
+            }
+          },
+          select: {
+            image_url: true,
+            imageable_id: true
+          }
+        }),
         tx.votes.findMany({
           where: {
             voteable_type: 'post',
@@ -74,12 +90,14 @@ export const getFeed = async (user_id: number | undefined): Promise<PostWithImag
 
       const mappedImageToPost = posts.flatMap((post) => {
         const images = image_urls.filter(({imageable_id}) => imageable_id === post.post_id)
+        const profile_image = profile_images.find(({imageable_id}) => imageable_id === post.user_id)?.image_url
+        
         const mappedVotes = votes.find((vote) => vote.voteable_id === post.post_id)
         const hasVoted = mappedVotes?.user_votes?.find((vote) => {
           return vote.user_id === user_id;
         })
 
-        return {...post , images, votes: {...mappedVotes, hasVoted}}
+        return {...post , images, profile_image, votes: {...mappedVotes, hasVoted}}
       })
 
       // await redis.set(`feed`, 360, JSON.stringify(mappedImageToPost));

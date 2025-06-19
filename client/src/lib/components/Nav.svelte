@@ -4,7 +4,7 @@
     const { isLoggedIn, user_id } = $props()
 </script>
 
-<div class="pt-[7px] sticky top-0 right-0 left-0 z-[10000] bg-white shadow-md">
+<div class="pt-[7px] sticky top-0 right-0 left-0 z-[10000] bg-white shadow-md bg-bb-blue">
     <div class="flex flex-row items-center justify-between pb-[5px] max-sm:px-2 max-sm:pb-[6px] px-8">
         <div class="flex flex-row">
             <a aria-label="bbwelds logo" href="/" class="flex flex-row items-center">
@@ -21,10 +21,16 @@
                 <a href="/login">Login</a>
             {:else}
                 <a href="/profile/{user_id}">Profile</a>
+                <a href="/post" class="px-[9px] py-[5px] cursor-pointer rounded-sm bg-blue-500 text-white font-semibold flex gap-2 items-center">
+                    <PencilIcon class="h-4 w-4"/> Post
+                </a>
             {/if}
-            <a href="/post" class="px-[9px] py-[5px] cursor-pointer rounded-sm bg-blue-500 text-white font-semibold flex gap-2 items-center">
-                <PencilIcon class="h-4 w-4"/> Post
-            </a>
         </div>
     </div>
 </div>
+
+<style>
+    .bg-bb-blue {
+        background-color: #FDFDFD;
+    }
+</style>
