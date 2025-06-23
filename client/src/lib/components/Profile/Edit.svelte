@@ -8,7 +8,6 @@
     const phone = findContact(user.contacts, 'phone')
     const email = findContact(user.contacts, 'email')
     const location = user.locations
-    console.log(location)
 </script>
 
 <form action="" method="POST" class="flex flex-col gap-4">
