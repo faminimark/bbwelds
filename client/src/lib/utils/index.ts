@@ -1,3 +1,5 @@
+import type { Contact, ContactType } from "./types";
+
 export const backHandler = () => {
     window.history.back();
 }
@@ -10,3 +12,11 @@ export const validateEmail = (input: string) => {
 export const didCurrentUserVote = (vote_type: 'upvote'| 'downvote' | undefined | null): { liked: boolean, disliked: boolean } => {
   return { liked: vote_type === "upvote", disliked: vote_type === "downvote" }
 }
+
+export const findContact = (contacts: Contact[], type:  ContactType): string | undefined => {
+  const contact: Contact | undefined = contacts.find(
+    (contactItem: Contact) => contactItem.contact_type === type
+  );
+
+  return contact?.value ?? undefined;
+};
