@@ -25,6 +25,8 @@
     const contacts = user?.contacts
     const avatar = user?.profile_image?.image_url
     const imageURL = Boolean(avatar) ? avatar :  `data:image/svg+xml;utf8,${generateFromString(user.user_id)}`
+
+    const licenses = false
 </script>
 
 
@@ -36,15 +38,14 @@
                 <h2 class="text-2xl font-semibold text-gray-700 flex justify-between">{ user.fullname } 
                     <ShareButton />
                </h2>
-                
                 <div class="flex flex-col gap-3">
-                    <div class="bg-gray-300 flex w-full justify-center py-4">
-                        <img aria-label="profile pic" alt="profile pic" src="{imageURL}" class="max-w-3/4" />
+                    <div class="bg-gray-300 max-sm:bg-transparent flex w-full justify-center py-4">
+                        <img aria-label="profile pic" alt="profile pic" src="{imageURL}" class="max-w-3/4 max-sm:max-w-full" />
                     </div>
                     <!-- If user then edit profile otherwise send message -->
                     {#if isCurrentUser}
                         <div>
-                            <Modal label={'Edit Profile'} title={"Edit Profile"} Icon={PencilIcon}>
+                            <Modal label={'Edit Profile'} title={"Edit Profile"} Icon={PencilIcon} type={'submit'} form="profile-edit">
                                 <Edit user={user}/>
                             </Modal>
                         </div> 
@@ -58,39 +59,44 @@
                             </button>
                         </div>
                     {/if}
-                   
                 </div>
             </div>
             <div class="flex flex-col gap-12 max-md:gap-4">
-                
+                {#if user.profile_description}
                 <div>
                     <header class="font-semibold text-sm">About</header>
                     <p class="max-w-[400px] text-sm text-gray-500">
                         { user.profile_description }
                     </p>
                 </div>
+                {/if}
                 <div class="flex flex-col gap-3">
                     {#each contacts as contact}
                         <Display title={contact.contact_type} value={contact.value}/>
                     {/each}
+                    {#if location}
                     <Display title="Location" value={`${location.city}, ${location.state_region} ${location.zip_postal} ${location.country}`}/>
+                    {/if}
+                    {#if licenses}
                     <Display title="License #" value={'999999999'}/>
                     <Display title="Cerifications" value={["AWS 6G", "Certified Rap battle champion", "Certified Lover boy"]} />
+                    {/if}
                 </div>
             </div>
         </div>
     </div>
+    <hr/>
     <div class="flex flex-col gap-6">
         <div class="flex flex-row justify-between">
-            <h2  class="text-2xl">Portfolio</h2>
+            <h2  class="text-2xl self-center flex">Portfolio</h2>
             {#if isCurrentUser}
             <div class="flex gap-4">
                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
                     <PencilIcon class="w-[20px]"/> <span class="max-sm:hidden">Edit Gallery</span>
                 </button>
-                <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
+                <a href="/post" class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
                     <Plus class="w-[20px]"/> <span class="max-sm:hidden">Add to Gallery</span>
-                </button>
+                </a>
             </div>
             {/if}
         </div>

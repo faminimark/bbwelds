@@ -3,6 +3,7 @@
     import {LeftAligned} from '$lib/components/Dividers'
     import Certificate from './Certificate.svelte';
     import { findContact } from '$lib/utils';
+    import { enhance } from '$app/forms';
 
     const { user } = $props()
     const phone = findContact(user.contacts, 'phone')
@@ -10,7 +11,7 @@
     const location = user.locations
 </script>
 
-<form action="" method="POST" class="flex flex-col gap-4">
+<form id="profile-edit" method="POST" class="flex flex-col gap-4" use:enhance>
     <div class="flex gap-3 max-sm:flex-col">
         <Text name="f_name" placeholder={"First name"}  value={user.f_name}/>
         <Text name="l_name" placeholder={"Last name"} value={user.l_name}/>
@@ -29,6 +30,6 @@
     <Text name="country" placeholder={"Country"} value={location.country}/>
     </div>
     
-    <LeftAligned text="Certificates"/>
-    <Certificate />
+    <!-- <LeftAligned text="Certificates"/>
+    <Certificate /> -->
 </form>
