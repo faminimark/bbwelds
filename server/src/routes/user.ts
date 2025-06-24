@@ -10,7 +10,9 @@ user.post('/create', async (c) => {
     return c.json({success: true, data: response});
 })
 
-user.put('/update', (c) => {
+user.put('/', async (c) => {
+    const body = await c.req.json()
+    console.log(body)
     return c.json({ success: true });
 })
 

@@ -10,7 +10,7 @@
 <div class="grid grid-cols-5 gap-3 max-w-2xl self-center max-sm:w-full  min-sm:min-w-2xl">
     <div class="flex flex-col col-span-4 gap-3">
         <BackButton />
-        <h1 class="font-bold text-4xl">Share your story</h1>
+        <h1 class="font-bold text-4xl">Share your build story</h1>
         <form class="flex flex-col gap-3" method="POST" use:enhance enctype="multipart/form-data">
             <Text name={'title'} placeholder={'Title'} max={50}></Text>
             <Picker name={'category'} placeholder="Select the build categories" options={data.categories} />

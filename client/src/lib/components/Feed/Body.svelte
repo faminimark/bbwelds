@@ -1,6 +1,11 @@
 <script lang="ts">
     import Carousel from '$lib/components/Carousel.svelte'
-    let { description, post_id, images, variant, post_tags } = $props()
+    import { getRelativeTime } from '$lib/utils';
+    import Avatar from '../Profile/Avatar.svelte';
+
+    let {post_id, images, title, user, created_at, profile_image } = $props()
+    const date = new Date(created_at)
+    let formattedDate =  getRelativeTime(date)
 </script>
 
 <div class="flex flex-col min-w-280px">
@@ -11,14 +16,16 @@
             </a>
         {/each}
     </Carousel>
-    <div class="my-5">
-        <desc class="text-sm font-light text-gray-400">{description}</desc>
-    </div>
-    {#if variant === 'default'}
-    <div class="flex gap-2 flex-wrap">
-        {#each post_tags as {tag}}
-            <a href="/category/{tag}" class="text-xs font-semibold text-gray-400 border-1 rounded-sm p-2 capitalize cursor-pointer">{tag}</a>
-        {/each}
-    </div>
-    {/if}
+        <div class="absolute bottom-0 p-4 bg-linear-to-b from-black/50 from-60% to-black/30 border-white text-white w-full flex gap-4 align-middle">
+            <Avatar img_src={profile_image} user_id={user.user_id}/>
+            <div class="w-full flex flex-col align-middle">
+                <div class="flex flex-row items-center justify-between">
+                    <h2 class="text-xl font-semibold text-white">{ title }</h2>
+                    <span>{ formattedDate }</span>
+                </div>
+
+                <a href="/profile/{ user.user_id }" class="text-sm text-inherit"> { user.fullname } </a>
+            </div>
+        </div>
 </div>
+
