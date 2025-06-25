@@ -6,12 +6,6 @@ import redis from '../redis';
 
 const prisma = new PrismaClient();
 
-type PostInput = {
-    post_id: string
-}
-
-
-// TODO Properly type these inputs pls
 export const createUser = async (
     data?: any
 ): Promise<any> => {
@@ -154,3 +148,87 @@ export const getUser = async (
     return {...user, profile_image, posts};
     
 };
+
+export const updateUser = async (user_id: string, data: any) => {
+    const {phone, email , city, state_region, zip_postal, country, ...rest} = data
+    const [userUpdate, contactPhone, contactEmail] = await Promise.all([
+        prisma.users.update({data: {...rest, fullname: `${rest.f_name} ${rest.l_name}`}, where: {
+            user_id
+        }}),
+        phone ? prisma.contacts.findFirst({
+            where: {
+                user_id,
+                contact_type: 'phone',
+            }
+        }): null,
+        email ? prisma.contacts.findFirst({
+            where: {
+                user_id,
+                contact_type: 'email',
+            }
+        }): null
+    ])
+
+    if(!userUpdate) throw new HTTPException(500, { message: 'Failed to update user profile'})
+
+    const updateContacts: Promise<any>[] = [];
+    const location_id = userUpdate?.location_id
+    if(location_id)
+        updateContacts.push(prisma.locations.update({
+            where: {
+                location_id
+            },
+            data: {
+                city,
+                country,
+                state_region,
+                zip_postal
+            }
+        }))
+
+
+    if(phone){
+        if(contactPhone){
+            updateContacts.push(prisma.contacts.update({
+                where: {
+                    contact_id: contactPhone.contact_id
+                },
+                data: {
+                    value: phone
+                }
+            }))
+        } else {
+            updateContacts.push(prisma.contacts.create({
+                data: {
+                    contact_type: 'phone',
+                    user_id,
+                    value: phone
+                }
+            }))
+        }
+    }
+
+    if(email) {
+        if(contactEmail){
+            updateContacts.push(prisma.contacts.update({
+                where: {
+                    contact_id: contactEmail.contact_id
+                },
+                data: {
+                    value: email
+                }
+            }))
+        } else {
+            updateContacts.push(prisma.contacts.create({
+                data: {
+                    contact_type: 'email',
+                    user_id,
+                    value: email
+                }
+            }))
+        }
+    }
+ 
+    // TODO: FIX THE RESPONSE USING ZOD
+    await Promise.all(updateContacts);
+}

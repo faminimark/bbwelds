@@ -37,13 +37,32 @@
     <div class="flex flex-col gap-7 w-full">
         <div class="max-sm:bg-transparent max-sm:flex max-sm:flex-col-reverse w-full grid grid-cols-2">
             <div class="flex flex-col p-4 justify-between col-span-1">
-                <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-2">
+                    <div class="flex">
+                        <div>
+                            <h2 class="text-2xl font-semibold text-gray-700 flex justify-between">
+                                { user.fullname } <ShareButton />
+                            </h2>
+                            {#if user.job_title}
+                                <small class="text-sm color-gray-500">{user.job_title}</small>
+                            {/if}
+                        </div>
+                    </div>
                     <div>
-                        <h2 class="text-2xl font-semibold text-gray-700 flex justify-between">
-                            { user.fullname } 
-                            <ShareButton />
-                        </h2>
-                        <small class="text-sm color-gray-500">Apprentice Welder/SWE/Machinist</small>
+                        {#if isCurrentUser}
+                            <Modal label={'Edit Profile'} title={"Edit Profile"} Icon={PencilIcon} type={'submit'} form="profile-edit">
+                                <Edit user={user}/>
+                            </Modal>
+                        {:else}
+                            <div class="flex justify-between">
+                                <button class="flex gap-2 cursor-pointer font-semibold p-2 text-gray-700 rounded-md hover:bg-gray-100 border-gray-700">
+                                    <MessageSquare class="w-[25px]"/> Send message
+                                </button>
+                                <button class="text-gray-500 font-light text-sm cursor-pointer">
+                                    Report User
+                                </button>
+                            </div>
+                        {/if}
                     </div>
                     {#if user.profile_description}
                     <div>
@@ -66,25 +85,8 @@
                         {/if}
                     </div>
                 </div>
-                <!-- If user then edit profile otherwise send message -->
-                {#if isCurrentUser}
-                    <div>
-                        <Modal label={'Edit Profile'} title={"Edit Profile"} Icon={PencilIcon} type={'submit'} form="profile-edit">
-                            <Edit user={user}/>
-                        </Modal>
-                    </div> 
-                {:else}
-                    <div class="flex justify-between">
-                        <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md hover:bg-gray-100 border-gray-700">
-                            <MessageSquare class="w-[25px]"/> Send message
-                        </button>
-                        <button class="text-gray-500 font-light text-sm cursor-pointer">
-                            Report User
-                        </button>
-                    </div>
-                {/if}
             </div>
-            <img aria-label="profile pic" alt="profile pic" src="{imageURL}" class="w-full col-span-1" />
+            <img aria-label="profile pic" alt="profile pic" src="{imageURL}" class="w-full col-span-1 rounded-2xl max-w-3/4" />
         </div>
     </div>
     <div class="flex flex-col gap-6">
@@ -92,9 +94,11 @@
             <h2  class="text-2xl self-center flex font-semibold">Stories</h2>
             {#if isCurrentUser}
             <div class="flex gap-4">
+                {#if posts.length}
                 <button class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
                     <PencilIcon class="w-[20px]"/> <span class="max-sm:hidden">Edit Gallery</span>
                 </button>
+                {/if}
                 <a href="/post" class="flex gap-2 cursor-pointer font-semibold p-3 text-gray-700 rounded-md  border-gray-700  hover:bg-gray-100">
                     <Plus class="w-[20px]"/> <span class="max-sm:hidden">Add to Gallery</span>
                 </a>
