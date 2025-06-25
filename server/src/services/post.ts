@@ -1,5 +1,5 @@
 import { HTTPException } from 'hono/http-exception'
-import { PrismaClient, posts as Posts, category_types, status_enum, image_type, image_urls as Images, votes as Votes } from '@prisma/client'
+import { PrismaClient, posts as Posts, status_enum, image_type, image_urls as Images, votes as Votes } from '@prisma/client'
 import { Storage } from '@google-cloud/storage'
 import { v2 } from '@google-cloud/storage-control'
 
@@ -110,7 +110,7 @@ export const createPost = async (
 ): Promise<any> => {
     const files = formData.getAll('files')
     const category = formData.get('category') as string
-    const categories = category?.split(',') as category_types[]
+    const categories = category?.split(',') as string[]
     const title = formData.get('title') as string
     const description = formData.get('description') as string
 

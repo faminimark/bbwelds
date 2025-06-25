@@ -1,25 +1,22 @@
 <script>
     import Footer from './Footer.svelte';
     import Header from './Header.svelte';
-
-    let { children, title = undefined, submit = $bindable(), label } = $props()
+    import {WhiteButton} from '$lib/components/Buttons'
+    let { children, title = undefined, submit = $bindable(), label, Icon = undefined, type = undefined, form = undefined } = $props()
     let modal = $state()
 </script>
 
-<dialog id="modal" class="hidden w-full max-w-3xl min-h-1/3 m-auto p-5" bind:this={modal}>
-    <div class="flex flex-col gap-5 h-full ">
-        <Header title={title} modal={modal}/>
-        <div>
-            {@render children()}
-        </div>
-        <Footer submit={submit} modal={modal}/>
+<dialog id="modal" class="hidden w-full max-w-5xl min-h-1/3 m-auto p-5 rounded-sm flex-col gap-5 " bind:this={modal}>
+    <Header {title} {modal}/>
+    <div class="overflow-auto">
+        {@render children()}
     </div>
+    <Footer {submit} {modal} {type} {form}/>
 </dialog>
 
-<button aria-label="open modal" onclick={() => modal.showModal() }>{label}</button>
-
+<WhiteButton {Icon} {label} onclick={() => modal.showModal() } />
 <style>
     dialog:open {
-        display: block;
+        display: flex;
     }
 </style>

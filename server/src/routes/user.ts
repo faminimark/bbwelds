@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
+import { createUser, getUser, updateUser } from '../services/user'
+import { getCookie } from 'hono/cookie'
 
-import { createUser, getUser } from '../services/user'
 const user = new Hono()
 
 user.post('/create', async (c) => {
@@ -10,7 +11,11 @@ user.post('/create', async (c) => {
     return c.json({success: true, data: response});
 })
 
-user.put('/update', (c) => {
+user.put('/', async (c) => {
+    const body = await c.req.json()
+    const user_id = getCookie(c, 'user_id') ?? ''
+    console.log(body)
+    await updateUser(user_id, body)
     return c.json({ success: true });
 })
 

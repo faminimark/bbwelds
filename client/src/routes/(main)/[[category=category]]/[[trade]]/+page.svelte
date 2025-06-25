@@ -11,7 +11,6 @@
   </div>
 
   <div class="col-span-4 flex flex-col gap-4">
-    <Category categories={data.categories}/>
     {#each feeds as { images, votes, ...rest }}
       <Card>
         <Feed {...rest} {votes} {images}/>
