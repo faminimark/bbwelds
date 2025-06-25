@@ -43,10 +43,10 @@ model locations {
 }
 
 model post_tags {
-  post_tag_id String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  post_id     String?        @db.Uuid
-  tag         category_types
-  posts       posts?         @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pt_post_id")
+  post_tag_id String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  post_id     String? @db.Uuid
+  tag         String  @db.VarChar(50)
+  posts       posts?  @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pt_post_id")
 }
 
 model posts {
@@ -69,6 +69,7 @@ model users {
   location_id         Int?
   company_id          Int?
   user_id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_title           String?       @db.VarChar(100)
   auth                auth[]
   comments            comments[]
   contacts            contacts[]
@@ -136,6 +137,12 @@ model user_votes {
   votes        votes     @relation(fields: [vote_id], references: [vote_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_uv_vote_id")
 }
 
+model tags {
+  tag_id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  count  Int
+  name   String @db.VarChar(50)
+}
+
 enum contact_enum {
   email
   phone
@@ -149,14 +156,6 @@ enum credential_type_enum {
 enum status_enum {
   active
   deleted
-}
-
-enum category_types {
-  electrician
-  automotive
-  metal_workers @map("metal workers")
-  hvac
-  concrete
 }
 
 enum image_type {
