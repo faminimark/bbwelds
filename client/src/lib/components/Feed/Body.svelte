@@ -16,16 +16,17 @@
             </a>
         {/each}
     </Carousel>
-        <div class="absolute bottom-0 p-4 bg-linear-to-b from-black/50 from-60% to-black/30 border-white text-white w-full flex gap-4 align-middle">
-            <Avatar img_src={profile_image} user_id={user.user_id}/>
-            <div class="w-full flex flex-col align-middle">
-                <div class="flex flex-row items-center justify-between">
-                    <h2 class="text-xl font-semibold text-white">{ title }</h2>
-                    <span>{ formattedDate }</span>
-                </div>
-
-                <a href="/profile/{ user.user_id }" class="text-sm text-inherit"> { user.fullname } </a>
+    <div class="absolute bottom-0 p-4 bg-linear-to-b from-black/50 from-40% to-black/30 border-white backdrop-blur-md text-white w-full flex gap-4 items-center">
+        <span class="max-sm:hidden">
+        <Avatar img_src={profile_image} user_id={user.user_id}/>
+        </span>
+        <div class="w-full flex flex-col">
+            <div class="flex flex-row items-center justify-between">
+                <h2 class="text-xl font-semibold text-white">{ title }</h2>
             </div>
+            <a href="/profile/{ user.user_id }" class="text-sm text-inherit underline"> { user.fullname } </a>
         </div>
+        <date class="whitespace-nowrap">{ formattedDate }</date>
+    </div>
 </div>
 

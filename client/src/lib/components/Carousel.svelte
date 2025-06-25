@@ -17,9 +17,7 @@
     </div>
 
     {#if image_count > 1}
-    <div class="flex justify-between absolute top-1/2 w-full p-2">
-        <button class="embla__prev text-gray-500 opacity-60 bg-gray-50 hover:opacity-100 hover:bg-gray-50 cursor-pointer rounded-full p-1" onclick={() => emblaApi.scrollPrev()}><ChevronLeft class="w-10 h-10"/></button>
-        <button class="embla__next text-gray-500 opacity-60 bg-gray-50 hover:opacity-100 hover:bg-gray-50 cursor-pointer rounded-full p-1" onclick={() => emblaApi.scrollNext()}><ChevronRight class="w-10 h-10"/></button>
-    </div>
+        <button class="absolute top-1/2 left-2 embla__prev text-gray-500 opacity-60 bg-gray-50 hover:opacity-100 hover:bg-gray-50 cursor-pointer rounded-full p-1" onclick={() => emblaApi.scrollPrev()}><ChevronLeft class="w-10 h-10"/></button>
+        <button class="absolute top-1/2 right-2 embla__next text-gray-500 opacity-60 bg-gray-50 hover:opacity-100 hover:bg-gray-50 cursor-pointer rounded-full p-1" onclick={() => emblaApi.scrollNext()}><ChevronRight class="w-10 h-10"/></button>
     {/if}
 </div>
