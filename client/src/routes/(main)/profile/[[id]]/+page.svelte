@@ -12,6 +12,7 @@
     import { redirect } from '@sveltejs/kit';
     import { MessageSquare, PencilIcon, Plus } from 'lucide-svelte'
     import { Centered } from '$lib/components/Dividers';
+    import ImagePicker from '$lib/components/Profile/ImagePicker.svelte';
     
     const { data } = $props()
     const current_user = $derived(data?.user)
@@ -67,7 +68,7 @@
                     {#if user.profile_description}
                     <div>
                         <header class="font-semibold text-sm">About</header>
-                        <desc class="max-w-[400px] text-sm text-gray-500">
+                        <desc class="max-w-[400px] text-sm text-gray-500 whitespace-break-spaces">
                             { user.profile_description }
                         </desc>
                     </div>
@@ -77,16 +78,16 @@
                             <Display title={contact.contact_type} value={contact.value}/>
                         {/each}
                         {#if location}
-                        <Display title="Location" value={`${location.city}, ${location.state_region} ${location.zip_postal} ${location.country}`}/>
+                            <Display title="Location" value={`${location.city}, ${location.state_region} ${location.zip_postal} ${location.country}`}/>
                         {/if}
                         {#if licenses}
-                        <Display title="License #" value={'999999999'}/>
-                        <Display title="Cerifications" value={["AWS 6G", "Certified Rap battle champion", "Certified Lover boy"]} />
+                            <Display title="License #" value={'999999999'}/>
+                            <Display title="Cerifications" value={["AWS 6G", "Certified Rap battle champion", "Certified Lover boy"]} />
                         {/if}
                     </div>
                 </div>
             </div>
-            <img aria-label="profile pic" alt="profile pic" src="{imageURL}" class="w-full col-span-1 rounded-2xl max-w-3/4" />
+            <ImagePicker {imageURL} {isCurrentUser}/>
         </div>
     </div>
     <div class="flex flex-col gap-6">

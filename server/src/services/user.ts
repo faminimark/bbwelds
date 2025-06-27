@@ -1,7 +1,8 @@
-import { PrismaClient, locations as Location, users as User } from '@prisma/client'
+import { PrismaClient, locations as Location, users as User, image_type, status_enum } from '@prisma/client'
 import { serializer } from '../utils';
 import { hashPassword } from '../utils/password';
 import { HTTPException } from 'hono/http-exception';
+import uploadUserImage from '../utils/upload-to-gcp'
 import redis from '../redis';
 
 const prisma = new PrismaClient();
@@ -113,7 +114,8 @@ export const getUser = async (
         prisma.image_urls.findFirst({
             where: {
                 image_type: 'user',
-                imageable_id: user_id
+                imageable_id: user_id,
+                status: 'active'
             },
             select: {
                 image_url: true
@@ -231,4 +233,52 @@ export const updateUser = async (user_id: string, data: any) => {
  
     // TODO: FIX THE RESPONSE USING ZOD
     await Promise.all(updateContacts);
+}
+
+export const uploadImage = async (user_id: string, formData: FormData) => {
+    const files = formData.getAll('files')
+
+    try {
+        const uploadResults = await uploadUserImage(user_id, files)
+        const fileNames = uploadResults.map((res) => ({
+            image_url: res.publicUrl ?? '',
+            image_type: image_type.user,
+            status: status_enum.active,
+            imageable_id: user_id
+        }))
+
+        const [currentProfileURL, createNewProfileRecord] = await Promise.all([
+                prisma.image_urls.findFirst({
+                    where: {
+                        imageable_id: user_id,
+                        status: 'active',
+                        image_type: 'user'
+                    }
+                }), 
+                prisma.image_urls.createManyAndReturn({
+                    data: fileNames,
+                })
+            ])
+
+        const currentProfileImageId = currentProfileURL?.image_id
+
+        if(currentProfileURL){
+            await prisma.image_urls.update({
+                where: {
+                    image_id: currentProfileImageId
+                },
+                data: {
+                    status: 'deleted'
+                }
+            })
+        }
+
+        return {
+            message: 'Upload process completed',
+            results: uploadResults
+        } 
+
+    } catch (e) {
+        return { error: 'Upload failed', details: e }
+    }
 }
