@@ -1,5 +1,5 @@
 import { SERVER_URL } from '$env/static/private';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect,  } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const load = async({ fetch, params  }) => {
@@ -8,10 +8,9 @@ export const load = async({ fetch, params  }) => {
 }
 
 export const actions = {
-	default: async ({ request, fetch, cookies }) => {
+	edit: async ({ request, fetch }) => {
 		const formData = await request.formData();
         const data = Object.fromEntries(formData)
-		console.log(data)
 		const response = await fetch(`${SERVER_URL}/user`, {
 			method: 'PUT',
 			body: JSON.stringify(data)
@@ -24,6 +23,29 @@ export const actions = {
 		} else {
 			return fail(500, { error: 'Failed to upload files' });
 		}
+
+	},
+	uploadImage: async ({request, fetch}) => {
+		const formData = await request.formData();
+        const files = formData.getAll('file') as File[]
+		const apiFormData = new FormData();
+
+        files.forEach((file) => {
+            apiFormData.append('files', file);
+        });
+
+		const response = await fetch(`${SERVER_URL}/user/upload-image`, {
+			method: 'POST',
+			body: apiFormData
+		});
+
+		const result = await response.json()
+
+        if(result.success){
+            return result
+        } else {
+            return fail(500, { error: 'Failed to upload user image' });
+        }
 
 	}
 } satisfies Actions

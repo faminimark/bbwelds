@@ -1,7 +1,6 @@
 import { HTTPException } from 'hono/http-exception'
 import { PrismaClient, posts as Posts, status_enum, image_type, image_urls as Images, votes as Votes } from '@prisma/client'
-import { Storage } from '@google-cloud/storage'
-import { v2 } from '@google-cloud/storage-control'
+import uploadImage from '../utils/upload-to-gcp'
 
 interface PostWithImages extends Posts {
   images: Images[]
@@ -10,19 +9,6 @@ interface PostWithImages extends Posts {
 }
 
 const prisma = new PrismaClient();
-
-const googleCredentials = {
-    keyFilename: './src/config/key.json',
-    projectId: process.env.GOOGLE_PROJECT_ID
-}
-
-//Set up for G storage bucket/control to create a new folder if folder doesn't exist
-const bucketName = 'build-bard-gallery'
-const storage = new Storage(googleCredentials)
-const controlClient = new v2.StorageControlClient(googleCredentials)
-
-const bucket = storage.bucket(bucketName)
-const bucketPath = controlClient.bucketPath('_', bucketName);
 
 type GetPostInput = {
     post_id: string;
@@ -106,7 +92,7 @@ export const getPost = async (
 };
 
 export const createPost = async (
-    formData: FormData //fix this type after formData
+    formData: FormData
 ): Promise<any> => {
     const files = formData.getAll('files')
     const category = formData.get('category') as string
@@ -115,20 +101,6 @@ export const createPost = async (
     const description = formData.get('description') as string
 
     const user_id = formData.get('user_id') as string; //Build context for these
-    const USER_FOLDER = `gallery-${user_id}`
-    // TODO: refactor this to use GetFolder instead, this will be a bottleneck after a thousand users
-    const [folders] = await controlClient.listFolders({
-        parent: bucketPath,
-    });
-
-    const userFolderExist = Boolean(folders.filter(({ name }) =>  name === `projects/_/buckets/${bucketName}/folders/gallery-${user_id}/`).length)
-
-    if(!userFolderExist) await controlClient.createFolder({
-        parent: bucketPath,
-        folderId: USER_FOLDER
-    });
-    
-    const uploadResults = []
 
     try {
         const post = await prisma.posts.create({
@@ -144,48 +116,7 @@ export const createPost = async (
             }
         })
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i]
-            
-            if (!(file instanceof File)) {
-                uploadResults.push({
-                index: i,
-                error: 'Invalid file object'
-                })
-                continue
-            }
-
-            try {
-                const timestamp = Date.now()
-                const fileName = `${USER_FOLDER}/${timestamp}-${i}-${file.name}`
-                const fileRef = bucket.file(fileName)
-                
-                const arrayBuffer = await file.arrayBuffer()
-                const buffer = Buffer.from(arrayBuffer)
-                
-                await fileRef.save(buffer, {
-                    metadata: {
-                        contentType: file.type,
-                    },
-                })
-
-                uploadResults.push({
-                    index: i,
-                    originalName: file.name,
-                    fileName: fileName,
-                    size: file.size,
-                    contentType: file.type,
-                    publicUrl: `https://storage.googleapis.com/${bucketName}/${fileName}`
-                })
-
-            } catch (error) {
-                uploadResults.push({
-                    index: i,
-                    originalName: file.name,
-                    error: error
-                })
-            }
-        }
+        const uploadResults = await uploadImage(user_id, files)
 
         const fileNames = uploadResults.map((res) => ({
             image_url: res.publicUrl ?? '',
