@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@import "@friendofsvelte/tipex/styles/index.css";
+
+.tiptap.ProseMirror {
+    padding: calc(var(--spacing) * 4);
+}

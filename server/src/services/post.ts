@@ -70,7 +70,8 @@ export const getPost = async (
         prisma.image_urls.findFirst({
             where: {
             image_type: 'user',
-            imageable_id: post?.user_id
+            imageable_id: post?.user_id,
+            status: 'active'
             },
         }),
         prisma.votes.findFirst({

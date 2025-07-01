@@ -41,3 +41,8 @@ export const getRelativeTime = (date: Date) => {
     return rtf.format(-Math.floor(diffInSeconds / 31536000), 'year');
   }
 }
+
+//This is a work around for @html not working properly after hydration
+export const innerHTML = (node: Element, html:string) => {
+    node.innerHTML = html
+}
