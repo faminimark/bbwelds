@@ -56,7 +56,7 @@
                 <button type="button" value={index} onclick={toggleSelect} class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-3 rounded-xs text-nowrap capitalize cursor-pointer flex">{selected} <X size="15"/></button>
             {/each}
         </div>
-        <input type="text" id={name} name={name} class="hidden" placeholder="{placeholder}" bind:value={valueSelected}/>
+        <input type="text" id={name} name={name} class="" placeholder="{placeholder}" bind:value={valueSelected}/>
     </label>
 
     {#if focused}

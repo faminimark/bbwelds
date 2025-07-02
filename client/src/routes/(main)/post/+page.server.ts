@@ -5,7 +5,6 @@ import type { Actions } from './$types';
 export const actions = {
 	default: async ({ request, fetch, cookies }) => {
         const formData = await request.formData();
-
         const files = formData.getAll('file') as File[]
         const title = formData.get('title') as string
         const category = formData.get('category') as string

@@ -130,7 +130,7 @@
             {/each}
         {:else}
             <div class="text-center w-full py-5 text-lg">
-                {user.f_name} is still working on his Stories!
+                {user.f_name} is still working on a Story!
             </div>
         {/if}
     </div>
