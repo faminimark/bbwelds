@@ -5,13 +5,10 @@
     import AddComment from '$lib/components/Comments/Add.svelte'
     import { DownvoteButton, UpvoteButton, ShareButton } from '$lib/components/Buttons'
     import Carousel from '$lib/components/Carousel.svelte';
-    import { didCurrentUserVote, getRelativeTime, innerHTML } from '$lib/utils';
+    import { didCurrentUserVote, innerHTML } from '$lib/utils';
     let { data } = $props()
     let { title, description, created_at, users, images, votes, comments, profile_image, post_tags } = data.data;
     const { liked, disliked } = didCurrentUserVote(votes?.user_votes?.[0]?.vote_type)
-
-    const date = new Date(created_at)
-    let formattedDate =  getRelativeTime(date)
 </script>
 
 <div class="flex flex-col gap-12">
@@ -31,7 +28,7 @@
             <ShareButton />
         </header>
         <div class="border-y border-gray-200 p-2">
-            <Link user_id={users.user_id} name={users.fullname} created_at={formattedDate} img_src={profile_image}/>
+            <Link user_id={users.user_id} name={users.fullname} {created_at} img_src={profile_image}/>
         </div>
         <desc class="whitespace-break-spaces text-lg" use:innerHTML={description} />
         <div class="flex gap-2">
@@ -53,10 +50,10 @@
         </div>
         <AddComment />
         <div>
-            {#each comments as comment}
+            {#each comments as {users, created_at, comment, profile_image}}
             <div class="p-2">
-                <Link user_id={comment.users.user_id} created_at={comment.created_at} name={comment.users.fullname} img_src={''}/>
-                <p class="pl-8 text-md">{comment.comment}</p>
+                <Link user_id={users.user_id} {created_at} name={users.fullname} img_src={profile_image}/>
+                <p class="pl-8 text-md">{comment}</p>
             </div>
             {/each}
         </div>
