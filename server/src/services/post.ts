@@ -60,6 +60,8 @@ export const getPost = async (
         }
     });
 
+    if(!post) throw new HTTPException(404, { message: 'Post not found'})
+
     const include = user_id ? {
         user_votes: {
         where: {
@@ -68,17 +70,20 @@ export const getPost = async (
         }
     }: {}
 
-    const [image_url, profile_image, votes, comment_profile_images] = await Promise.all([
+    const image_ids = [...post?.comments.map((comment) => comment.user_id), post.user_id]
+    const [image_url, profile_images, votes] = await Promise.all([
         prisma.image_urls.findMany({
         where: {
             imageable_id: post_id,
             image_type: 'post'
         }
         }),
-        prisma.image_urls.findFirst({
+        prisma.image_urls.findMany({
             where: {
             image_type: 'user',
-            imageable_id: post?.user_id,
+            imageable_id: {
+                in: image_ids
+            },
             status: 'active'
             },
         }),
@@ -92,22 +97,11 @@ export const getPost = async (
             voteable_type: true
             },
             include
-        }),
-        prisma.image_urls.findMany({
-            where: {
-                image_type: 'user',
-                imageable_id: {
-                    in: post?.comments.map((comment) => comment.user_id)
-                },
-                status: 'active'
-            }
         })
     ])
-
-    if(!post) throw new HTTPException(404, { message: 'Post not found'})
-
-    const comments = post.comments.map((comment) => ({...comment, profile_image: comment_profile_images.find((image) => image.imageable_id === comment.users.user_id)?.image_url}))
-    return {...post, images: image_url, profile_image: profile_image?.image_url ?? '', votes: votes ?? undefined, comments};
+    const comments = post.comments.map((comment) => ({...comment, profile_image: profile_images.find((image) => image.imageable_id === comment.users.user_id)?.image_url}))
+    const profile_image = profile_images.find((image) => image.imageable_id === post.user_id)?.image_url ?? ''
+    return {...post, images: image_url, profile_image, votes: votes ?? undefined, comments};
 };
 
 export const createPost = async (

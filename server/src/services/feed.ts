@@ -67,7 +67,8 @@ export const getFeed = async (user_id: string | undefined): Promise<PostWithImag
             image_type: 'user',
             imageable_id: {
               in: user_ids
-            }
+            },
+            status: 'active'
           },
           select: {
             image_url: true,
