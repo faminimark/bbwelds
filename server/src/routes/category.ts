@@ -3,8 +3,9 @@ import { getCategories } from '../services/category';
 
 const category = new Hono()
 
-category.get('/', async (c) => {
-    const categories = await getCategories()
+category.post('/', async (c) => {
+    const {input} = await c.req.json()
+    const categories = await getCategories(input)
     return c.json({success: true, data: categories});
 })
 

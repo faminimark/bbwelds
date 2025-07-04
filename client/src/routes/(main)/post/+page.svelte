@@ -18,7 +18,7 @@
                 <Text name={'title'} placeholder={'Title'} max={50}></Text>
                 <FilePicker />
                 <Editor name={'description'} />
-                <Picker name={'category'} placeholder="Select the build categories" options={data.categories} />
+                <Picker name={'category'} placeholder="Select the build categories" />
                 <div class="flex justify-end">
                     <button type="submit" class="px-3 py-2 cursor-pointer rounded-sm bg-blue-500 text-white font-semibold max-sm:w-full text-center flex gap-2"><Rocket /> Post</button>
                 </div>

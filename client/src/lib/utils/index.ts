@@ -46,3 +46,16 @@ export const getRelativeTime = (date: Date) => {
 export const innerHTML = (node: Element, html:string) => {
     node.innerHTML = html
 }
+
+// Basic debounce function
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+}

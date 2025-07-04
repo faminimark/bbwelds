@@ -1,8 +1,8 @@
-<script lang="ts" generics="Option extends { displayValue: string, value: string }">
+<script lang="ts">
     import { X } from 'lucide-svelte'
-
+    import { onMount } from 'svelte'
+    import {debounce} from '$lib/utils'
     interface OptionProps {
-        options: Option[];
         placeholder: string;
         name: string;
     }
@@ -10,20 +10,18 @@
     let { 
         placeholder, 
         name, 
-        options,
     }: OptionProps = $props();
     
-    let displaySelected: string[] = $state([])
     let valueSelected: string[] = $state([])
+    let tags: string[] = $state([])
+    let input: string = $state('');
     let focused = $state(false)
 
     const handleSelect = (event: { currentTarget: { value: any; }; }) => {
-        const { value, displayValue} = options[event?.currentTarget?.value];
-        if(displaySelected.includes(displayValue)){
-            displaySelected = displaySelected.filter((d) => d !== displayValue)
+        const  value = tags[event?.currentTarget?.value];
+        if(valueSelected.includes(value)){
             valueSelected = valueSelected.filter((v) => v !== value) 
         } else {
-            displaySelected.push(displayValue)
             valueSelected.push(value)
         }
     }
@@ -36,42 +34,77 @@
 
     const toggleSelect = (event: { currentTarget: { value: any; }; }) => { 
         const index = event?.currentTarget?.value
-        displaySelected.splice(index, 1)
         valueSelected.splice(index, 1)
 
-        displaySelected = displaySelected
         valueSelected = valueSelected
     }
 
     const availableOptions = $derived(
-        options.filter(option => !valueSelected.includes(option.value))
+        tags.filter(tag => !valueSelected.includes(tag))
     )
+
+    onMount(async() => {
+        handleTagSearch();
+    })
+
+    const handleNewTag = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            valueSelected.push(input)
+            input = ''
+        }
+    }
+
+    const addTag = () => {
+        valueSelected.push(input)
+    }
+
+    const handleTagSearch = debounce(async () => {
+        const getTags = async () => ((await fetch('http://localhost:4000/category', {
+            method: 'POST',
+            body: JSON.stringify({input})
+        })).json())
+
+        const response = await getTags()
+        tags = response.data
+    }, 500)
 </script>
 
 <div class="relative bg-white picker-popup">
-    <label for={name}>
-        <input name="display" type="text" class="min-w-[280px] w-full border-1 border-gray-300 rounded-md p-4 capitalize" readonly placeholder="{!displaySelected.length ? placeholder : ''}" onfocus={() => focused = true}/>
-        <div class="absolute top-0 p-3 flex flex-row flex-wrap align-middle gap-2">
-            {#each displaySelected as selected, index}
+    <label for={name} class="min-w-[280px] w-full border-1 border-gray-300 rounded-md flex flex-col">
+        <input name="display" type="text" class="p-4 capitalize border-transparent w-full" placeholder={ placeholder } onfocus={() => focused = true} oninput={() => handleTagSearch()} bind:value={input} onkeydown={handleNewTag}/>
+        <div class="p-3 align-middle gap-2 {!valueSelected.length ? 'hidden' : 'flex flex-row flex-wrap'}">
+            {#each valueSelected as selected, index}
                 <button type="button" value={index} onclick={toggleSelect} class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-3 rounded-xs text-nowrap capitalize cursor-pointer flex">{selected} <X size="15"/></button>
             {/each}
         </div>
-        <input type="text" id={name} name={name} class="" placeholder="{placeholder}" bind:value={valueSelected}/>
+        <input type="text" id={name} name={name} class="hidden" placeholder="{placeholder}" bind:value={valueSelected}/>
     </label>
 
     {#if focused}
-    <div class="absolute top-15 bg-white w-full gap-4 py-3 px-5 border-1 overflow-auto border-gray-300 rounded-xs flex flex-row justify-between z-[20]">
+    <div class="absolute {!valueSelected.length ? 'top-15' : 'top-30'} bg-white w-full gap-4 py-3 px-5 border-1 overflow-auto border-gray-300 rounded-xs flex flex-row justify-between z-[20]">
         <div class="flex flex-row gap-2 flex-wrap ">
-            {#each availableOptions as option}
+            {#if availableOptions.length}
+                {#each availableOptions as option}
+                    <button 
+                        type="button" 
+                        value={tags.findIndex(o => o === option)} 
+                        onclick={handleSelect} 
+                        class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-3 rounded-xs text-nowrap capitalize cursor-pointer"
+                    >
+                        {option}
+                    </button>
+                {/each}
+            {:else}
                 <button 
                     type="button" 
-                    value={options.findIndex(o => o.value === option.value)} 
-                    onclick={handleSelect} 
+                    value={input} 
+                    onclick={addTag} 
                     class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-3 rounded-xs text-nowrap capitalize cursor-pointer"
                 >
-                    {option.displayValue}
+                    {input}
                 </button>
-            {/each}
+            {/if}
         </div>
         <div>
             <button type="button" onclick={() => focused = false} class="font-semibold text-xs text-gray-500 max-sm:text-sm text-nowrap capitalize cursor-pointer"><X/></button>

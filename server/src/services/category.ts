@@ -1,23 +1,26 @@
-import redis from '../redis';
+import { PrismaClient } from '@prisma/client'
 
-type Categories = {
-    value: string, 
-    displayValue: string
-}
+const prisma = new PrismaClient();
 
-export const getCategories = async (): Promise<Categories[]> => {
-    // const cachedCategories = await redis.get(`categories`) ?? null
-    // if(cachedCategories && cachedCategories != null) return JSON.parse(cachedCategories)
-    const categories: Categories[] = []
+export const getCategories = async (input: string): Promise<string[]> => {
+    const where = input ? {
+        name: {
+            contains: input,
+            mode: 'insensitive'
+        }
+    } : undefined
+    const categories = await prisma.tags.findMany({
+            take: 10,
+            orderBy: {
+                count: 'desc'
+            },
+            //@ts-ignore
+            where,
+            select: {
+                name: true
+            }
+        })
 
-    // for(let category in category_types){
-    //     const displayValue = category.replace('_', ' ')
-    //     categories.push({
-    //         displayValue, 
-    //         value: category as category_types
-    //     })
-    // }
-
-    // await redis.set(`categories`, 36000, JSON.stringify(categories));
-    return categories;
+    return categories.map((category) => category.name)
   };
+
