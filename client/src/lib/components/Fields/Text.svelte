@@ -3,10 +3,15 @@
     import { Eye, EyeClosedIcon } from 'lucide-svelte';
     let showHide =  $state(type);
 
+    const handleDefault = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+        }
+    }
 </script>
 
 <label for={name} class="min-w-[280px] flex w-full border-1 border-gray-300 rounded-md relative bg-white">
-    <input id={name} {name} {placeholder} class="w-full p-4" type={showHide} {required} {value}/>
+    <input id={name} {name} {placeholder} class="w-full p-4" type={showHide} {required} {value} onkeydown={handleDefault}/>
     
     {#if max}
     <div class="absolute right-0 top-0 px-4 border-l-gray-300 border-l-1 h-full text-gray-600 pt-4">
