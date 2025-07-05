@@ -55,10 +55,6 @@
         }
     }
 
-    const addTag = () => {
-        valueSelected.push(input)
-    }
-
     const handleTagSearch = debounce(async () => {
         const getTags = async () => ((await fetch('http://localhost:4000/category', {
             method: 'POST',
@@ -75,14 +71,14 @@
         <input name="display" type="text" class="p-4 capitalize border-transparent w-full" placeholder={ placeholder } onfocus={() => focused = true} oninput={() => handleTagSearch()} bind:value={input} onkeydown={handleNewTag}/>
         <div class="p-3 align-middle gap-2 {!valueSelected.length ? 'hidden' : 'flex flex-row flex-wrap'}">
             {#each valueSelected as selected, index}
-                <button type="button" value={index} onclick={toggleSelect} class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-3 rounded-xs text-nowrap capitalize cursor-pointer flex">{selected} <X size="15"/></button>
+                <button type="button" value={index} onclick={toggleSelect} class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-2 rounded-xs text-nowrap capitalize cursor-pointer flex gap-0.5">{selected} <X size="15"/></button>
             {/each}
         </div>
-        <input type="text" id={name} name={name} class="hidden" placeholder="{placeholder}" bind:value={valueSelected}/>
+        <input type="text" id={name} name={name} class="hidden" bind:value={valueSelected}/>
     </label>
 
-    {#if focused}
-    <div class="absolute {!valueSelected.length ? 'top-15' : 'top-30'} bg-white w-full gap-4 py-3 px-5 border-1 overflow-auto border-gray-300 rounded-xs flex flex-row justify-between z-[20]">
+    {#if focused && availableOptions.length}
+    <div class="absolute bottom-[100%] bg-white w-full gap-4 py-3 px-5 border-1 overflow-auto border-gray-300 rounded-xs flex flex-row justify-between z-[9999]">
         <div class="flex flex-row gap-2 flex-wrap ">
             {#if availableOptions.length}
                 {#each availableOptions as option}
@@ -95,15 +91,6 @@
                         {option}
                     </button>
                 {/each}
-            {:else}
-                <button 
-                    type="button" 
-                    value={input} 
-                    onclick={addTag} 
-                    class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-3 rounded-xs text-nowrap capitalize cursor-pointer"
-                >
-                    {input}
-                </button>
             {/if}
         </div>
         <div>
