@@ -69,9 +69,9 @@
 <div class="relative bg-white picker-popup">
     <label for={name} class="min-w-[280px] w-full border-1 border-gray-300 rounded-md flex flex-col">
         <input name="display" type="text" class="p-4 capitalize border-transparent w-full" placeholder={ placeholder } onfocus={() => focused = true} oninput={() => handleTagSearch()} bind:value={input} onkeydown={handleNewTag}/>
-        <div class="p-3 align-middle gap-2 {!valueSelected.length ? 'hidden' : 'flex flex-row flex-wrap'}">
+        <div class="p-3 align-middle gap-2 {!valueSelected.length ? 'hidden' : 'flex flex-row flex-wrap border-t border-gray-300'}">
             {#each valueSelected as selected, index}
-                <button type="button" value={index} onclick={toggleSelect} class="font-semibold text-gray-500 max-sm:text-sm border-gray-400 border-1 shadow-md p-1 px-2 rounded-xs text-nowrap capitalize cursor-pointer flex gap-0.5">{selected} <X size="15"/></button>
+                <button type="button" value={index} onclick={toggleSelect} class="font-semibold text-blue-400 max-sm:text-sm border-blue-400 border-1 shadow-md p-1 px-2 rounded-xs text-nowrap capitalize cursor-pointer flex gap-0.5">{selected} <X size="15"/></button>
             {/each}
         </div>
         <input type="text" id={name} name={name} class="hidden" bind:value={valueSelected}/>

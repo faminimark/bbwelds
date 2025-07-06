@@ -12,9 +12,9 @@
 
   <div class="col-span-4 flex flex-col gap-4">
     {#each feeds as { images, votes, ...rest }}
-      <Card>
+    <div>
         <Feed {...rest} {votes} {images}/>
-      </Card>
+        </div>
     {:else}
       <p class="text-center p-10 text-3xl">Your feed seems to be empty, be the first bard to <a href="/post" class="text-blue-600">share your build story!</a></p>
     {/each}
