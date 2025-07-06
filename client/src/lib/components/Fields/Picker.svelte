@@ -47,7 +47,7 @@
         handleTagSearch();
     })
 
-    const handleNewTag = (e) => {
+    const handleNewTag = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault()
             valueSelected.push(input)

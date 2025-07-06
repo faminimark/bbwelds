@@ -3,7 +3,7 @@
     import { Eye, EyeClosedIcon } from 'lucide-svelte';
     let showHide =  $state(type);
 
-    const handleDefault = (e) => {
+    const handleDefault = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault()
         }
