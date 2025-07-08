@@ -1,13 +1,19 @@
 <script lang="ts">
     import {Tipex, type TipexEditor} from "@friendofsvelte/tipex"
     import Placeholder from '@tiptap/extension-placeholder'
+    import Paragraph from '@tiptap/extension-paragraph'
     import type { Extensions } from '@tiptap/core';
     let {name, value = undefined} = $props()
     let editor: TipexEditor = $state()
     const htmlContent = $derived(editor?.getHTML())
 
   const customExtensions: Extensions = [
-        Placeholder.configure({placeholder: 'Tell us your build story ...'})
+        Placeholder.configure({placeholder: 'Tell us your build story ...'}),
+        Paragraph.configure({
+            HTMLAttributes: {
+                class: 'py-2'
+            }
+        })
     ]
 </script>
 
