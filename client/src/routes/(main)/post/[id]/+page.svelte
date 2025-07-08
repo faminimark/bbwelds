@@ -14,11 +14,11 @@
 <div class="flex flex-col gap-12">
     <div class=" flex flex-col justify-center gap-4">
         <BackButton />
-        <div class="flex justify-center bg-gray-200 p-3 max-lg:p-0">
+        <div class="flex justify-center p-3 max-lg:p-0">
             <Carousel image_count={images.length}>
                 {#each images as image}
-                    <div class="embla__slide w-full flex shrink-0 grow-0 basis-full align-middle justify-center">
-                        <img aria-label="feed" alt="feed" src={image.image_url} class="w-full h-full max-w-5xl object-cover aspect-auto" />
+                    <div class="embla__slide w-full flex shrink-0 align-middle justify-center">
+                        <img aria-label="feed" alt="feed" src={image.image_url} class="w-full object-contain aspect-auto" />
                     </div>
                 {/each}
             </Carousel>
@@ -30,7 +30,7 @@
         <div class="border-y border-gray-200 p-2">
             <Link user_id={users.user_id} name={users.fullname} {created_at} img_src={profile_image}/>
         </div>
-        <desc class="whitespace-break-spaces text-lg" use:innerHTML={description} />
+        <div class="whitespace-break-spaces text-lg" use:innerHTML={description}></div>
         <div class="flex gap-2">
             {#each post_tags as {tag}}
                 <a href="/category/{tag}" class="text-xs font-semibold text-gray-400 border-1 rounded-sm p-2 capitalize cursor-pointer">{tag}</a>

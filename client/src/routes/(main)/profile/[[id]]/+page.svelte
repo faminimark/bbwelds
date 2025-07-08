@@ -68,9 +68,9 @@
                     {#if user.profile_description}
                     <div>
                         <header class="font-semibold text-sm">About</header>
-                        <desc class="max-w-[400px] text-sm text-gray-500 whitespace-break-spaces">
+                        <div class="max-w-[400px] text-sm text-gray-500 whitespace-break-spaces">
                             { user.profile_description }
-                        </desc>
+                        </div>
                     </div>
                     {/if}
                     <div class="flex flex-col gap-3">
