@@ -110,24 +110,39 @@ export const createPost = async (
     const files = formData.getAll('files')
     const category = formData.get('category') as string
     const categories = category?.split(',') as string[]
+    const lowerCat = categories.map((category) => category.toLowerCase())
     const title = formData.get('title') as string
     const description = formData.get('description') as string
 
-    const user_id = formData.get('user_id') as string; //Build context for these
+    const user_id = formData.get('user_id') as string;
+
+    if(!files.length || !categories.length || !title || !description) throw new Error ('Post creation failed, missing required field')
 
     try {
-        const post = await prisma.posts.create({
-            data: {
-                title,
-                user_id: user_id,
-                description,
-                post_tags: {
-                    createMany: {
-                        data: [...categories.map((category)=> ({ tag: category}))]
+        const [post, tags] = await Promise.all([
+            prisma.posts.create({
+                data: {
+                    title,
+                    user_id: user_id,
+                    description,
+                    post_tags: {
+                        createMany: {
+                            data: [...lowerCat.map((category)=> ({ tag: category}))]
+                        }
                     }
                 }
-            }
-        })
+            }),
+            prisma.tags.findMany({
+                where: {
+                    name: {
+                        in: lowerCat
+                    }
+                },
+            })
+        ])
+
+        const existingNamesSet = new Set(tags.map(tag => tag.name))
+        const notInDatabase = lowerCat.filter(category => !existingNamesSet.has(category))
 
         const uploadResults = await uploadImage(user_id, files)
 
@@ -138,9 +153,27 @@ export const createPost = async (
             imageable_id: post.post_id
         }))
 
-        await prisma.image_urls.createManyAndReturn({
-            data: fileNames,
-        });
+        await Promise.all([
+            prisma.tags.updateManyAndReturn({
+                where: {
+                    name: {
+                        in: lowerCat
+                    }
+                },
+                data: {
+                    count: {
+                        increment: 1
+                    }
+                }
+            }),
+            prisma.tags.createMany({
+                skipDuplicates: true,
+                data: [...notInDatabase.map((tag)=>({ name: tag.toLowerCase(), count: 1 }))]
+            }),
+            prisma.image_urls.createManyAndReturn({
+                data: fileNames,
+            })
+        ])
 
         return {
             message: 'Upload process completed',
@@ -148,8 +181,7 @@ export const createPost = async (
         }
 
     } catch (error) {
-        console.error('Upload error:', error)
-        return { error: 'Upload failed', details: error }
+        throw new Error('Upload failed, please try again later.')
     }
 
 };

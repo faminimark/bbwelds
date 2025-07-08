@@ -5,9 +5,14 @@ import { getCookie } from 'hono/cookie'
 const post = new Hono()
 
 post.post('/create', async (c) => {
-    const formData = await c.req.formData()
-    const response =  await createPost(formData)
-    return c.json({success: true, data: response});
+   const formData = await c.req.formData()
+    try {
+        const response = await createPost(formData)
+        return c.json({success: true, data: response});
+    } catch(e: unknown) {
+        const error = e instanceof Error ? e.message : 'Upload failed, please try again later.'
+        return c.json({success: false, error});
+    }
 })
 
 post.put('/:id', (c) => {

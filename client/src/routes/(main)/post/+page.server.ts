@@ -12,7 +12,9 @@ export const actions = {
         const tag = formData.get('tag') as string
         const user_id = cookies.get('user_id') as string
 
-        // Create new FormData for the node API
+        if(!title) return fail(400, { error: 'Title is required to post a story' })
+        if(!category) return fail(400, { error: 'Please pick at least 1 tag' })
+
         const apiFormData = new FormData();
         files.forEach((file) => {
             apiFormData.append('files', file);
@@ -34,7 +36,7 @@ export const actions = {
         if(result.success){
             redirect(303, '/')
         } else {
-            return fail(500, { error: 'Failed to upload files' });
+            return fail(400, { error: result.error });
         }
 
 	}

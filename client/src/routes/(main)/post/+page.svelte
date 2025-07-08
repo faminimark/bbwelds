@@ -4,7 +4,8 @@
     import BackButton from '$lib/components/BackButton.svelte'
     import { Text, Picker, FilePicker, Editor } from '$lib/components/Fields'
     import { Rocket } from 'lucide-svelte'
-    let { data } = $props()
+    let { data, form } = $props()
+
 </script>
 
 
@@ -12,6 +13,7 @@
     <BackButton />
 
 <div class="flex flex-col gap-2 max-w-6xl self-center w-full">
+    {#if form?.error} <span class="text-red-600">{form?.error}</span> {/if}
     <div class="grid grid-cols-8 max-sm:flex max-sm:flex-col-reverse gap-3 w-full">
         <div class="flex flex-col gap-4 col-span-5">
             <form class="flex flex-col gap-3" method="POST" use:enhance enctype="multipart/form-data">
