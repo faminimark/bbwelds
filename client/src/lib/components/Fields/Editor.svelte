@@ -20,16 +20,23 @@
 <div>
     <input {name} id={name} type="text" value={htmlContent} class="hidden"/>
     <Tipex
+        focal={false}
         autofocus={false}
         extensions={customExtensions}
         body={value}
         bind:tipex={editor}
         floating
-        style="background-color: white;"
-        class="h-[50vh] border border-gray-300" 
+        style="background-color: white; border-color: #d1d5dc;"
+        class="h-[50vh] foooo" 
         >
             {#snippet utilities(tipex)}
                 <!-- N/A -->
             {/snippet}
     </Tipex>
 </div>
+
+<style>
+    .foooo:focus {
+        border-color: var(--color-gray-600)
+    }
+</style>

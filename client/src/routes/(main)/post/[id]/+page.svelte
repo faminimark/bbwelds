@@ -6,6 +6,8 @@
     import { DownvoteButton, UpvoteButton, ShareButton } from '$lib/components/Buttons'
     import Carousel from '$lib/components/Carousel.svelte';
     import { didCurrentUserVote, innerHTML } from '$lib/utils';
+    import Menu from '$lib/components/Post/Menu.svelte'
+    
     let { data } = $props()
     let { title, description, created_at, users, images, votes, comments, profile_image, post_tags } = data.data;
     const { liked, disliked } = didCurrentUserVote(votes?.user_votes?.[0]?.vote_type)
@@ -27,8 +29,9 @@
             {title} 
             <ShareButton />
         </header>
-        <div class="border-y border-gray-200 p-2">
+        <div class="border-y border-gray-200 p-2 flex justify-between items-center">
             <Link user_id={users.user_id} name={users.fullname} {created_at} img_src={profile_image}/>
+            <Menu />
         </div>
         <div class="whitespace-break-spaces text-lg" use:innerHTML={description}></div>
         <div class="flex gap-2">

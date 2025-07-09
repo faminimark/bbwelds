@@ -10,7 +10,11 @@
 </script>
 
 <div class="flex flex-col">
-    <div class="flex  items-center gap-2">
-        <Avatar {img_src} {user_id}/> <a href="/profile/{ user_id }" class="text-lg text-inherit underline"> { name } </a> &#183; {formattedDate}
+    <div class="flex gap-2">
+        <Avatar {img_src} {user_id}/> 
+        <div class="flex max-sm:flex-col min-sm:items-center gap-2 max-sm:gap-0">
+            <a href="/profile/{ user_id }" class="text-lg text-inherit underline"> { name } </a>
+            &#183; {formattedDate}
+        </div>
     </div>
 </div>

@@ -1,7 +1,5 @@
 <script lang="ts">
-  import Card from '$lib/components/Card.svelte'
   import Feed from '$lib/components/Feed/index.svelte'
-  import Category from '$lib/components/Category.svelte'
   let { data } = $props();
   const feeds = data.data;
 </script>

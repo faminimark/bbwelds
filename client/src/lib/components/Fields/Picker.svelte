@@ -1,18 +1,21 @@
 <script lang="ts">
+     // @ts-nocheck
     import { X } from 'lucide-svelte'
     import { onMount } from 'svelte'
     import {debounce} from '$lib/utils'
     interface OptionProps {
         placeholder: string;
         name: string;
+        values?: string[];
     }
 
     let { 
         placeholder, 
         name, 
+        values = undefined
     }: OptionProps = $props();
     
-    let valueSelected: string[] = $state([])
+    let valueSelected: string[] = $state(values ? values: [])
     let tags: string[] = $state([])
     let input: string = $state('');
     let focused = $state(false)

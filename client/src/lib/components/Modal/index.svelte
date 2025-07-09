@@ -2,7 +2,7 @@
     import Footer from './Footer.svelte';
     import Header from './Header.svelte';
     import {WhiteButton} from '$lib/components/Buttons'
-    let { children, title = undefined, submit = $bindable(), label, Icon = undefined, type = undefined, form = undefined } = $props()
+    let { children, title = undefined, submit = $bindable(), label = undefined, Icon = undefined, type = undefined, form = undefined } = $props()
     let modal = $state()
 </script>
 
